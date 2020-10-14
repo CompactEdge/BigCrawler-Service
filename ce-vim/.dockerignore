@@ -1,0 +1,19 @@
+/chart/
+# /config/
+/devops/
+# /internal/
+/scripts/
+/vendor/
+.gitignore
+.gitlab-ci.yml
+Dockerfile
+Dockerfile.bak
+# go.mod
+go.sum
+Jenkinsfile.groovy
+Makefile
+# main.go
+mec-broker
+*.md
+*.log
+VERSION_BROKER

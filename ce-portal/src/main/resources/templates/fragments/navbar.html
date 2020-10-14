@@ -1,0 +1,40 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent sticky-top">
+  <div class="navbar-form"></div>
+  <div class="container-fluid">
+    <div th:class="'col-' + (${#httpServletRequest.requestURI} eq '/test' ? 4 : 2 )">
+      <th:block th:if="false">
+      <!-- <th:block th:if="${#httpServletRequest.requestURI} != '/resource/node'"> -->
+        
+          <div class="card sticky-card">
+            <div class="card-body">
+              <div class="input-group">
+
+                <div class="col-md">
+                  <select class="selectpicker show-tick" data-width="100%" data-style="btn-primary">
+                    <optgroup label="Namespace" data-max-options="1">
+                      <option selected value="all">All namespaces</option>
+                    </optgroup>
+                    <th:block th:each="namespace : ${ namespaces }">
+                      <option data-value="${ namespace.name }">[[${namespace.name}]]</option>
+                    </th:block>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </th:block>
+      </th:block>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+  </div>
+</nav>
+<!-- End Navbar -->

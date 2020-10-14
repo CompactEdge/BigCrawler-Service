@@ -1,0 +1,160 @@
+// https://jenkins.io/doc/book/pipeline/syntax/
+// declarative pipeline
+pipeline {
+  agent any
+
+  environment {
+    PATH="/usr/local/bin:/usr/bin"
+    PORTAL="ce-portal"
+    NAMESPACE="ce-mano"
+    REPOSITORY="ce-repo"
+    PORT="5000"
+    IMAGE_NAME="ce-portal"
+    PREV_VERSION="0.1.0"
+    VERSION="0.1.1"
+    HELM_REPO="local"
+  }
+
+  stages {
+    stage('Ready') {
+      steps {
+        script {
+          try {
+            sh "sudo kill -9 \$(sudo lsof -i :19090 | grep -i 19090 | awk \'{print \$2}\')"
+          }
+          catch (exc) {
+            echo exc.getMessage()
+            echo "catch: 19090 port-forward not exists."
+          }
+        }
+        sh '''
+          echo "server-profile script"
+          echo "Build script"
+        '''
+        // environment 사용 시 sh로 묶을 수 없음
+        echo "PATH=${env.PATH}"
+        echo "NAMESPACE=${env.NAMESPACE}"
+        echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+        echo "in ${env.WORKSPACE}"
+
+        sh '''
+          pwd
+          sudo docker version
+        '''
+
+        echo "PWD=${pwd}"
+        
+        script {
+          try {
+            sh "helm ls --all-namespaces | grep ${env.PORTAL}"
+            // sh "helm uninstall ${env.PORTAL} --namespace ${env.NAMESPACE}"
+          }
+          catch (exc) {
+            echo exc.getMessage()
+            echo "catch: Installed helm chart not exists."
+          }
+        }
+
+        script {
+          try {
+            sh "sudo docker rmi --force $IMAGE_NAME $IMAGE_NAME:latest $IMAGE_NAME:$PREV_VERSION $REPOSITORY:$PORT/$IMAGE_NAME:$PREV_VERSION"
+            sh "sudo docker rmi --force \$(sudo docker images --filter 'dangling=true' --filter=reference='$REPOSITORY:*/$IMAGE_NAME' -q)"
+          }
+          catch (exc) {
+            echo exc.getMessage()
+            echo "catch: Docker image not exists."
+          }
+        }
+      }
+      post {
+        always {
+          echo "Finish \'Ready\' stage"
+        }
+        success {
+          echo "\'Ready\' stage Success"
+        }
+        failure {
+          echo "\'Ready\' stage fail"
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        echo "Build script"
+        // sh "sudo bash ./scripts/build-image.sh"
+        sh "sudo docker build --file ./Dockerfile . --tag $IMAGE_NAME:latest --tag $IMAGE_NAME:$VERSION --no-cache"
+        sh "sudo docker tag $IMAGE_NAME:$VERSION $REPOSITORY:$PORT/$IMAGE_NAME:$VERSION"
+        sh "sudo docker push $REPOSITORY:$PORT/$IMAGE_NAME:$VERSION"
+      }
+      post {
+        always {
+          echo "Finish \'Build\' stage"
+        }
+        success {
+          echo "\'Build\' stage Success"
+        }
+        failure {
+          echo "\'Build\' stage fail"
+        }
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        echo "Deploy script"
+        sh '''
+          helm version
+          kubectl version
+        '''
+        // sh "sudo kubectl version"  // sudo: kubectl: command not found
+        // script {
+        //   try {
+        //     sh "helm repo list" // Error: no repositories to show
+        //     sh "helm push --force ./chart ${env.HELM_REPO}"
+        //     sh "helm repo update"
+        //     sh "helm search repo ${env.HELM_REPO}"
+        //   }
+        //   catch (exc) {
+        //     // Error: no repositories found. You must add one before updating
+        //     echo exc.getMessage()
+        //     echo "catch: helm repo error."
+        //   }
+        // }
+        
+        // echo -e "\n\n>>>>>> install CE-Portal Project <<<<<<" // escape option error
+        
+        // echo ">>>>>> install CE-Portal Project <<<<<<"
+        // sh "helm install ${env.PORTAL} ./chart --namespace ${env.NAMESPACE}"
+
+        // script {
+        //   try {
+        //     sh "sudo mkdir -p /root/wizontech/ce-portal"
+        //     sh "sudo cp -r /var/lib/jenkins/workspace/ce-portal/chart/* /root/wizontech/ce-portal"
+        //   }
+        //   catch (exc) {
+        //     echo exc.getMessage()
+        //     echo "catch: Fail to copy"
+        //   }
+        // }
+      }
+      post {
+        always {
+          echo "Finish \'Deploy\' stage"
+        }
+        success {
+          // https://www.jenkins.io/doc/pipeline/steps/workflow-basic-steps/#sleep-sleep
+          // sleep(time: 30, unit: "SECONDS")
+          // error: unable to forward port because pod is not running. Current status=Pending
+          // sh "kubectl port-forward --address 0.0.0.0 svc/portal-ce-portal 19090:10080 -n ce-mano &" => 적용되지 않음
+          // sh "nohup kubectl port-forward --address 0.0.0.0 svc/portal-ce-portal 19090:10080 -n ce-mano > portal.log < /dev/null &"
+          // /var/lib/jenkins/workspace/giga-ce-portal@tmp/durable-f7e6766f/script.sh: line 1: portal.log: Permission denied
+          echo "\'Deploy\' stage Success"
+        }
+        failure {
+          echo "\'Deploy\' stage fail"
+        }
+      }
+    }
+  }
+}

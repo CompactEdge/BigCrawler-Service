@@ -1,0 +1,185 @@
+<div class="sidebar" data-color="rose" data-background-color="black">
+
+  <!-- <div class="logo">
+    <a th:href="@{/portal}" class="simple-text gigamec-logo logo-normal logo-top">
+      <img class="wizontech" th:src="@{/img/wizontech-white.png}" alt="위즈온텍">
+    </a>
+  </div> -->
+  <div class="logo sidebar-logo">
+    <a th:href="@{/portal}" class="gigamec-logo simple-text logo-normal logo-top">
+      <img class="gigamec" th:src="@{/img/gigamec.png}" alt="GigaMEC">
+    </a>
+  </div>
+  
+  <div class="sidebar-wrapper">
+    <input type="hidden" name="user-id" th:value="${#authentication.principal.id}" />
+    <input type="hidden" name="user-name" th:value="${#authentication.principal.username}" />
+    <div class="user">
+      <div class="photo">
+        <img th:src="@{/img/default-avatar.png}" />
+      </div>
+      <div class="user-info">
+        <a data-toggle="collapse" href="#userMenu" class="username">
+          <span>
+            <span sec:authorize="isAuthenticated()" th:text="${ #authentication.principal.getUsername() }"></span>
+            <b class="caret"></b>
+          </span>
+        </a>
+        <div class="collapse" id="userMenu">
+          <ul class="nav">
+            <li class="nav-item menu">
+              <!-- <a class="nav-link" th:href="@{/user/{id}(id=${#authentication.principal.id})}"> -->
+              <a class="nav-link" href="#" id="userProfile">
+                <!-- <span class="sidebar-mini">&nbsp;</span> -->
+                <i class="fa fa-id-card"></i>
+                <p class="sidebar-normal">My Profile</p>
+              </a>
+            </li>
+            <!--
+            <li class="nav-item menu">
+              <a class="nav-link" href="#">
+                <i class="fa fa-cogs"></i>
+                <p class="sidebar-normal">Settings</p>
+              </a>
+            </li>
+            -->
+            <li class="nav-item menu">
+              <a class="nav-link" th:href="@{/logout}">
+                <!-- <span class="sidebar-mini">&nbsp;</span> -->
+                <i class="fa fa-sign-out"></i>
+                <p class="sidebar-normal">Logout</p>
+              </a>
+              <!-- <form th:action="@{/logout}" method="post"><button type="submit">test</button></form> -->
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul class="nav mb-3">
+      <!-- Dashboard -->
+      <li class="nav-item menu">
+        <a class="nav-link" href="#" id="dashboard">
+          <i class="material-icons">dashboard</i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+
+      <!-- Monitoring -->
+      <th:block th:if="${@environment.getProperty('prometheus.enable')} eq 'true'">
+        <li id="sbMonitoring" class="nav-item top-item">
+          <a class="nav-link collapsed" data-toggle="collapse" href="#monitoringMenu" aria-expanded="false">
+            <i class="material-icons">tv</i>
+            <p> Monitoring
+              <b class="caret"></b>
+            </p>
+          </a>
+          <div class="collapse" id="monitoringMenu">
+            <ul class="nav">
+              <li class="nav-item menu">
+                <a class="nav-link" href="#" id="mCluster">
+                  <span class="sidebar-mini">&nbsp;</span>
+                  <span class="sidebar-normal">Cluster</span>
+                </a>
+              </li>
+              <li class="nav-item menu">
+                <a class="nav-link" href="#" id="mNamespace">
+                  <span class="sidebar-mini">&nbsp;</span>
+                  <span class="sidebar-normal">Namespace</span>
+                </a>
+              </li>
+              <li class="nav-item menu">
+                <a class="nav-link" href="#" id="mNode">
+                  <span class="sidebar-mini">&nbsp;</span>
+                  <span class="sidebar-normal">Node</span>
+                </a>
+              </li>
+              <li class="nav-item menu">
+                <a class="nav-link" href="#" id="mPod">
+                  <span class="sidebar-mini">&nbsp;</span>
+                  <span class="sidebar-normal">Pod</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </th:block>
+
+      <!-- Resource -->
+      <li class="nav-item top-item">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#resourceMenu" aria-expanded="false">
+          <i class="material-icons">storage</i>
+          <p> Resource
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse" id="resourceMenu">
+          <ul class="nav">
+            <li class="nav-item menu">
+              <a class="nav-link" href="#" id="rNode">
+                <span class="sidebar-mini">&nbsp;</span>
+                <span class="sidebar-normal">Node</span>
+              </a>
+            </li>
+            <li class="nav-item menu">
+              <a class="nav-link" href="#" id="rPod">
+                <span class="sidebar-mini">&nbsp;</span>
+                <span class="sidebar-normal">Pod</span>
+              </a>
+            </li>
+            <li class="nav-item menu">
+              <a class="nav-link" href="#" id="rService">
+                <span class="sidebar-mini">&nbsp;</span>
+                <span class="sidebar-normal">Service</span>
+              </a>
+            </li>
+            <li class="nav-item menu">
+              <a class="nav-link" href="#" id="rStorage">
+                <span class="sidebar-mini">&nbsp;</span>
+                <span class="sidebar-normal">Storage</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Trace -->
+      <th:block th:if="${@environment.getProperty('kiali.enable')} eq 'true'">
+        <li class="nav-item menu">
+          <a class="nav-link" href="#" id="trace">
+            <i class="material-icons">device_hub</i>
+            <p>Trace</p>
+          </a>
+        </li>
+      </th:block>
+
+      <!-- App Repo -->
+      <li class="nav-item menu">
+        <!-- <a class="nav-link" th:href="@{/apps}"> -->
+        <a class="nav-link" href="#" id="appRepo">
+          <i class="material-icons">backup</i>
+          <p>App Repo</p>
+        </a>
+      </li>
+
+      <!-- SKT Datacenter -->
+      <li class="nav-item menu">
+        <!-- <a class="nav-link" th:href="@{/apps}"> -->
+        <a class="nav-link" href="#" id="sktDatacenter">
+          <i class="material-icons">explore</i>
+          <p>SKT</p>
+        </a>
+      </li>
+
+    </ul>
+    <div class="logo sidebar-logo">
+      <a href="javascript:void(0)" class="gigamec-logo simple-text logo-normal logo-bottom">
+        <img class="wizontech" th:src="@{/img/wizontech-white.png}" alt="위즈온텍">
+      </a>
+      <a href="javascript:void(0)" class="gigamec-logo simple-text logo-normal logo-bottom">
+        powered by <img class="etri" th:src="@{/img/etri-wordmark.png}" alt="한국전자통신연구원">
+      </a>
+    </div>
+
+  </div>
+
+</div>

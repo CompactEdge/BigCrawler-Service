@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <div th:replace="./fragments/header.html"></div>
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="popup main-panel">
+
+      <nav class="info-navbar navbar-expand-lg navbar-absolute fixed-top success-bg-color">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <span class="navbar-brand">
+              Node
+              &gt;
+              [[${node.name}]]
+            </span>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content">
+        <div class="container-fluid">
+
+          <!-- metadata start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">Metadata</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="object-info">
+                    <div class="flex-info">
+                      <div class="info-item">
+                        <div class="item-header">Name</div>
+                        <div class="item-body">[[${node.name}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Creation time</div>
+                        <div class="item-body">[[${node.creationTime}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">UID</div>
+                        <div class="item-body">[[${node.uid}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Labels</div>
+                        <div class="item-row">
+                          <span th:each="label : ${node.labels}" th:text="${label}" />
+                        </div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Annotations</div>
+                        <div class="item-row">
+                          <span th:each="label : ${node.labels}" th:text="${label}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- metadata end -->
+
+          <!-- resource information start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">Resource Information</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="object-info">
+                    <div class="flex-info">
+                      <div class="info-item">
+                        <div class="item-header">Address</div>
+                        <div class="item-row">
+                          <span th:each="address : ${node.address}" th:text="${address}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- resource information end -->
+
+          <!-- system information by start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">System Information</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="object-info">
+                    <div class="flex-info">
+                      <div class="info-item">
+                        <div class="item-header">Machine ID</div>
+                        <div class="item-body">[[${node.machineId}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">System UUID</div>
+                        <div class="item-body">[[${node.systemUuid}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Boot ID</div>
+                        <div class="item-body">[[${node.bootId}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Kernel version</div>
+                        <div class="item-body">[[${node.kernelVersion}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">OS Image</div>
+                        <div class="item-body">[[${node.osImage}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Container runtime version</div>
+                        <div class="item-body">[[${node.containerRuntimeVersion}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">kubelet version</div>
+                        <div class="item-body">[[${node.kubeletVersion}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">kube-proxy version</div>
+                        <div class="item-body">[[${node.kubeProxyVersion}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Operating system</div>
+                        <div class="item-body">[[${node.operatingSystem}]]</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="item-header">Architecture</div>
+                        <div class="item-body">[[${node.architecture}]]</div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- system information by end -->
+
+          <!-- allocation start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">Allocation</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="object-info">
+                    <div class="flex-info">
+                      <div class="info-item">
+                        <div class="item-header">Machine ID</div>
+                        <div class="item-body">[[${node.machineId}]]</div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- allocation end -->
+
+          <!-- conditions start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">Conditions</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-dark">
+                        <tr>
+                          <th>Type</th>
+                          <th>Status</th>
+                          <th>Last probe time</th>
+                          <th>Last transition time</th>
+                          <th>Reason</th>
+                          <th>Message</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="condition : ${node.conditions}">
+                          <td th:text="${condition.type}" />
+                          <td th:text="${condition.status}" />
+                          <td th:text="${condition.lastHeartbeatTime} ? ${condition.lastHeartbeatTime} : '-'" />
+                          <td th:text="${condition.lastTransitionTime}" />
+                          <td th:text="${condition.reason} ? ${condition.reason} : '-'" />
+                          <td th:text="${condition.message} ? ${condition.message} : '-'" />
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- conditions end -->
+
+          <!-- pods start -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-icon card-header-success">
+                  <h4 class="card-title">Pods</h4>
+                </div>
+                <hr>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-dark">
+                        <tr>
+                          <th></th>
+                          <th>Name</th>
+                          <th>Namespace</th>
+                          <th>Labels</th>
+                          <th>Status</th>
+                          <th>Restarts</th>
+                          <!-- <th>CPU Usage (cores)</th> -->
+                          <!-- <th>Memory Usage (bytes)</th> -->
+                          <!-- <th>Action</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="pod : ${pods}">
+                          <td>
+                            <i
+                              th:class="material-icons"
+                              th:classappend="${pod.running} == 'Running' ? 'text-success' : 'text-warning'"
+                              th:text="${pod.running} == 'Running' ? 'check_circle' : 'warning'">
+                            </i>
+                          </td>
+                          <td th:text="${pod.name}" />
+                          <td th:text="${pod.namespace}" />
+                          <td>
+                            <div class="item-row">
+                              <span th:each="label : ${pod.labels}" th:text="${label}" />
+                            </div>
+                          </td>
+                          <td th:text="${pod.running}" />
+                          <td th:text="${pod.restarts}" />
+                          <!-- <td></td> -->
+                          <!-- <td></td> -->
+                          <!-- <td><span class="badge badge-danger remove">DEL</span></td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div><!-- card body end -->
+              </div>
+            </div>
+          </div>
+          <!-- pods end -->
+
+        </div>
+      </div>
+      <div th:replace="./fragments/footer.html"></div>
+    </div>
+  </div>
+  <div th:replace="./fragments/footer-js.html"></div>
+</body>
+
+</html>

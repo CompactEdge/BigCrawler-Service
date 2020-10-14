@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.configMapName }}
+  namespace: "{{ .Release.namespace }}"
+data:
+{{- if .Values.configFiles }}
+  ce-broker.conf: |-
+{{ .Files.Get "files/ce-broker.conf" | indent 4 }}
+{{ end }}

@@ -1,0 +1,61 @@
+profile: "develop"
+
+enable:
+  ping: true
+  rabbitmq: true
+  resourceManager: false
+  # predefinedKey: false
+
+broker:
+  version: 0.2.4
+  server:
+    ip: 127.0.0.1
+    port: 7000
+  UseRedirectURL: false
+  UseTLS: false
+  webhook:
+    token: 7c35ced827cea3da8438e7bbf9214d56
+
+vim:
+  server:
+    ip: 127.0.0.1
+    port: 6000
+
+rsc_mgr:
+  server:
+    ip: 127.0.0.1
+    port: 7500
+
+mariadb:
+  host: 127.0.0.1
+  port: 3306
+  username: 'root'
+  password: 'testmaria'
+  dbname: 'mano_rsc'
+
+cemanager:
+  server:
+    ip: ce-framework.namespace
+    port: 10201
+
+prometheus:
+  server:
+    ip: 127.0.0.1
+    port: 9090
+
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: root
+  password: 'password!'
+  queue_vim: CE-VIM
+  queue_broker: CE-BROKER
+  queue_rscmgr: CE-RSCMGR
+  exchange_vim: CE-VIM.exchange
+  exchange_broker: CE-BROKER.exchange
+  exchange_rscmgr: CE-RSCMGR.exchange
+  route: route
+
+jwt:
+  enabled: false
+  secret: broker-jwt

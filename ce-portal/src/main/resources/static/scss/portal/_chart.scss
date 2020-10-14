@@ -1,0 +1,12 @@
+.chart-box {
+  width: 100%;
+  min-height: 280px;
+}
+
+#chartColumn {
+  [class^="col"] {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0;
+  }
+}

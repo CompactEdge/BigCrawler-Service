@@ -1,0 +1,75 @@
+replicaCount: 1
+
+image:
+  repository: giga-chungju1:5000/mano-portal
+  tag: 0.0.7
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  annotations: {}
+  # name: mano-portal
+
+podSecurityContext: {}
+
+securityContext: {}
+
+configMap:
+  enabled: true
+  name: "configmap-portal"
+  files: "files/application.yml"
+
+service:
+  # type: ClusterIP
+  # port: 10080
+  # targetPort: 10080
+  type: NodePort
+  port: 19090
+  nodePort: 19090
+
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart.local
+      paths: []
+  tls:
+    - secretName: chart-tls
+      hosts:
+        - chart.local
+
+# resources: {}
+resources:
+  limits:
+    cpu: 2
+    memory: 2Gi
+  requests:
+    cpu: 1
+    memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: topology.kubernetes.io/zone
+  #         operator: In
+  #         values:
+  #         - pangyo
+  #       - key: nvidia.com/gpu
+  #         operator: NotIn
+  #         values:
+  #         - "true"

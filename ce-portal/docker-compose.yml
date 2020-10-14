@@ -1,0 +1,38 @@
+version: "3"
+services:
+  docker-mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: devmariadb
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: mano_rsc
+      # MYSQL_USER: ###
+      # MYSQL_PASSWORD: ###
+    ports:
+      - 3306:3306
+    networks:
+      - spring-boot-maria-network
+    restart: always
+  
+  docker-spring:
+    build:
+      context: .
+      dockerfile: ./op-dev-vm/Dockerfile
+    image: ce-portal
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://docker-mariadb:3306/mano_rsc?serverTimezone=Asia/Seoul&useUnicode=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: devmariadb
+    ports:
+      - 10080:10080
+    networks:
+      - spring-boot-maria-network
+    depends_on:
+      - docker-mariadb
+
+networks:
+  spring-boot-maria-network:
+    driver: bridge
+
+# docker-compose up --build (Build images before starting containers.)
+# docker-compose up

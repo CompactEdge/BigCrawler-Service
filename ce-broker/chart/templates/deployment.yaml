@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "ce-broker.fullname" . }}
+  namespace: {{ .Release.namespace }}
+  labels:
+    app: {{ template "ce-broker.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "ce-broker.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ce-broker.name" . }}
+        release: "{{ .Release.Name }}"
+{{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+{{- end }}
+    spec:
+      hostNetwork: {{ .Values.hostNetwork }}
+      containers:
+        - name: {{ .Chart.Name }}
+          args:
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+          - containerPort: {{ .Values.service.port }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+{{- if .Values.configMapName }}
+          - name: conf
+            mountPath: /root/ce-broker/conf
+{{- end }}
+          - name: localtime
+            mountPath: /etc/localtime
+{{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+{{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+{{- end }}
+      volumes:
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+{{- if .Values.configMapName }}
+      - name: conf
+        configMap:
+          name: {{ .Values.configMapName }}
+{{- end }}

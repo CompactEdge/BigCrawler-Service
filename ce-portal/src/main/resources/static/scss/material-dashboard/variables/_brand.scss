@@ -1,0 +1,24 @@
+// Bootstrap brand color customization
+
+
+/*     brand Colors              */
+
+// $brand-primary:              $purple-500 !default;
+$brand-primary:              $blue-grey-500 !default;
+// $brand-info:                 $cyan-500 !default;
+$brand-info:                 $blue-600 !default;
+// $brand-success:              $green-600 !default;
+$brand-success:              $blue-600 !default;
+// $brand-danger:               $red-600 !default;
+$brand-danger:               $orange-700 !default;
+// $brand-warning:              $orange-500 !default;
+$brand-warning:              $orange-700 !default;
+// $brand-rose:                 $pink-500 !default;
+$brand-rose:                 $blue-600 !default;
+// $brand-inverse:              $black-color !default;
+$brand-inverse:              $black-color !default;
+
+/*
+  별도로 수정해줘야 하는 컴포넌트
+  _cards.scss => .card-header-xxx
+*/

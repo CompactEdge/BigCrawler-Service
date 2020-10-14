@@ -1,0 +1,63 @@
+.sidebar-logo {
+  width: 100%;
+
+  .gigamec-logo {
+    text-align: center;
+    padding: 0 !important;
+  }
+  .simple-text.logo-normal {
+    font-size: 14px;
+    text-transform: none !important;
+    img.gigamec {
+      max-width: 200px;
+      max-height: 70px;
+    }
+    img.wizontech {
+      max-width: 200px;
+      max-height: 30px;
+    }
+    img.etri {
+      max-width: 100px;
+      max-height: 20px;
+    }
+  }
+  .logo-bottom {
+    cursor: default;
+  }
+}
+
+.sidebar-logo:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 15px;
+  height: 1px;
+  width: calc(100% - 30px);
+  background-color: hsla(0,0%,71%,.3);
+}
+
+// @keyframes blink { 
+//   50% {
+//     border-color: #ff0000;
+//   }
+// }
+
+.sidebar {
+  .sidebar-wrapper {
+    .user {
+      .user-info {
+        [data-toggle=collapse] {
+          &~div {
+            &>ul>li>a {
+              i {
+                // font-size: 24px;
+                line-height: 30px;
+                width: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

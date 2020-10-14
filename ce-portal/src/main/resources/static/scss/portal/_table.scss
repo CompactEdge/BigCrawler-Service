@@ -1,0 +1,67 @@
+.remove {
+  cursor: pointer;
+  user-select: none;
+}
+
+table.dataTable {
+
+  &>thead {
+    th {
+      font-size: 0.95rem;
+    }
+
+    & .sorting{
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    & .sorting_asc {
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    & .sorting_desc {
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+  &>tbody {
+    p {
+      margin: 2px;
+      padding: 2px 8px;
+      border-radius: 1rem;
+      background-color: #e2e2e2;
+      display: inline-block;
+    }
+
+    tr {
+      td:nth-child(2) {
+        cursor: pointer;
+        &:hover {
+          color: $color-blue;
+        }
+      }
+
+      .hide-label {
+        display: none;
+      }
+
+      .show-all-btn,
+      .hide-btn {
+        cursor: pointer;
+        border: 0;
+      }
+    }
+  }
+}
+
+.popup.main-panel {
+  width: 100%;
+}

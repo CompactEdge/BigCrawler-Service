@@ -1,0 +1,18 @@
+.selectpicker {
+  &+button {
+    text-transform: lowercase!important;
+  }
+}
+
+.main-panel {
+  .content {
+    margin-top: 0;
+    padding: 0px 15px;
+  }
+}
+
+.footer {
+  .copyright {
+    user-select: none;
+  }
+}

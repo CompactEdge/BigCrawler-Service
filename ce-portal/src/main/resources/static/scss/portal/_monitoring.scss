@@ -1,0 +1,15 @@
+.monitoring.table-responsive {
+  max-height: 300px;
+}
+
+.cluster-headlines {
+  .card {
+    margin: 15px 0!important;
+  }
+  .panel-header {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.7vw!important;
+  }
+}
