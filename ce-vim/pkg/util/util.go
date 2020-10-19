@@ -2,13 +2,19 @@ package util
 
 import (
 	"bufio"
+	"io/ioutil"
+	"net/http"
+
 	// _ "errors" // ?
 	"io"
 	"os"
 	"regexp"
 	"strings"
 
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/kubernetes/scheme"
 )
 
 // var vim-conf *os.FileInfo
@@ -297,4 +303,66 @@ func expandVariables(v string, m map[string]string) string {
 func isIgnoredLine(line string) bool {
 	trimmedLine := strings.TrimSpace(line)
 	return len(trimmedLine) == 0 || strings.HasPrefix(trimmedLine, "#")
+}
+
+// ParseCreateBody ...
+// test
+func ParseCreateBody(ctx echo.Context) (runtime.Object, error) {
+	var bodyBytes []byte
+	if ctx.Request().Body != nil {
+		bodyBytes, _ = ioutil.ReadAll(ctx.Request().Body)
+	} else {
+		return nil, nil
+	}
+	body, err := deserializeObject(bodyBytes, ctx.Logger())
+	if err != nil {
+		return nil, err
+	}
+	return body, err
+}
+
+// ParseBody ...
+func ParseBody(ctx echo.Context) (runtime.Object, int, error) {
+	// 1. Parameter
+	// TODO
+	namespace := ctx.Param("namespace")
+	if namespace != "" {
+		return nil, http.StatusOK, nil
+	}
+	// 2. Body
+	var bodyBytes []byte
+	if ctx.Request().Body != nil {
+		bodyBytes, _ = ioutil.ReadAll(ctx.Request().Body)
+	} else {
+		return nil, http.StatusBadRequest, nil
+	}
+	body, err := deserializeObject(bodyBytes, ctx.Logger())
+	if err != nil {
+		return nil, http.StatusInternalServerError, err
+	}
+	return body, http.StatusOK, err
+}
+
+func deserializeObject(body []byte, logger echo.Logger) (runtime.Object, error) {
+	decode := scheme.Codecs.UniversalDeserializer().Decode
+	obj, _, err := decode(body, nil, nil)
+	if err != nil {
+		logger.Warn("%#v", err)
+		return nil, err
+	}
+	// kind := obj.GetObjectKind()
+	// logger.Debug("kind: ", kind)
+	// logger.Debug("obj: ", obj.(*v1.Namespace))
+	return obj, nil
+}
+
+// Namer ...
+// https://github.com/kubernetes/apiserver/blob/release-1.19/pkg/endpoints/handlers/namer.go
+func Namer(ctx echo.Context) (namespace, name string, err error) {
+	names := ctx.ParamNames()
+	params := make(map[string]string)
+	for i := 0; i < len(names); i++ {
+		params[names[i]] = ctx.Param(names[i])
+	}
+	return params["namespace"], params["name"], nil
 }

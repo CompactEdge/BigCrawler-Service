@@ -1,5 +1,9 @@
 BINARY := ce-vim
 
+fmt:
+	go fmt ./...
+.PHONY: fmt
+
 deps:
 	# go get -u
 	go get -t -d -v ./...

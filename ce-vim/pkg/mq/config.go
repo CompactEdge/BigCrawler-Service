@@ -87,12 +87,12 @@ func Init() {
 	// ------------------------------------------------------------------------
 	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
 		util.EnvMap["rabbitmq.exchange_vim"], // name of the exchange
-		"direct",                                // type
-		true,                                    // durable
-		false,                                   // delete when complete
-		false,                                   // internal
-		false,                                   // noWait
-		nil,                                     // arguments
+		"direct",                             // type
+		true,                                 // durable
+		false,                                // delete when complete
+		false,                                // internal
+		false,                                // noWait
+		nil,                                  // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-VIM Failed to declare the Exchange")
@@ -100,22 +100,22 @@ func Init() {
 
 	rbmqConfig.vimQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
 		util.EnvMap["rabbitmq.queue_vim"], // name
-		false,                                // durable
-		false,                                // delete when unused
-		false,                                // exclusive
-		false,                                // no-wait
-		nil,                                  // arguments
+		false,                             // durable
+		false,                             // delete when unused
+		false,                             // exclusive
+		false,                             // no-wait
+		nil,                               // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-VIM Failed to declare a queue")
 	}
 
 	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.vimQueue.Name,                // name of the queue
+		rbmqConfig.vimQueue.Name,             // name of the queue
 		util.EnvMap["rabbitmq.route"],        // bindingKey
 		util.EnvMap["rabbitmq.exchange_vim"], // sourceExchange
-		false,                                   // noWait
-		nil,                                     // arguments
+		false,                                // noWait
+		nil,                                  // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-VIM Error binding to the Queue")
@@ -126,12 +126,12 @@ func Init() {
 	// ------------------------------------------------------------------------
 	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
 		util.EnvMap["rabbitmq.exchange_broker"], // name of the exchange
-		"direct", // type
-		true,     // durable
-		false,    // delete when complete
-		false,    // internal
-		false,    // noWait
-		nil,      // arguments
+		"direct",                                // type
+		true,                                    // durable
+		false,                                   // delete when complete
+		false,                                   // internal
+		false,                                   // noWait
+		nil,                                     // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-BROKER Failed to declare the Exchange")
@@ -139,22 +139,22 @@ func Init() {
 
 	rbmqConfig.brokerQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
 		util.EnvMap["rabbitmq.queue_broker"], // name
-		false,                                   // durable
-		false,                                   // delete when unused
-		false,                                   // exclusive
-		false,                                   // no-wait
-		nil,                                     // arguments
+		false,                                // durable
+		false,                                // delete when unused
+		false,                                // exclusive
+		false,                                // no-wait
+		nil,                                  // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-BROKER Failed to declare a queue")
 	}
 
 	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.brokerQueue.Name,                // name of the queue
+		rbmqConfig.brokerQueue.Name,             // name of the queue
 		util.EnvMap["rabbitmq.route"],           // bindingKey
 		util.EnvMap["rabbitmq.exchange_broker"], // sourceExchange
-		false, // noWait
-		nil,   // arguments
+		false,                                   // noWait
+		nil,                                     // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-BROKER Error binding to the Queue")
@@ -165,12 +165,12 @@ func Init() {
 	// ------------------------------------------------------------------------
 	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
 		util.EnvMap["rabbitmq.exchange_rscmgr"], // name of the exchange
-		"direct", // type
-		true,     // durable
-		false,    // delete when complete
-		false,    // internal
-		false,    // noWait
-		nil,      // arguments
+		"direct",                                // type
+		true,                                    // durable
+		false,                                   // delete when complete
+		false,                                   // internal
+		false,                                   // noWait
+		nil,                                     // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-RSC_MGR Failed to declare the Exchange")
@@ -178,22 +178,22 @@ func Init() {
 
 	rbmqConfig.rscmgrQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
 		util.EnvMap["rabbitmq.queue_rscmgr"], // name
-		false,                                   // durable
-		false,                                   // delete when unused
-		false,                                   // exclusive
-		false,                                   // no-wait
-		nil,                                     // arguments
+		false,                                // durable
+		false,                                // delete when unused
+		false,                                // exclusive
+		false,                                // no-wait
+		nil,                                  // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-RSC_MGR Failed to declare a queue")
 	}
 
 	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.rscmgrQueue.Name,                // name of the queue
+		rbmqConfig.rscmgrQueue.Name,             // name of the queue
 		util.EnvMap["rabbitmq.route"],           // bindingKey
 		util.EnvMap["rabbitmq.exchange_rscmgr"], // sourceExchange
-		false, // noWait
-		nil,   // arguments
+		false,                                   // noWait
+		nil,                                     // arguments
 	)
 	if rbmqConfig.rbmqErr != nil {
 		log.Error("MEC-RSC_MGR Error binding to the Queue")

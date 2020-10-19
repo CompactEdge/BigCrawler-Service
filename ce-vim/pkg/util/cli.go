@@ -10,7 +10,7 @@ import (
 
 var (
 	configPath string
-	configName     = "ce-vim.yaml"
+	configName = "ce-vim.yaml"
 	// userLicense string
 	// rootCmd = &cobra.Command{
 	// 	Use:   "root",
@@ -23,7 +23,7 @@ var (
 // Cli ...
 type Cli struct {
 	Version bool
-	Debug bool
+	Debug   bool
 	Profile string
 }
 

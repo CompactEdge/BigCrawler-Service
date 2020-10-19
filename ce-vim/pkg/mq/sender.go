@@ -25,8 +25,8 @@ func SendMessageToBroker(msg string) {
 	rbmqConfig.rbmqErr = rbmqConfig.ch.Publish(
 		util.EnvMap["rabbitmq.exchange_broker"], //exchange
 		util.EnvMap["rabbitmq.route"],           //routing key
-		false,                                      //mandatory
-		false,                                      //immediate
+		false,                                   //mandatory
+		false,                                   //immediate
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent,
 			ContentType:  "text/plain",
@@ -52,8 +52,8 @@ func SendMessageToRscManager(msg string) bool {
 	rbmqConfig.rbmqErr = rbmqConfig.ch.Publish(
 		util.EnvMap["rabbitmq.exchange_rscmgr"], //exchange
 		util.EnvMap["rabbitmq.route"],           //routing key
-		false,                                      //mandatory
-		false,                                      //immediate
+		false,                                   //mandatory
+		false,                                   //immediate
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent,
 			ContentType:  "text/plain",

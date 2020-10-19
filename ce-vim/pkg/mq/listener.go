@@ -21,12 +21,12 @@ func messageListenerVimDriver() {
 
 	rbmqConfig.repliesVim, rbmqConfig.rbmqErr = rbmqConfig.ch.Consume(
 		util.EnvMap["rabbitmq.queue_vim"], // queue
-		"consumer-vim",                       // Consumer tag
-		true,                                 // auto-ack
-		false,                                // exclusive
-		false,                                // no-local
-		false,                                // no-wait
-		nil,                                  // args
+		"consumer-vim",                    // Consumer tag
+		true,                              // auto-ack
+		false,                             // exclusive
+		false,                             // no-local
+		false,                             // no-wait
+		nil,                               // args
 	)
 
 	if rbmqConfig.rbmqErr != nil {
