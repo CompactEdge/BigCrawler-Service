@@ -1,24 +1,10 @@
 package service
 
-import (
-	"github.com/labstack/gommon/log"
+// TODO: modularize handler
+// https://github.com/kubernetes/apiserver/blob/release-1.19/pkg/endpoints/handlers/create.go
+// https://github.com/kubernetes/apiserver/blob/release-1.19/pkg/endpoints/handlers/delete.go
+
+const (
+	_NAMESPACE = "namespace"
+	_NAME      = "name"
 )
-
-// patchStr ...
-type patchStr struct {
-	Operation string `json:"operation"`
-	Path      string `json:"path"`
-	Patchval  string `json:"patchval"`
-}
-
-// Init ...
-func Init() {
-	log.Debug("service pkg Init()")
-	// initCore()
-	// initApps()
-	// initAutoscaling()
-	// initBatch()
-	// initExt()
-	// initNetworking()
-	// initStorage()
-}

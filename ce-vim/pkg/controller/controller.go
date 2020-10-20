@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// Handler is member of controller package
+// Handler ...
 type Handler struct{}
 
 // NewHandler ...
@@ -21,8 +21,13 @@ func NewHandler() *Handler {
 // Register ...
 func (h *Handler) Register(api *echo.Group) {
 	v1 := api.Group("/v1")
-	NewCoreController(v1)
-	// NewCoreController().Register(v1)
+	newAppsController(v1)
+	// newScaleController(v1)
+	// newBatchController(v1)
+	newCoreController(v1)
+	// newExtensionController(v1)
+	newNetworkingController(v1)
+	// newStorageController(v1)
 }
 
 // SetConfig ...

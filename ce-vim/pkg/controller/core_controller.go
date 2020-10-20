@@ -5,11 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Core ...
-type Core struct{}
-
-// NewCoreController ...
-func NewCoreController(v1 *echo.Group) *Core {
+func newCoreController(v1 *echo.Group) {
 	core := v1.Group("/core")
 
 	// CREATE
@@ -83,12 +79,14 @@ func NewCoreController(v1 *echo.Group) *Core {
 	core.GET("/serviceaccounts/:namespace/:name", service.GetNamespacedServiceAccounts)
 
 	// REPLACE
+	// TODO:
 	core.PUT("/pods/:namespace", service.ReplaceNamespacedPods)
 	core.PUT("/podstatuses/:namespace", service.ReplaceNamespacedPodStatuses)
 	core.PUT("/services/:namespace", service.ReplaceNamespacedServices)
 	core.PUT("/servicestatuses/:namespace", service.ReplaceNamespacedServiceStatuses)
 
 	// PATCH
+	// TODO:
 	core.PATCH("/pods/:namespace", service.PatchNamespacedPods)
 	core.PATCH("/services/:namespace", service.PatchNamespacedServices)
 
@@ -124,6 +122,4 @@ func NewCoreController(v1 *echo.Group) *Core {
 	core.DELETE("/secrets", service.DeleteNamespacedSecrets)
 	core.DELETE("/services", service.DeleteNamespacedServices)
 	core.DELETE("/serviceaccounts", service.DeleteNamespacedServiceAccounts)
-
-	return &Core{}
 }
