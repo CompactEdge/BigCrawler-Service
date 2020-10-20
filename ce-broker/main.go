@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/compactedge/cewizontech/ce-broker/pkg/controller"
-	"github.com/compactedge/cewizontech/ce-broker/pkg/db"
 	"github.com/compactedge/cewizontech/ce-broker/pkg/mq"
 	"github.com/compactedge/cewizontech/ce-broker/pkg/util"
 	"github.com/labstack/echo/v4"
@@ -36,10 +35,10 @@ func init() {
 		mq.SetConfigCh()
 	}
 
-	if viper.GetBool("enable.resourceManager") == false {
-		log.Debug("db init")
-		db.SetConfig()
-	}
+	// if viper.GetBool("enable.resourceManager") == false {
+	// 	log.Debug("db init")
+	// 	db.SetConfig()
+	// }
 
 	if viper.GetBool("enable.rabbitmq") == true {
 		log.Debug("message queue init")
@@ -69,7 +68,7 @@ func main() {
 	// e.Logger.SetLevel(log.INFO)
 	e.Logger.SetLevel(log.DEBUG)
 	e.Logger.SetPrefix("echo")
-	
+
 	e.GET("/health", healthCheck)
 	api := e.Group("/api")
 

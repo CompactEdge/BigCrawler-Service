@@ -7,21 +7,21 @@ import (
 	"github.com/streadway/amqp"
 )
 
-// SendMessageToBroker ...
-func SendMessageToBroker(msg string) {
+// SendMessage ...
+func SendMessage(msg, contentType string) {
 	if rabbitMQConfig.conn == nil || rabbitMQConfig.conn.IsClosed() == true {
 		log.Warn("Failed to publish a message (to Broker). RabbitMQ connection is closed.")
 		return
 	}
 
 	rabbitMQConfig.err = rabbitMQConfig.ch.Publish(
-		viper.GetString("rabbitmq.broker.exchange"), //exchange
+		viper.GetString("rabbitmq.exchange.broker"), //exchange
 		viper.GetString("rabbitmq.route"),           //routing key
 		false,                                       //mandatory
 		false,                                       //immediate
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent,
-			ContentType:  "application/json",
+			ContentType:  contentType,
 			Body:         []byte(msg),
 		},
 	)

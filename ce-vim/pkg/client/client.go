@@ -21,7 +21,7 @@ var client *kubernetes.Clientset
 // SetConfig ...
 func SetConfig() error {
 	var err error
-	if viper.GetBool("common.useSpecifiedConfig") == false {
+	if viper.GetBool("enable.defaultkubeconfig") == true {
 		path := fmt.Sprintf("%s/%s", os.Getenv("HOME"), ".kube/config")
 		log.Info("Load from : ", path)
 		if client, err = loadKubeConfig(); err != nil {

@@ -6,6 +6,10 @@ minikube start \
 --container-runtime=docker \
 --memory='2gb'
 
+# https://hub.docker.com/_/rabbitmq
+# docker run -d --restart=always --name rabbit -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS='password!' rabbitmq:3.8.9-alpine
+docker run -d --restart=always --name rabbit -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS='password!' rabbitmq:3.8.9-management
+
 # kubectl create -f devops/k8s/coreos/kube-prometheus/manifests/setup
 # kubectl create -f devops/k8s/coreos/kube-prometheus/manifests
 # kubectl delete -f devops/k8s/coreos/kube-prometheus/manifests

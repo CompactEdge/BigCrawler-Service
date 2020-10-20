@@ -35,7 +35,7 @@ func init() {
 
 	if viper.GetBool("enable.rabbitmq") == true {
 		log.Debug("message queue channel init")
-		mq.Init()
+		mq.SetConfig()
 	}
 }
 

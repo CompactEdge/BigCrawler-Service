@@ -1,13 +1,14 @@
+---
 profile: "develop"
 
 enable:
-  ping: true
-  rabbitmq: false
-  resourceManager: false
+  rabbitmq: true
+  ping: false
+  # resourceManager: false
   # predefinedKey: false
 
 broker:
-  version: 0.2.4
+  version: 0.2.4 # deprecated
   server:
     ip: 127.0.0.1
     port: 7000
@@ -21,41 +22,38 @@ vim:
     ip: 127.0.0.1
     port: 6000
 
-rsc_mgr:
-  server:
-    ip: 127.0.0.1
-    port: 7500
-
 mariadb:
   host: 127.0.0.1
   port: 3306
   username: 'root'
   password: 'testmaria'
-  dbname: 'mano_rsc'
+  dbname: 'edge'
 
 cemanager:
   server:
     ip: ce-framework.namespace
     port: 10201
 
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: user
+  password: 'password!'
+  queue:
+    vim: vim.queue
+    broker: broker.queue
+  exchange:
+    vim: vim.exchange
+    broker: broker.exchange
+  route: route
+
 prometheus:
   server:
     ip: 127.0.0.1
     port: 9090
 
-rabbitmq:
-  host: 127.0.0.1
-  port: 5672
-  username: root
-  password: 'password!'
-  queue_vim: CE-VIM
-  queue_broker: CE-BROKER
-  queue_rscmgr: CE-RSCMGR
-  exchange_vim: CE-VIM.exchange
-  exchange_broker: CE-BROKER.exchange
-  exchange_rscmgr: CE-RSCMGR.exchange
-  route: route
-
 jwt:
   enabled: false
   secret: broker-jwt
+
+---

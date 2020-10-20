@@ -31,7 +31,7 @@ func New() *Controller {
 
 // Register ...
 func (c *Controller) Register(api *echo.Group) {
-	api.POST("/auth", c.Login)
+	api.POST("/auth", c.login)
 
 	// Restricted group
 	v1 := api.Group("/v1")
@@ -46,22 +46,20 @@ func (c *Controller) Register(api *echo.Group) {
 	// v1.Use(middleware.JWTWithConfig(jwtConfig))
 
 	vim := v1.Group("/vim")
-	vim.GET("", c.VimDriver)
-	vim.GET("/:group/:api", c.VimDriver)
-	vim.POST("/:group/:api", c.VimDriver)
-	vim.PUT("/:group/:api", c.VimDriver)
-	vim.PATCH("/:group/:api", c.VimDriver)
-	vim.DELETE("/:group/:api", c.VimDriver)
+	vim.GET("", c.sendToVim)
+	vim.GET("/:group/:api", c.sendToVim)
+	vim.POST("/:group/:api", c.sendToVim)
+	vim.PUT("/:group/:api", c.sendToVim)
+	vim.PATCH("/:group/:api", c.sendToVim)
+	vim.DELETE("/:group/:api", c.sendToVim)
 }
 
-// Login ...
-func (c *Controller) Login(ctx echo.Context) error {
+func (c *Controller) login(ctx echo.Context) error {
 	return service.Login(ctx)
 }
 
-// VimDriver ...
-func (c *Controller) VimDriver(ctx echo.Context) error {
-	statusCode, msg := service.ToVimDriver(ctx)
+func (c *Controller) sendToVim(ctx echo.Context) error {
+	statusCode, msg := service.SendToVim(ctx)
 	if statusCode == http.StatusInternalServerError {
 		return ctx.String(http.StatusInternalServerError, msg)
 	}

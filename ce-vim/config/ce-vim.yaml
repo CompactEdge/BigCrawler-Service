@@ -1,39 +1,30 @@
-common:
-  useSpecifiedConfig: false
-  UseMessageQueue: true
-  UsePredefinedKey: false
-  UsePingTest: false
-  UseRscMgr: false
+---
+profile: "develop"
 
-vim:
-  server:
-    ip: 127.0.0.1
-    port: "6000"
-  UseDynamicRoute: true
+enable:
+  defaultkubeconfig: true
+  rabbitmq: true
+  # ping: false
+  # predefinedKey: false
 
 broker:
   server:
     ip: 127.0.0.1
     port: "7000"
-  webhook:
-    token: 7c35ced827cea3da8438e7bbf9214d56
   UseRedirectURL: false
   UseTLS: false
+  webhook:
+    token: 7c35ced827cea3da8438e7bbf9214d56
 
-cemanager:
+vim:
   server:
     ip: 127.0.0.1
-    port: 10201
-
-prometheus:
-  server:
-    ip: 127.0.0.1
-    port: 9090
+    port: "6000"
 
 rabbitmq:
   host: 127.0.0.1
-  username: user1
-  password: 'password'
+  username: user
+  password: 'password!'
   port: 5672
   consumer: consumer.vim
   queue:
@@ -44,9 +35,8 @@ rabbitmq:
     broker: broker.exchange
   route: route
 
-mariadb:
-  host: 127.0.0.1
-  username: 'maria'
-  password: 'testmaria'
-  port: 3306
-  dbname: 'edge'
+# prometheus:
+#   server:
+#     ip: 127.0.0.1
+#     port: 9090
+---

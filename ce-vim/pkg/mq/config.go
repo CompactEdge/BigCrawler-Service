@@ -23,23 +23,32 @@ type RabbitMQConfig struct {
 
 var rabbitMQConfig RabbitMQConfig
 
+// SetConfig ...
+func SetConfig() {
+	if viper.GetBool("enable.rabbitmq") == false {
+		return
+	}
+
+	go initMQ()
+}
+
 func connectToRabbitMQ(uri string) *amqp.Connection {
 	for {
 		conn, err := amqp.Dial(uri)
 		if err == nil {
 			return conn
 		}
-		log.Warn("RabbitMQ connection retry : ", err, uri)
+		log.Error("RabbitMQ connection retry : ", err, uri)
 		time.Sleep(30 * time.Second)
 	}
 }
 
-// Init ...
-func Init() {
+// initMQ ...
+func initMQ() {
 	// Connection
 	addr := fmt.Sprintf("amqp://%s:%s@%s:%s/", viper.GetString("rabbitmq.username"), viper.GetString("rabbitmq.password"), viper.GetString("rabbitmq.host"), viper.GetString("rabbitmq.port"))
 	rabbitMQConfig.conn = connectToRabbitMQ(addr)
-	defer rabbitMQConfig.conn.Close()
+	// defer rabbitMQConfig.conn.Close()
 	log.Debugf("Connected to RabbitMQ : %s:%s", viper.GetString("rabbitmq.host"), viper.GetString("rabbitmq.port"))
 
 	// Notify
@@ -48,9 +57,9 @@ func Init() {
 		for {
 			select {
 			case rabbitMQConfig.err = <-rabbitMQConfig.connNotify:
-				log.Warn("Connection Closed. Trying to reconnect to RabbitMQ")
-				time.Sleep(30 * time.Second)
-				Init()
+				log.Error("Connection Closed. Trying to reconnect to RabbitMQ")
+				time.Sleep(20 * time.Second)
+				SetConfig()
 				return
 			}
 		}
@@ -64,7 +73,7 @@ func Init() {
 	defer rabbitMQConfig.ch.Close()
 
 	rabbitMQConfig.err = rabbitMQConfig.ch.ExchangeDeclare(
-		viper.GetString("rabbitmq.vim.exchange"), // name of the exchange
+		viper.GetString("rabbitmq.exchange.vim"), // name of the exchange
 		"direct",                                 // type
 		true,                                     // durable
 		false,                                    // delete when complete
@@ -77,7 +86,7 @@ func Init() {
 	}
 
 	rabbitMQConfig.vimQueue, rabbitMQConfig.err = rabbitMQConfig.ch.QueueDeclare(
-		viper.GetString("rabbitmq.vim.queue"), // name
+		viper.GetString("rabbitmq.queue.vim"), // name
 		false,                                 // durable
 		false,                                 // delete when unused
 		false,                                 // exclusive
@@ -91,7 +100,7 @@ func Init() {
 	rabbitMQConfig.err = rabbitMQConfig.ch.QueueBind(
 		rabbitMQConfig.vimQueue.Name,             // name of the queue
 		viper.GetString("rabbitmq.route"),        // bindingKey
-		viper.GetString("rabbitmq.vim.exchange"), // sourceExchange
+		viper.GetString("rabbitmq.exchange.vim"), // sourceExchange
 		false,                                    // noWait
 		nil,                                      // arguments
 	)
@@ -100,7 +109,7 @@ func Init() {
 	}
 
 	rabbitMQConfig.err = rabbitMQConfig.ch.ExchangeDeclare(
-		viper.GetString("rabbitmq.broker.exchange"), // name of the exchange
+		viper.GetString("rabbitmq.exchange.broker"), // name of the exchange
 		"direct", // type
 		true,     // durable
 		false,    // delete when complete
@@ -113,7 +122,7 @@ func Init() {
 	}
 
 	rabbitMQConfig.brokerQueue, rabbitMQConfig.err = rabbitMQConfig.ch.QueueDeclare(
-		viper.GetString("rabbitmq.broker.queue"), // name
+		viper.GetString("rabbitmq.queue.broker"), // name
 		false,                                    // durable
 		false,                                    // delete when unused
 		false,                                    // exclusive
@@ -127,7 +136,7 @@ func Init() {
 	rabbitMQConfig.err = rabbitMQConfig.ch.QueueBind(
 		rabbitMQConfig.brokerQueue.Name,             // name of the queue
 		viper.GetString("rabbitmq.route"),           // bindingKey
-		viper.GetString("rabbitmq.broker.exchange"), // sourceExchange
+		viper.GetString("rabbitmq.exchange.broker"), // sourceExchange
 		false, // noWait
 		nil,   // arguments
 	)
