@@ -4,70 +4,50 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/compactedge/cewizontech/ce-vim/pkg/util"
 	"github.com/labstack/gommon/log"
+	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 )
 
-// BodyData is member of messagequeue package.
-type BodyData struct {
-	Accept         string `json:"accept"`
-	CacheControl   string `json:"cache-control"`
-	PostmanToken   string `json:"postman-token"`
-	AcceptEncoding string `json:"accept-encoding"`
-	ContentLength  string `json:"content-length"`
-	Connection     string `json:"connection"`
-	UserAgent      string `json:"user-agent"`
-	Namespace      string `json:"namespace"`
-	Name           string `json:"name"`
-}
-
-// RbmqConfig is member of messagequeue package
-type RbmqConfigST struct {
+// RabbitMQConfig ...
+type RabbitMQConfig struct {
 	vimQueue      amqp.Queue
 	brokerQueue   amqp.Queue
-	rscmgrQueue   amqp.Queue
 	conn          *amqp.Connection
 	ch            *amqp.Channel
 	repliesVim    <-chan amqp.Delivery
 	repliesBroker <-chan amqp.Delivery
-	repliesRscMgr <-chan amqp.Delivery
 	connNotify    <-chan *amqp.Error
-	rbmqErr       error
+	err           error
 }
 
-var rbmqConfig RbmqConfigST
+var rabbitMQConfig RabbitMQConfig
 
-// Try to connect to the RabbitMQ server as
-// long as it takes to establish a connection
-func connectToRabbitMQ(uri string) (*amqp.Connection, error) {
+func connectToRabbitMQ(uri string) *amqp.Connection {
 	for {
 		conn, err := amqp.Dial(uri)
 		if err == nil {
-			return conn, err
-		} else {
-			log.Warn("RabbitMQ connection retry : ", err, uri)
+			return conn
 		}
-
+		log.Warn("RabbitMQ connection retry : ", err, uri)
 		time.Sleep(30 * time.Second)
 	}
 }
 
+// Init ...
 func Init() {
-	addr := fmt.Sprintf("amqp://%s:%s@%s:%s/", util.EnvMap["rabbitmq.username"], util.EnvMap["rabbitmq.password"], util.EnvMap["rabbitmq.host"], util.EnvMap["rabbitmq.port"])
+	// Connection
+	addr := fmt.Sprintf("amqp://%s:%s@%s:%s/", viper.GetString("rabbitmq.username"), viper.GetString("rabbitmq.password"), viper.GetString("rabbitmq.host"), viper.GetString("rabbitmq.port"))
+	rabbitMQConfig.conn = connectToRabbitMQ(addr)
+	defer rabbitMQConfig.conn.Close()
+	log.Debugf("Connected to RabbitMQ : %s:%s", viper.GetString("rabbitmq.host"), viper.GetString("rabbitmq.port"))
 
-	rbmqConfig.conn, rbmqConfig.rbmqErr = connectToRabbitMQ(addr)
-
-	defer rbmqConfig.conn.Close()
-
-	log.Info("Connected to RabbitMQ : " + util.EnvMap["rabbitmq.host"] + ":" + util.EnvMap["rabbitmq.port"])
-
-	rbmqConfig.connNotify = rbmqConfig.conn.NotifyClose(make(chan *amqp.Error))
-
+	// Notify
+	rabbitMQConfig.connNotify = rabbitMQConfig.conn.NotifyClose(make(chan *amqp.Error))
 	go func() {
 		for {
 			select {
-			case rbmqConfig.rbmqErr = <-rbmqConfig.connNotify:
+			case rabbitMQConfig.err = <-rabbitMQConfig.connNotify:
 				log.Warn("Connection Closed. Trying to reconnect to RabbitMQ")
 				time.Sleep(30 * time.Second)
 				Init()
@@ -76,134 +56,91 @@ func Init() {
 		}
 	}()
 
-	rbmqConfig.ch, rbmqConfig.rbmqErr = rbmqConfig.conn.Channel()
-	if rbmqConfig.rbmqErr != nil {
+	// Channel
+	rabbitMQConfig.ch, rabbitMQConfig.err = rabbitMQConfig.conn.Channel()
+	if rabbitMQConfig.err != nil {
 		log.Error("Failed to open a channel")
 	}
-	defer rbmqConfig.ch.Close()
+	defer rabbitMQConfig.ch.Close()
 
-	// ------------------------------------------------------------------------
-	// Queue : MEC-VIM
-	// ------------------------------------------------------------------------
-	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
-		util.EnvMap["rabbitmq.exchange_vim"], // name of the exchange
-		"direct",                             // type
-		true,                                 // durable
-		false,                                // delete when complete
-		false,                                // internal
-		false,                                // noWait
-		nil,                                  // arguments
+	rabbitMQConfig.err = rabbitMQConfig.ch.ExchangeDeclare(
+		viper.GetString("rabbitmq.vim.exchange"), // name of the exchange
+		"direct",                                 // type
+		true,                                     // durable
+		false,                                    // delete when complete
+		false,                                    // internal
+		false,                                    // noWait
+		nil,                                      // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-VIM Failed to declare the Exchange")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-VIM Failed to declare the Exchange")
 	}
 
-	rbmqConfig.vimQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
-		util.EnvMap["rabbitmq.queue_vim"], // name
-		false,                             // durable
-		false,                             // delete when unused
-		false,                             // exclusive
-		false,                             // no-wait
-		nil,                               // arguments
+	rabbitMQConfig.vimQueue, rabbitMQConfig.err = rabbitMQConfig.ch.QueueDeclare(
+		viper.GetString("rabbitmq.vim.queue"), // name
+		false,                                 // durable
+		false,                                 // delete when unused
+		false,                                 // exclusive
+		false,                                 // no-wait
+		nil,                                   // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-VIM Failed to declare a queue")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-VIM Failed to declare a queue")
 	}
 
-	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.vimQueue.Name,             // name of the queue
-		util.EnvMap["rabbitmq.route"],        // bindingKey
-		util.EnvMap["rabbitmq.exchange_vim"], // sourceExchange
-		false,                                // noWait
-		nil,                                  // arguments
+	rabbitMQConfig.err = rabbitMQConfig.ch.QueueBind(
+		rabbitMQConfig.vimQueue.Name,             // name of the queue
+		viper.GetString("rabbitmq.route"),        // bindingKey
+		viper.GetString("rabbitmq.vim.exchange"), // sourceExchange
+		false,                                    // noWait
+		nil,                                      // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-VIM Error binding to the Queue")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-VIM Error binding to the Queue")
 	}
 
-	// ------------------------------------------------------------------------
-	// Queue : MEC-BROKER
-	// ------------------------------------------------------------------------
-	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
-		util.EnvMap["rabbitmq.exchange_broker"], // name of the exchange
-		"direct",                                // type
-		true,                                    // durable
-		false,                                   // delete when complete
-		false,                                   // internal
-		false,                                   // noWait
-		nil,                                     // arguments
+	rabbitMQConfig.err = rabbitMQConfig.ch.ExchangeDeclare(
+		viper.GetString("rabbitmq.broker.exchange"), // name of the exchange
+		"direct", // type
+		true,     // durable
+		false,    // delete when complete
+		false,    // internal
+		false,    // noWait
+		nil,      // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-BROKER Failed to declare the Exchange")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-BROKER Failed to declare the Exchange")
 	}
 
-	rbmqConfig.brokerQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
-		util.EnvMap["rabbitmq.queue_broker"], // name
-		false,                                // durable
-		false,                                // delete when unused
-		false,                                // exclusive
-		false,                                // no-wait
-		nil,                                  // arguments
+	rabbitMQConfig.brokerQueue, rabbitMQConfig.err = rabbitMQConfig.ch.QueueDeclare(
+		viper.GetString("rabbitmq.broker.queue"), // name
+		false,                                    // durable
+		false,                                    // delete when unused
+		false,                                    // exclusive
+		false,                                    // no-wait
+		nil,                                      // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-BROKER Failed to declare a queue")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-BROKER Failed to declare a queue")
 	}
 
-	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.brokerQueue.Name,             // name of the queue
-		util.EnvMap["rabbitmq.route"],           // bindingKey
-		util.EnvMap["rabbitmq.exchange_broker"], // sourceExchange
-		false,                                   // noWait
-		nil,                                     // arguments
+	rabbitMQConfig.err = rabbitMQConfig.ch.QueueBind(
+		rabbitMQConfig.brokerQueue.Name,             // name of the queue
+		viper.GetString("rabbitmq.route"),           // bindingKey
+		viper.GetString("rabbitmq.broker.exchange"), // sourceExchange
+		false, // noWait
+		nil,   // arguments
 	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-BROKER Error binding to the Queue")
-	}
-
-	// ------------------------------------------------------------------------
-	// Queue : MEC-RSC_MGR
-	// ------------------------------------------------------------------------
-	rbmqConfig.rbmqErr = rbmqConfig.ch.ExchangeDeclare(
-		util.EnvMap["rabbitmq.exchange_rscmgr"], // name of the exchange
-		"direct",                                // type
-		true,                                    // durable
-		false,                                   // delete when complete
-		false,                                   // internal
-		false,                                   // noWait
-		nil,                                     // arguments
-	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-RSC_MGR Failed to declare the Exchange")
-	}
-
-	rbmqConfig.rscmgrQueue, rbmqConfig.rbmqErr = rbmqConfig.ch.QueueDeclare(
-		util.EnvMap["rabbitmq.queue_rscmgr"], // name
-		false,                                // durable
-		false,                                // delete when unused
-		false,                                // exclusive
-		false,                                // no-wait
-		nil,                                  // arguments
-	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-RSC_MGR Failed to declare a queue")
-	}
-
-	rbmqConfig.rbmqErr = rbmqConfig.ch.QueueBind(
-		rbmqConfig.rscmgrQueue.Name,             // name of the queue
-		util.EnvMap["rabbitmq.route"],           // bindingKey
-		util.EnvMap["rabbitmq.exchange_rscmgr"], // sourceExchange
-		false,                                   // noWait
-		nil,                                     // arguments
-	)
-	if rbmqConfig.rbmqErr != nil {
-		log.Error("MEC-RSC_MGR Error binding to the Queue")
+	if rabbitMQConfig.err != nil {
+		log.Error("CE-BROKER Error binding to the Queue")
 	}
 
 	messageListenerVimDriver()
 }
 
+// GetConnectState ...
 func GetConnectState() bool {
-	if rbmqConfig.conn != nil && rbmqConfig.conn.IsClosed() == false {
+	if rabbitMQConfig.conn != nil && rabbitMQConfig.conn.IsClosed() == false {
 		log.Info("Connction State TRUE")
 		return true
 	}

@@ -45,7 +45,7 @@ func newAppsController(v1 *echo.Group) {
 	apps.PUT("/deployments", service.ReplaceNamespacedDeployments)
 	apps.PUT("/deploymentscale", service.ReplaceNamespacedDeploymentScale)
 	apps.PUT("/deploymentstatuses", service.ReplaceNamespacedDeploymentStatuses)
-	
+
 	// PATCH
 	// TODO:
 	apps.PATCH("/controllerrevisions", service.PatchNamespacedControllerRevisions)
@@ -59,7 +59,7 @@ func newAppsController(v1 *echo.Group) {
 	collection.DELETE("/deployments/:namespace", service.DeleteCollectionNamespacedDeployments)
 	collection.DELETE("/replicasets/:namespace", service.DeleteCollectionNamespacedReplicaSets)
 	collection.DELETE("/statefulsets/:namespace", service.DeleteCollectionNamespacedStatefulSets)
-	
+
 	// DELETE
 	apps.DELETE("/controllerrevisions", service.DeleteNamespacedControllerRevisions)
 	apps.DELETE("/daemonsets", service.DeleteNamespacedDaemonsets)

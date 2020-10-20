@@ -7,7 +7,6 @@ import (
 	"github.com/compactedge/cewizontech/ce-vim/pkg/client"
 	"github.com/compactedge/cewizontech/ce-vim/pkg/controller"
 	"github.com/compactedge/cewizontech/ce-vim/pkg/mq"
-	"github.com/compactedge/cewizontech/ce-vim/pkg/service"
 	"github.com/compactedge/cewizontech/ce-vim/pkg/util"
 
 	// "github.com/compactedge/cewizontech/ce-vim/pkg/controller"
@@ -31,7 +30,7 @@ func init() {
 	if err := client.SetConfig(); err != nil {
 		panic(err)
 	}
-	service.Init()
+	// service.Init()
 	// controller.Init()
 
 	if viper.GetBool("enable.rabbitmq") == true {

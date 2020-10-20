@@ -1,4 +1,3 @@
-# Common Functions
 common:
   useSpecifiedConfig: false
   UseMessageQueue: true
@@ -6,14 +5,12 @@ common:
   UsePingTest: false
   UseRscMgr: false
 
-# VIM Driver specific configs
 vim:
   server:
     ip: 127.0.0.1
     port: "6000"
   UseDynamicRoute: true
 
-# BROKER specific configs
 broker:
   server:
     ip: 127.0.0.1
@@ -23,40 +20,33 @@ broker:
   UseRedirectURL: false
   UseTLS: false
 
-# rsc_mgr specific configs
-# rsc_mgr.server.ip: localhost
-# rsc_mgr.server.port: 7500
-
-# CE Manager specific configs
 cemanager:
   server:
     ip: 127.0.0.1
     port: 10201
 
-# Prometheus specific configs
 prometheus:
   server:
     ip: 127.0.0.1
     port: 9090
 
-# AMQP RabbitMQ specific configs
 rabbitmq:
   host: 127.0.0.1
-  username: mec1
-  password: '!mecuser1'
+  username: user1
+  password: 'password'
   port: 5672
-  queue_vim: CE-VIM
-  queue_broker: CE-BROKER
-  queue_rscmgr: CE-RSCMGR
-  exchange_vim: CE-VIM.exchange
-  exchange_broker: CE-BROKER.exchange
-  exchange_rscmgr: CE-RSCMGR.exchange
+  consumer: consumer.vim
+  queue:
+    vim: vim.queue
+    broker: broker.queue
+  exchange:
+    vim: vim.exchange
+    broker: broker.exchange
   route: route
 
-# MariaDB specific configs
 mariadb:
   host: 127.0.0.1
   username: 'maria'
   password: 'testmaria'
   port: 3306
-  dbname: 'mano_rsc'
+  dbname: 'edge'

@@ -22,12 +22,25 @@ func NewHandler() *Handler {
 func (h *Handler) Register(api *echo.Group) {
 	v1 := api.Group("/v1")
 	newAppsController(v1)
-	// newScaleController(v1)
-	// newBatchController(v1)
+	newBatchController(v1)
 	newCoreController(v1)
-	// newExtensionController(v1)
 	newNetworkingController(v1)
-	// newStorageController(v1)
+	newStorageController(v1)
+
+	// TODO
+	// admissionregistrationV1
+	// authenticationV1
+	// authorizationV1
+	// autoscalingV1
+	// certificatesV1
+	// coordinationV1
+	// eventsV1
+	// extensionsV1beta1
+	// nodeV1beta1
+	// policyV1beta1
+	// rbacV1
+	// schedulingV1
+	// settingsV1alpha1
 }
 
 // SetConfig ...
