@@ -2,6 +2,6 @@
 
 > [위즈온텍 WizOnTech](http://wizontech.com/)
 
-- ce-service-bus
-- ce-api-gateway
-- ce-portal
+- service-bus
+- api-gateway
+- portal
