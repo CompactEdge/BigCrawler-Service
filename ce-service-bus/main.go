@@ -31,15 +31,6 @@ func init() {
 	if err := client.SetConfig(); err != nil {
 		panic(err)
 	}
-	// service.Init()
-	// controller.Init()
-
-	if viper.GetBool("enable.rabbitmq") == true {
-		log.Debug("message queue channel init")
-		mq.SetConfigChannel()
-		log.Debug("message queue init")
-		mq.SetConfig()
-	}
 }
 
 func main() {
@@ -61,6 +52,13 @@ func main() {
 	e := echo.New()
 	e.HideBanner = true
 
+	if viper.GetBool("enable.rabbitmq") == true {
+		log.Debug("message queue channel init")
+		mq.SetConfigChannel(e)
+		log.Debug("message queue init")
+		mq.SetConfig()
+	}
+
 	logConfig := middleware.LoggerConfig{
 		// Format: "method=${method}, uri=${uri}, status=${status}\n",
 		Format: `
@@ -75,6 +73,8 @@ func main() {
 		Output: os.Stdout,
 	}
 	e.Use(middleware.LoggerWithConfig(logConfig))
+	// e.Use(mq.BusClientAPI)
+
 	if flags.Debug == true {
 		e.Logger.SetLevel(log.DEBUG)
 	} else {

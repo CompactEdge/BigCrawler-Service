@@ -74,7 +74,7 @@ func (c *Cli) Parse() {
 
 	if c.Debug == true {
 		log.SetLevel(log.DEBUG)
-		log.Debug("Debug level")
+		log.Debug("Log Level: DEBUG")
 	} else {
 		log.SetLevel(log.INFO)
 	}

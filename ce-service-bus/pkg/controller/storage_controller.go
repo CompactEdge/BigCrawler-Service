@@ -9,11 +9,12 @@ func newStorageController(v1 *echo.Group) {
 	storage := v1.Group("/storage")
 
 	// CREATE
-	storage.POST("/storageclasses", createStorageClasses)
+	storage.POST("/storageclasses", service.CreateStorageClasses)
 	storage.POST("/volumeattachments", service.CreateVolumeAttachments)
 
 	// LIST
-	storage.GET("/storageclasses", listStorageClasses)
+	// storage.GET("/storageclasses", listStorageClasses)
+	storage.GET("/storageclasses", service.ListStorageClasses)
 	storage.GET("/volumeattachments", service.ListVolumeAttachments)
 
 	// GET
@@ -40,10 +41,6 @@ func newStorageController(v1 *echo.Group) {
 
 }
 
-func createStorageClasses(ctx echo.Context) error {
-	return ctx.JSON(service.CreateStorageClasses(ctx, nil))
-}
-
-func listStorageClasses(ctx echo.Context) error {
-	return ctx.JSON(service.ListStorageClasses())
-}
+// func listStorageClasses(ctx echo.Context) error {
+// 	return ctx.JSON(service.ListStorageClasses())
+// }

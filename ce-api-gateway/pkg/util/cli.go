@@ -39,7 +39,7 @@ func (c *Cli) Parse() *Cli {
 
 	if c.Debug == true {
 		log.SetLevel(log.DEBUG)
-		log.Debug("Debug level")
+		log.Debug("Log Level: DEBUG")
 	} else {
 		log.SetLevel(log.INFO)
 	}
@@ -65,7 +65,7 @@ func (c *Cli) Parse() *Cli {
 	return c
 }
 
-// printVersion is member of main package
+// printVersion ...
 func printVersion(c *Cli) {
 	var (
 		name    = fmt.Sprint("Compact Edge API Gateway")
@@ -73,13 +73,6 @@ func printVersion(c *Cli) {
 		config  = fmt.Sprintf("Config : %s", configPath+configName)
 		version string
 	)
-	// if c.Debug == true {
-	// 	name = fmt.Sprint("Compact Edge API Gateway (Debug mode)")
-	// 	profile = fmt.Sprintf("Profile   : %s", c.Profile)
-	// 	config = fmt.Sprintf("Config    : %s", configPath+configName)
-	// } else {
-	// 	name = fmt.Sprint("Compact Edge API Gateway")
-	// }
 	version = fmt.Sprintf("%s", viper.GetString("apigw.version"))
 	log.Debugf("%s:%s, %s, %s", name, version, profile, config)
 }

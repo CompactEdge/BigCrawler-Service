@@ -4,17 +4,19 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/service"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
 )
 
 // MessageQueueCh ...
 // var MessageQueueCh = make(chan string, 1)
-var MessageQueueCh chan string // = make(chan string, 1)
+var (
+	MessageQueueCh chan string // = make(chan string, 1)
+)
 
 // SetConfigChannel ...
-func SetConfigChannel() {
+func SetConfigChannel(ec *echo.Echo) {
 	MessageQueueCh = make(chan string, 1)
 }
 
@@ -43,16 +45,12 @@ func messageListenerServiceBus() {
 }
 
 func parseReceivedMsg(data []byte) {
-	log.Debug("Received a message: %s", string(data))
-	// TODO:
-	code, obj := service.ListStorageClasses()
+	code, obj := k8sClientAPI(data)
 	if code >= http.StatusOK && http.StatusMultipleChoices > code {
 		if jsonData, err := json.Marshal(obj); err != nil {
 			log.Error(err)
 		} else {
-			// log.Debug([]byte(fmt.Sprintf("%v", obj)))
-			// sendMessage(jsonData, "text/plain")
-			sendMessage(jsonData, "application/json")
+			sendMessage(jsonData, echo.MIMEApplicationJSON)
 		}
 	}
 }

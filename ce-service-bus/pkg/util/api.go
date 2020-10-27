@@ -16,27 +16,28 @@ type BodyData struct {
 }
 
 // RequestAPI ...
-func RequestAPI(data *BodyData) (int, string) {
-	log.Info("Request to", data.Host)
+func RequestAPI(data *BodyData) (int, interface{}) {
+	log.Info("Request to: ", data.Host)
 
 	req, err := http.NewRequest(data.Method, data.Host, bytes.NewReader([]byte(data.Body)))
 	if err != nil {
 		log.Error(err)
+		return http.StatusInternalServerError, err
 	}
 	client := http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
 		log.Error(err)
+		return http.StatusInternalServerError, err
 	}
 	defer res.Body.Close()
-
-	resJSON := new(BodyData)
-	err = json.NewDecoder(res.Body).Decode(resJSON)
+	
+	var resJSON map[string]interface{}
+	err = json.NewDecoder(res.Body).Decode(&resJSON)
 	if err != nil {
 		log.Error(err)
+		return http.StatusInternalServerError, err
 	}
-
-	log.Debug(resJSON.Body)
-
-	return http.StatusOK, resJSON.Body
+	log.Debug(resJSON)
+	return http.StatusOK, resJSON
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type bodyData struct {
+type busData struct {
 	Method string `json:"method"`
 	Host   string `json:"host"`
 	Body   string `json:"body"`
@@ -29,6 +29,7 @@ func SendToBus(ctx echo.Context) (int, interface{}) {
 	log.Debug("requestURI :", requestURI)
 	// TODO: modify uri format
 	rewriteURI := fmt.Sprintf("http://%s:%s/api/v1%s", viper.GetString("svcbus.server.ip"), viper.GetString("svcbus.server.port"), requestURI)
+	// rewriteURI := fmt.Sprintf("/api/v1%s", requestURI)
 	log.Debug("rewriteURI :", rewriteURI)
 
 	// 1. Redirect to svc api
@@ -48,11 +49,13 @@ func SendToBus(ctx echo.Context) (int, interface{}) {
 		if ctx.Request().Body != nil {
 			bodyBytes, _ = ioutil.ReadAll(ctx.Request().Body)
 		}
-		body := new(bodyData)
-		body.Method = ctx.Request().Method
-		body.Host = rewriteURI
-		body.Body = string(bodyBytes)
-		jsonData, err := json.Marshal(body)
+		bd := new(busData)
+		bd.Method = ctx.Request().Method
+		bd.Host = rewriteURI
+		bd.Body = string(bodyBytes)
+		bd.Body = strings.ReplaceAll(bd.Body, "\n", "")
+		log.Debugf("bd.Body: %s\n", bd.Body)
+		jsonData, err := json.Marshal(bd)
 		if err != nil {
 			return http.StatusInternalServerError, err.Error()
 		}
@@ -63,6 +66,7 @@ func SendToBus(ctx echo.Context) (int, interface{}) {
 		if err != nil {
 			return http.StatusInternalServerError, err.Error()
 		}
+		// Empty interface w/o escape characters
 		var m map[string]interface{}
 		if err := json.Unmarshal(ret, &m); err != nil {
 			log.Fatal(err)
