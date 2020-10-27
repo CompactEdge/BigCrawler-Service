@@ -1,0 +1,53 @@
+---
+profile: "develop"
+
+enable:
+  rabbitmq: true
+  ping: false
+
+apigw:
+  version: 0.3.0 # deprecated
+  server:
+    ip: 127.0.0.1
+    port: 6000
+  UseRedirectURL: false
+  UseTLS: false
+  webhook:
+    token: 7c35ced827cea3da8438e7bbf9214d56
+
+svcbus:
+  server:
+    ip: 127.0.0.1
+    port: 7000
+
+mariadb:
+  host: 127.0.0.1
+  port: 3306
+  username: 'root'
+  password: 'testmaria'
+  dbname: 'edge'
+
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: user
+  password: 'password!'
+  consumer: consumer.apigw
+  queue:
+    svcbus: svcbus.queue
+    apigw: apigw.queue
+  exchange:
+    svcbus: svcbus.exchange
+    apigw: apigw.exchange
+  route: route
+
+prometheus:
+  server:
+    ip: 127.0.0.1
+    port: 9090
+
+jwt:
+  enabled: false
+  secret: apigw-jwt
+
+---

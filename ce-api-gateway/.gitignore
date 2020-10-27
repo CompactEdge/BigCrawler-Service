@@ -1,0 +1,12 @@
+### bin ###
+.DS_Store
+apigw
+apigw.exe
+
+### mod ###
+vendor/
+*.log
+*.out
+
+### unused ###
+/deprecated/

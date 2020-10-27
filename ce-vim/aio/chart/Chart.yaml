@@ -1,5 +1,0 @@
-apiVersion: v1
-version: 0.2.3
-appVersion: 0.2.3
-name: mec-vim
-description: A Helm chart for MEC VIM

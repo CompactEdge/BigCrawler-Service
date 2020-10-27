@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.configMapName }}
+  namespace: {{ .Release.namespace }}
+data:
+{{- if .Values.configFilesApp }}
+  mec-app.conf: |-
+{{ .Files.Get "files/ce-service-bus.yaml" | indent 4 }}
+{{ end }}
