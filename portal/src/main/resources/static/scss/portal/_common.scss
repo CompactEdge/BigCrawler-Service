@@ -1,6 +1,6 @@
 .selectpicker {
-  &+button {
-    text-transform: lowercase!important;
+  & + button {
+    text-transform: lowercase !important;
   }
 }
 
@@ -14,5 +14,22 @@
 .footer {
   .copyright {
     user-select: none;
+  }
+}
+
+.index-container {
+  padding-top: 0 !important;
+}
+
+.main-logo {
+  display: flex;
+  justify-content: center;
+  margin-top: 6vh;
+  margin-bottom: 9vh;
+  > .compact-edge {
+    > img.compact-edge-logo {
+      max-width: 30vw;
+      object-fit: contain;
+    }
   }
 }

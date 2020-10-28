@@ -25,7 +25,7 @@ export default `
               <h5 class="card-text">Apache HTTP Server</h5>
               <button class="btn btn-success btn-install">Install</button>
               <input type="hidden" value="apache">
-              <button class="btn btn-danger btn-delete">Delete</button>
+              <button class="btn btn-warning btn-delete">Delete</button>
               <input type="hidden" value="apache">
             </div>
           </div>
@@ -36,7 +36,7 @@ export default `
               <h5 class="card-text">Maria DB</h5>
               <button class="btn btn-success btn-install">Install</button>
               <input type="hidden" value="maria">
-              <button class="btn btn-danger btn-delete">Delete</button>
+              <button class="btn btn-warning btn-delete">Delete</button>
               <input type="hidden" value="maria">
               </div>
           </div>
@@ -47,7 +47,7 @@ export default `
               <h5 class="card-text">ETRI SIM</h5>
               <button class="btn btn-success btn-install">Install</button>
               <input type="hidden" value="etri-sim">
-              <button class="btn btn-danger btn-delete">Delete</button>
+              <button class="btn btn-warning btn-delete">Delete</button>
               <input type="hidden" value="etri-sim">
               </div>
           </div>
@@ -58,7 +58,7 @@ export default `
               <h5 class="card-text">WizOnTech SIM</h5>
               <button class="btn btn-success btn-install">Install</button>
               <input type="hidden" value="wizontech-sim">
-              <button class="btn btn-danger btn-delete">Delete</button>
+              <button class="btn btn-warning btn-delete">Delete</button>
               <input type="hidden" value="wizontech-sim">
               </div>
           </div>

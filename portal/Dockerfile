@@ -1,6 +1,6 @@
 # mvn clean package -Dmaven.test.skip=true
-# docker build -f . -t markruler/mano-portal:0.0.7
-# docker push markruler/mano-portal:0.0.7
+# docker build -f . -t markruler/ce-portal:0.1.0
+# docker push markruler/ce-portal:0.1.0
 
 FROM maven:3.6-jdk-8
 
@@ -9,17 +9,17 @@ FROM maven:3.6-jdk-8
 
 VOLUME /tmp
 
-WORKDIR /root/mano-portal
+WORKDIR /root/ce-portal
 
 # Remove *.jar in .dockerignore
-# ADD manoportal-*.jar /root/mano-portal/manoportal.jar
-COPY manoportal-*.jar /root/mano-portal/manoportal.jar
+# ADD portal-*.jar /root/ce-portal/portal.jar
+COPY portal-*.jar /root/ce-portal/portal.jar
 
 RUN ["pwd"]
-RUN ["ls", "/root/mano-portal"]
-RUN ["ls", "-ltrh", "/root/mano-portal/manoportal.jar"]
+RUN ["ls", "/root/ce-portal"]
+RUN ["ls", "-ltrh", "/root/ce-portal/portal.jar"]
 
 # EXPOSE 10080
 
 # application.yml -> k8s configmap
-ENTRYPOINT [ "java", "-jar", "-Dspring.profiles.active=server", "-Dspring.config.location=file:/root/conf/application.yml", "/root/mano-portal/manoportal.jar" ]
+ENTRYPOINT [ "java", "-jar", "-Dspring.profiles.active=server", "-Dspring.config.location=file:/root/conf/application.yml", "/root/ce-portal/portal.jar" ]

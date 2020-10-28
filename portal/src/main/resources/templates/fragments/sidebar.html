@@ -1,13 +1,13 @@
 <div class="sidebar" data-color="rose" data-background-color="black">
 
   <!-- <div class="logo">
-    <a th:href="@{/portal}" class="simple-text gigamec-logo logo-normal logo-top">
+    <a th:href="@{/portal}" class="simple-text compact-edge-logo logo-normal logo-top">
       <img class="wizontech" th:src="@{/img/wizontech-white.png}" alt="위즈온텍">
     </a>
   </div> -->
   <div class="logo sidebar-logo">
-    <a th:href="@{/portal}" class="gigamec-logo simple-text logo-normal logo-top">
-      <img class="gigamec" th:src="@{/img/gigamec.png}" alt="GigaMEC">
+    <a th:href="@{/portal}" class="compact-edge-logo simple-text logo-normal logo-top">
+      <img class="compact-edge" th:src="@{/img/compact-edge.png}" alt="Compact Edge">
     </a>
   </div>
   
@@ -142,40 +142,39 @@
         </div>
       </li>
 
-      <!-- Trace -->
-      <th:block th:if="${@environment.getProperty('kiali.enable')} eq 'true'">
-        <li class="nav-item menu">
-          <a class="nav-link" href="#" id="trace">
-            <i class="material-icons">device_hub</i>
-            <p>Trace</p>
-          </a>
-        </li>
-      </th:block>
-
       <!-- App Repo -->
       <li class="nav-item menu">
-        <!-- <a class="nav-link" th:href="@{/apps}"> -->
         <a class="nav-link" href="#" id="appRepo">
           <i class="material-icons">backup</i>
           <p>App Repo</p>
         </a>
       </li>
 
-      <!-- SKT Datacenter -->
+      <!-- Trace -->
+      <th:block th:if="${@environment.getProperty('kiali.enable')} eq 'true'">
+        <li class="nav-item menu">
+          <!-- <a class="nav-link" href="#" id="trace"> -->
+          <a class="nav-link" th:href='@{${@environment.getProperty("kiali.url")}}' target="_blank" id="kiali">
+            <i class="material-icons">device_hub</i>
+            <p>Trace <em class="open-in-new material-icons">open_in_new</em></p>
+          </a>
+        </li>
+      </th:block>
+
+      <!-- Operational View -->
       <li class="nav-item menu">
-        <!-- <a class="nav-link" th:href="@{/apps}"> -->
-        <a class="nav-link" href="#" id="sktDatacenter">
-          <i class="material-icons">explore</i>
-          <p>SKT</p>
+        <a class="nav-link" th:href='@{${@environment.getProperty("kube-ops-view.url")}}' target="_blank" id="opsview">
+          <i class="material-icons">widgets</i>
+          <p>Operational View <em class="open-in-new material-icons">open_in_new</em></p>
         </a>
       </li>
 
     </ul>
     <div class="logo sidebar-logo">
-      <a href="javascript:void(0)" class="gigamec-logo simple-text logo-normal logo-bottom">
+      <a href="javascript:void(0)" class="compact-edge-logo simple-text logo-normal logo-bottom">
         <img class="wizontech" th:src="@{/img/wizontech-white.png}" alt="위즈온텍">
       </a>
-      <a href="javascript:void(0)" class="gigamec-logo simple-text logo-normal logo-bottom">
+      <a href="javascript:void(0)" class="compact-edge-logo simple-text logo-normal logo-bottom">
         powered by <img class="etri" th:src="@{/img/etri-wordmark.png}" alt="한국전자통신연구원">
       </a>
     </div>

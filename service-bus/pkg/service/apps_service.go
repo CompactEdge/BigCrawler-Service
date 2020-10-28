@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/client"
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/util"
+	"github.com/compactedge/cewizontech/service-bus/pkg/client"
+	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 	"github.com/labstack/echo/v4"
 	appsv1 "k8s.io/api/apps/v1"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"

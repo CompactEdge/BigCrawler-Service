@@ -14,7 +14,7 @@ go env
 > GOPATH="${HOME}/go"
 > GOROOT="/usr/local/go"
 pwd
-> ${GOPATH}/src/github.com/ceWizOnTech/ce-service-bus
+> ${GOPATH}/src/github.com/ceWizOnTech/service-bus
 
 ```
 
@@ -27,11 +27,11 @@ make build
 ## Run
 
 ```bash
-./ce-service-bus
+./service-bus
 ```
 
 ## Helm
 
 ```bash
-helm install ce-service-bus ./chart
+helm install service-bus ./chart
 ```

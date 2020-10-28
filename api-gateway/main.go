@@ -7,9 +7,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/controller"
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/mq"
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/util"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/controller"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/mq"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/util"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"

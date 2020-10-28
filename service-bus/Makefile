@@ -7,13 +7,17 @@ fmt:
 .PHONY: deps
 deps:
 	# go get -u
-	go get -t -d -v ./...
-	go mod tidy
-	go mod vendor
+	@go get -t -d -v ./...
+	@go mod tidy
+	@go mod vendor
 
 .PHONY: docker
 docker:
 	./scripts/docker.sh
+
+.PHONY: clean
+clean:
+	@rm -f ${BINARY}
 
 .PHONY: build
 build:

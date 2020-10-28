@@ -15,7 +15,7 @@ go env
 > GOPATH="${HOME}/go"
 > GOROOT="/usr/local/go"
 pwd
-> ${GOPATH}/src/ce-api-gateway
+> ${GOPATH}/src/api-gateway
 ```
 
 ## Build
@@ -27,11 +27,11 @@ make build
 ## Run
 
 ```bash
-./ce-api-gateway
+./api-gateway
 ```
 
 ## Helm
 
 ```bash
-helm install ce-api-gateway ./chart
+helm install api-gateway ./chart
 ```

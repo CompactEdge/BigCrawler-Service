@@ -29,7 +29,7 @@ spring:
 
 prometheus:
   enable: true
-  url: http://prom-prometheus-operator-prometheus.gigamec-monitor:9090
+  url: http://prom-prometheus-operator-prometheus.ce-monitor:9090
   api: /api/v1/
 
 kube-ops-view:

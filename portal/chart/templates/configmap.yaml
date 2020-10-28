@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.configMap.name }}
-  namespace: gigamec-mano
+  namespace: {{ .Release.Namespace }}
 data:
   application.yml: |-
 {{ .Files.Get .Values.configMap.files | indent 4 }}

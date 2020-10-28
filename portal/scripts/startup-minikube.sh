@@ -6,7 +6,7 @@
 LOCAL_PATH=$(echo $PATH | grep -c /usr/local/bin)
 MARIA="maria"
 PORTAL="portal"
-NAMESPACE="gigamec-mano"
+NAMESPACE="ce-mano"
 HELM_MARIA=$(helm ls -n $NAMESPACE | grep -c $MARIA)
 
 echo $PATH

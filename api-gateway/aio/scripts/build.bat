@@ -40,4 +40,4 @@ if "%HH1%" == " " set HOUR=0%HH2%
 set BUILDTIME=%date%T%HOUR%:%MINUTE%:%SECOND%
 rem echo %BUILDTIME%
 
-go build -ldflags "-X=main.Version=%VERSION%(Windows) -X=main.BuildTime=%BUILDTIME% -X=main.Revision=%REVISION%" -o ce-api-gateway.exe
+go build -ldflags "-X=main.Version=%VERSION%(Windows) -X=main.BuildTime=%BUILDTIME% -X=main.Revision=%REVISION%" -o api-gateway.exe

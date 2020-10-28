@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/mq"
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/util"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/mq"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/util"
 
 	"github.com/labstack/gommon/log"
 

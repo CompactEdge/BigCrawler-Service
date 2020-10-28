@@ -1,8 +1,7 @@
-{{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "mano-portal.name" -}}
+{{- define "ce-portal.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "mano-portal.fullname" -}}
+{{- define "ce-portal.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "mano-portal.chart" -}}
+{{- define "ce-portal.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "mano-portal.labels" -}}
-helm.sh/chart: {{ include "mano-portal.chart" . }}
-{{ include "mano-portal.selectorLabels" . }}
+{{- define "ce-portal.labels" -}}
+helm.sh/chart: {{ include "ce-portal.chart" . }}
+{{ include "ce-portal.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,23 +44,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{/*
 Selector labels
-https://kiali.io/documentation/glossary/concepts/#_label
-app: {{ include "mano-portal.name" . }}
-version: {{ .Chart.AppVersion | quote }}
 */}}
-{{- define "mano-portal.selectorLabels" -}}
-app: {{ include "mano-portal.name" . }}
-{{/* version: {{ .Chart.AppVersion | quote }} */}}
-app.kubernetes.io/name: {{ include "mano-portal.name" . }}
+{{- define "ce-portal.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ce-portal.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "mano-portal.serviceAccountName" -}}
+{{- define "ce-portal.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "mano-portal.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "ce-portal.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}

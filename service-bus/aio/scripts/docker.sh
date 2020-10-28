@@ -1,12 +1,12 @@
 #!/bin/sh
 
-SETTINGS_FILE=config/ce-service-bus.yaml
+SETTINGS_FILE=config/service-bus.yaml
 PORT=7000
 
 REPO=markruler
 # REPO_PORT=":5000"
 REPO_PORT=""
-IMAGE=ce-service-bus
+IMAGE=service-bus
 VERSION=$(cat ./VERSION)\
 
 if [ -f $SETTINGS_FILE ];then

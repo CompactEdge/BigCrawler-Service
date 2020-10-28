@@ -13,7 +13,7 @@
   <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
     <div sec:authorize="isAuthenticated()" class="container">
       <div class="navbar-wrapper">
-        <a class="navbar-brand" href="javascript:void(0)">Giga MEC Portal</a>
+        <a class="navbar-brand" href="javascript:void(0)">Compact Edge</a>
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
         <span class="sr-only">Toggle navigation</span>
@@ -38,17 +38,25 @@
     </div>
   </nav>
 
-  <div class="wrapper wrapper-full-page">
+  <!-- <div class="wrapper wrapper-full-page"> -->
+  <div class="wrapper">
     <div class="page-header error-page login-page header-filter">
-      <div class="container">
-      
+
+      <div class="container index-container">
+
+        <div class="main-logo">
+          <a class="compact-edge" th:href="@{/}">
+            <img class="compact-edge-logo" th:src="@{/img/compact-edge.png}" alt="Compact Edge">
+          </a>
+        </div>
+
         <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
 
             <form class="form" method="post" th:action="@{/signin}">
               <div class="card card-login">
-                <div class="card-header card-header-rose text-center">
-                  <h4 class="card-title">Giga MEC Portal</h4>
+                <div class="card-header card-header-info text-center">
+                  <h4 class="card-title">Compact Edge</h4>
                 </div>
 
                 <div sec:authorize="isAuthenticated()" class="my-4">
@@ -56,6 +64,7 @@
                 </div>
                 <div sec:authorize="isAnonymous()">
                   <div class="card-body">
+                    <!--
                     <div class="input-group">
                       <div class="col-md-12">
                         <select class="selectpicker show-tick" data-width="100%">
@@ -66,6 +75,7 @@
                         </select>
                       </div>
                     </div>
+                    -->
                     <span class="bmd-form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -107,7 +117,7 @@
       <div class="main-banner">
         <div class="banner-container">
           <img class="banner-logo-1" th:src="@{/img/msit.png}" alt="과학기술정보통신부">
-          <img class="banner-logo-2" th:src="@{/img/giga-korea.png}" alt="기가코리아사업단">
+          <!-- <img class="banner-logo-2" th:src="@{/img/giga-korea.png}" alt="기가코리아사업단"> -->
           <img class="banner-logo-3" th:src="@{/img/etri-text.png}" alt="한국전자통신연구원">
           <img class="banner-logo-4" th:src="@{/img/wizontech.png}" alt="위즈온텍">
         </div>

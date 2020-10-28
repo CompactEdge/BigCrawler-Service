@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/service"
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/util"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/service"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/util"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"

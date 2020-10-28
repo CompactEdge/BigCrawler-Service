@@ -12,7 +12,7 @@ fullnameOverride: ""
 hostNetwork: false
 
 configMapName: "configmap-service-bus"
-configFilesApp: "files/ce-service-bus.yaml"
+configFilesApp: "files/service-bus.yaml"
 
 service:
   name: vim

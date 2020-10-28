@@ -6,14 +6,18 @@ fmt:
 
 .PHONY: deps
 deps:
+	# @go get -u
 	@go get -t -d -v ./...
-	@go get -u
 	@go mod tidy
 	@go mod vendor
 
 .PHONY: docker
 docker:
 	./aio/scripts/docker.sh
+
+.PHONY: clean
+clean:
+	@rm -f ${BINARY}
 
 .PHONY: build
 build:

@@ -17,11 +17,12 @@
 
 ```bash
 # Install js package
+# npm install --save-dev
 npm i -D
 
 # Bundle
-./scripts/webpack.sh
+npm run webpack
 
 # Run
-mvn spring-boot:run -D spring-boot.run.profiles=dev-docker -D spring.config.location=file:application.yml
+npm run start
 ```

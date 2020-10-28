@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/util"
+	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 	"github.com/labstack/gommon/log"
 )
 

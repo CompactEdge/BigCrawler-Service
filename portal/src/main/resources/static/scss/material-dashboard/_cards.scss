@@ -175,7 +175,8 @@
     &.bg-info,
     &.card-rotate.bg-info .front,
     &.card-rotate.bg-info .back{
-      background: linear-gradient(60deg, $blue-400, $blue-600);
+      background: linear-gradient(60deg, $teal-400, $teal-600);
+      // background: linear-gradient(60deg, $blue-400, $blue-600);
     }
     .card-header-success .card-icon,
     .card-header-success .card-text,

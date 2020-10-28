@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/gommon/log"
 
-	. "github.com/compactedge/cewizontech/ce-api-gateway/pkg/model"
+	. "github.com/compactedge/cewizontech/api-gateway/pkg/model"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"

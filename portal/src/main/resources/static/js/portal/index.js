@@ -1,11 +1,8 @@
-import scss1 from '../../scss/material-dashboard.scss'; // Failed to load module script
-import scss2 from '../../scss/mano-portal.scss'; // Failed to load module script
+// import '../../scss/material-dashboard.scss'; // Failed to load module script
+// import '../../scss/portal.scss'; // Failed to load module script
 import Sidebar from './router/sidebar.js';
-import {
-  _CONSTANT
-} from './common/constants.js';
 
-const sb = new Sidebar('GigaMEC MANO Portal');
+const sb = new Sidebar('Compact Edge Portal');
 console.log(sb.message);
 sb.dashboard();
 

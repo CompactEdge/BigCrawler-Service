@@ -2,18 +2,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "mano-portal.fullname" . }}
+  name: {{ template "ce-portal.fullname" . }}
   labels:
-    app: {{ template "mano-portal.name" . }}
+    app: {{ template "ce-portal.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 subjects:
 - kind: ServiceAccount
-  name: mano-portal
+  name: {{ template "ce-portal.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "mano-portal.fullname" . }}
+  name: {{ template "ce-portal.fullname" . }}
 {{- end }}

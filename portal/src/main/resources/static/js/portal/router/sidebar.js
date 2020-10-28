@@ -10,7 +10,6 @@ import componentMonitoringNode from "../components/mNode.js";
 import componentMonitoringPod from "../components/mPod.js";
 import componentTrace from "../components/trace.js";
 import componentAppRepo from "../components/appRepo.js";
-import componentSKT from "../components/skt.js";
 
 import util from "../common/util.js";
 import notification from "../common/notification.js";
@@ -28,7 +27,6 @@ import mNode from "../monitoring/mNode.js";
 import mPod from "../monitoring/mPod.js";
 import trace from "../trace/trace.js";
 import app from "../app/app.js";
-import sktRegion from "../skt/region.js";
 
 const container = document.querySelector(".main-panel");
 
@@ -45,12 +43,12 @@ const sbMonitoringNode = document.querySelector("#mNode");
 const sbMonitoringPod = document.querySelector("#mPod");
 const sbTrace = document.querySelector("#trace");
 const sbAppRepo = document.querySelector("#appRepo");
-const sbSktDatacenter = document.querySelector("#sktDatacenter");
+const sbKubeOpsView = document.querySelector("#opsview");
 
 import IntervalDraw from "../common/IntervalDraw.js";
 const intervalDraw = new IntervalDraw();
 
-import { _CONSTANT } from "../common/constants.js";
+// import { _CONSTANT } from "../common/constants.js";
 
 // USER-PROFILE
 function goUserProfile() {
@@ -128,8 +126,8 @@ function goUserProfile() {
 // DASHBOARD
 function goDashboard() {
   container.innerHTML = componentDashboard(
-    _KUBE_OPS_VIEW_ENABLE,
-    _KUBE_OPS_VIEW
+    // _KUBE_OPS_VIEW_ENABLE,
+    // _KUBE_OPS_VIEW
   );
   const pieChart = pie.initPieChart();
   intervalDraw.getObjects(0, () => dashboard.draw(pieChart));
@@ -376,54 +374,9 @@ function goAppRepo() {
   }
 }
 
-// SKT Region
-function goSktRegion() {
-  intervalDraw.stop();
-  container.innerHTML = componentSKT();
-  createToken();
-}
-
-function createToken() {
-  fetch(`/skt/auth`, {
-    method: "POST",
-  })
-  .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    console.log(data);
-    requestSKT();
-  })
-  .catch((err) => {
-    console.error(err);
-  });
-}
-
-function requestSKT() {
-  fetch(`/skt/regions`, {
-    method: "GET",
-  })
-  .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    // console.log("requestSKT data :", data);
-    let existRegion = [];
-    data["region"].forEach((element)=>{
-      if (element["datacenter"].length) {
-        existRegion.push(element);
-      }
-    });
-    // sktRegion.kakaoMap(existRegion)
-    sktRegion.initMap(existRegion);
-    intervalDraw.getObjects(2, sktRegion.initRegionTable(existRegion));
-    // window.addEventListener('resize', () => {
-    //   sktRegion.resizeMap(map);
-    // }, true);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+function openKubeOpsView() {
+  const win = window.open(_KUBE_OPS_VIEW, '_blank');
+  win.focus();
 }
 
 sbUserProfile.addEventListener("click", (e) => {
@@ -474,14 +427,20 @@ if (sbTrace) {
     goTrace();
   });
 }
-sbAppRepo.addEventListener("click", (e) => {
-  e.preventDefault();
-  goAppRepo();
-});
-sbSktDatacenter.addEventListener("click", (e) => {
-  e.preventDefault();
-  goSktRegion();
-});
+
+if (sbAppRepo) {
+  sbAppRepo.addEventListener("click", (e) => {
+    e.preventDefault();
+    goAppRepo();
+  });
+}
+
+// if (sbKubeOpsView) {
+//   sbKubeOpsView.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     openKubeOpsView();
+//   })
+// }
 
 export default class Sidebar {
   constructor(msg) {

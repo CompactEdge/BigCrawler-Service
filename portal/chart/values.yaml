@@ -1,8 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: giga-chungju1:5000/mano-portal
-  tag: 0.0.7
+  repository: mec01:5000/ce-portal
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -14,8 +13,8 @@ rbac:
 
 serviceAccount:
   create: true
+  name: ce-portal-sa
   annotations: {}
-  # name: mano-portal
 
 podSecurityContext: {}
 
@@ -25,14 +24,23 @@ configMap:
   enabled: true
   name: "configmap-portal"
   files: "files/application.yml"
+  volumeName: "portal-conf"
+  mountPath: "/root/conf"
+
+localtime:
+  volumeName: "localtime"
+  hostPath: "/etc/localtime"
+  mountPath: "/etc/localtime"
+
+containerPort: 8000
 
 service:
   # type: ClusterIP
   # port: 10080
   # targetPort: 10080
   type: NodePort
-  port: 19090
-  nodePort: 19090
+  port: 8000
+  nodePort: 30090
 
 ingress:
   enabled: false
@@ -47,29 +55,26 @@ ingress:
       hosts:
         - chart.local
 
-# resources: {}
-resources:
-  limits:
-    cpu: 2
-    memory: 2Gi
-  requests:
-    cpu: 1
-    memory: 1Gi
+resources: {}
+# resources:
+#   limits:
+#     cpu: 2
+#     memory: 2Gi
+#   requests:
+#     cpu: 1
+#     memory: 1Gi
 
 nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
-  # nodeAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     nodeSelectorTerms:
-  #     - matchExpressions:
-  #       - key: topology.kubernetes.io/zone
-  #         operator: In
-  #         values:
-  #         - pangyo
-  #       - key: nvidia.com/gpu
-  #         operator: NotIn
-  #         values:
-  #         - "true"
+# affinity: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: worker
+          operator: In
+          values:
+          - cpu

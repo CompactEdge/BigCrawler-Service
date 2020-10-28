@@ -9,7 +9,7 @@ import (
 
 var (
 	configPath string
-	configName = "ce-service-bus.yaml"
+	configName = "service-bus.yaml"
 	// userLicense string
 	// rootCmd = &cobra.Command{
 	// 	Use:   "root",
@@ -30,7 +30,7 @@ type Cli struct {
 
 // func init() {
 // 	cobra.OnInitialize(initConfig)
-// 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/ce-service-bus.yaml)")
+// 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/service-bus.yaml)")
 // 	// rootCmd.PersistentFlags().StringP("author", "a", "compact-edge", "author name for copyright attribution")
 // 	// rootCmd.PersistentFlags().StringVarP(&userLicense, "license", "l", "", "name of license for the project")
 // 	// rootCmd.PersistentFlags().Bool("viper", true, "use Viper for configuration")

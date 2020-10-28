@@ -1,14 +1,14 @@
 .sidebar-logo {
   width: 100%;
 
-  .gigamec-logo {
+  .compact-edge-logo {
     text-align: center;
     padding: 0 !important;
   }
   .simple-text.logo-normal {
     font-size: 14px;
     text-transform: none !important;
-    img.gigamec {
+    img.compact-edge {
       max-width: 200px;
       max-height: 70px;
     }
@@ -44,6 +44,16 @@
 
 .sidebar {
   .sidebar-wrapper {
+    .open-in-new {
+      // class (small + blockquote)
+      font-size: 90%;
+      font-weight: 400;
+      margin-bottom: .8rem;
+    }
+    .nav-mobile-menu {
+      display: none;
+    }
+    
     .user {
       .user-info {
         [data-toggle=collapse] {

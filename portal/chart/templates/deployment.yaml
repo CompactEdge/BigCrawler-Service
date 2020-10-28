@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mano-portal.fullname" . }}
+  name: {{ include "ce-portal.fullname" . }}
   labels:
-    {{- include "mano-portal.labels" . | nindent 4 }}
+    {{- include "ce-portal.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "mano-portal.selectorLabels" . | nindent 6 }}
+      {{- include "ce-portal.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "mano-portal.selectorLabels" . | nindent 8 }}
+        {{- include "ce-portal.selectorLabels" . | nindent 8 }}
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
-      nodeName: giga-ansan2
-      {{- with .Values.imagePullSecrets }}
+      {{/*nodeName: mec02*/}}
+    {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "mano-portal.serviceAccountName" . }}
+    {{- end }}
+      serviceAccountName: {{ include "ce-portal.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -29,36 +31,36 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: mano-portal
-              containerPort: 19090
+            - name: {{ .Chart.Name }}
+              containerPort: {{ .Values.containerPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.configMap.enabled }}
           volumeMounts:
-          - name: localtime
-            mountPath: /etc/localtime
-          - name: portal-conf
-            mountPath: /root/conf
+          - name: {{ .Values.localtime.volumeName }}
+            mountPath: {{ .Values.localtime.mountPath }}
+          - name: {{ .Values.configMap.volumeName }}
+            mountPath: {{ .Values.configMap.mountPath }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+    {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
+    {{- end }}
+    {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.configMap.enabled }}
+    {{- end }}
+    {{- if .Values.configMap.enabled }}
       volumes:
-      - name: localtime
+      - name: {{ .Values.localtime.volumeName }}
         hostPath:
-          path: /etc/localtime
-      - name: portal-conf
+          path: {{ .Values.localtime.hostPath }}
+      - name: {{ .Values.configMap.volumeName }}
         configMap:
           name: {{ .Values.configMap.name }}
-      {{- end }}
+    {{- end }}

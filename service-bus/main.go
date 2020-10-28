@@ -7,12 +7,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/client"
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/controller"
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/mq"
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/util"
+	"github.com/compactedge/cewizontech/service-bus/pkg/client"
+	"github.com/compactedge/cewizontech/service-bus/pkg/controller"
+	"github.com/compactedge/cewizontech/service-bus/pkg/mq"
+	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 
-	// "github.com/compactedge/cewizontech/ce-service-bus/pkg/controller"
+	// "github.com/compactedge/cewizontech/service-bus/pkg/controller"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

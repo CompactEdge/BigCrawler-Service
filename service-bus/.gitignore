@@ -1,7 +1,7 @@
 ### bin ###
 .DS_Store
-ce-service-bus
-ce-service-bus.exe
+service-bus
+service-bus.exe
 
 ### mod ###
 vendor/

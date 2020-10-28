@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/client"
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/util"
+	"github.com/compactedge/cewizontech/service-bus/pkg/client"
+	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 	"github.com/labstack/echo/v4"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

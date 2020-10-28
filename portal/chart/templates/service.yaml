@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "mano-portal.fullname" . }}
+  name: {{ include "ce-portal.fullname" . }}
   labels:
-    {{- include "mano-portal.labels" . | nindent 4 }}
+    {{- include "ce-portal.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: mano-portal
+    - name: {{ .Chart.Name }}
       protocol: TCP
       port: {{ .Values.service.port }}
     {{- if .Values.service.targetPort }}
@@ -17,4 +17,4 @@ spec:
       nodePort: {{ .Values.service.nodePort }}
     {{- end }}
   selector:
-    {{- include "mano-portal.selectorLabels" . | nindent 4 }}
+    {{- include "ce-portal.selectorLabels" . | nindent 4 }}

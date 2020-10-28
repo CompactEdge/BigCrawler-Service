@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/compactedge/cewizontech/ce-service-bus/pkg/service"
+	"github.com/compactedge/cewizontech/service-bus/pkg/service"
 	"github.com/labstack/echo/v4"
 )
 

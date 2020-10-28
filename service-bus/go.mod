@@ -1,4 +1,4 @@
-module github.com/compactedge/cewizontech/ce-service-bus
+module github.com/compactedge/cewizontech/service-bus
 
 go 1.14
 

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/db"
-	"github.com/compactedge/cewizontech/ce-api-gateway/pkg/model"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/db"
+	"github.com/compactedge/cewizontech/api-gateway/pkg/model"
 
 	"github.com/labstack/gommon/log"
 

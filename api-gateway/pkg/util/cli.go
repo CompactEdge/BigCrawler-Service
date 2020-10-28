@@ -12,7 +12,7 @@ import (
 
 var (
 	configPath string
-	configName = "ce-api-gateway.yaml"
+	configName = "api-gateway.yaml"
 )
 
 // Cli ...

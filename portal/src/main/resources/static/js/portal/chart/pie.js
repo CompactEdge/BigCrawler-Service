@@ -3,7 +3,12 @@ let pieOption = {
     text: '',
     // subtext: 'subtext',
     left: 'center',
-    top: 'center'
+    top: 'center',
+    textStyle: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 18,
+    }
   },
   tooltip: {
     trigger: 'item',
@@ -13,7 +18,7 @@ let pieOption = {
     {
       // name: '', {a}
       type: 'pie',
-      radius: ['65%', '90%'],
+      // radius: ['65%', '90%'],
       center: ['50%', '50%'],
       // data: seriesData.seriesData,
       data: [],
@@ -95,7 +100,8 @@ function drawPieChart(data, option, chart, title, id) {
 }
 
 function drawSvcPieChart(data, option, chart, title, id) {
-  const countServices = countService(data, "Running");
+  // const countServices = countService(data, "Running");
+  const countServices = countService(data);
   const serviceGroupByNamespace = [];
   for (let [key, value] of Object.entries(countServices)) {
     serviceGroupByNamespace.push({ name: key, value: value });
@@ -132,7 +138,7 @@ function countData(data, status) {
         itemStyle: { color: "#3abd83" }
       });
     }
-  
+
     if (data.length - count !== 0) {
       seriesData.push({
         name: "Fail",

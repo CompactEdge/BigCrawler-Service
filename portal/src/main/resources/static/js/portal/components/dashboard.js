@@ -1,4 +1,4 @@
-export default (enable, path) => {
+export default () => {
   return `
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-transparent sticky-top">
@@ -66,37 +66,6 @@ export default (enable, path) => {
             </div>
           </div>
         </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xl-12 iframe-box">
-            <div class="card card-chart">
-              <div class="card-header card-header-icon card-header-info">
-                <div class="card-icon">
-                  <i class="material-icons">tv</i>
-                </div>
-                <h4 class="card-title mb-3">
-                  Node Monitoring
-                  <a
-                    class="btn btn-warning iframe-toggle px-0 py-1 my-0"
-                    data-toggle="collapse"
-                    data-target="#iframeContainer"
-                    aria-expanded="true"
-                    aria-controls="iframeContainer"
-                    style="text-transform:capitalize;font-size:14px;float:right;"
-                    ><i class="material-icons">unfold_more</i>
-                  </a>
-                </h4>
-              </div>
-            <div id="iframeContainer" class="collapse ${enable === 'true' ? 'show' : ''}">
-              <iframe
-                id="myIframe"
-                src="${path}"
-                style="width:100%;height:400px;border:0;"
-              >해당 브라우저는 iframe을 지원하지 않습니다.[kube-ops-view]</iframe>
-            </div>
-          </div>
-          </div>
         </div>
 
         <div class="data-loading" style="display: none;">
