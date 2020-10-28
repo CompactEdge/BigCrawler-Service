@@ -1,18 +1,15 @@
 import util from '../common/util.js';
 import monitoring from './monitoring.js';
+import notification from '../common/notification.js';
 
-function drawPodMonitoring(change, timeunit) {
+function drawPodMonitoring(change, idraw) {
   // console.log(new Date(Date.now()));
   const _SELECT_NAMESPACE = document.querySelectorAll('.selectpicker')[0].value;
   const _SELECT_POD = document.querySelectorAll('.selectpicker')[1].value;
   const params = { namespace: _SELECT_NAMESPACE, pod: _SELECT_POD };
   const searchParams = new URLSearchParams(params).toString();
   const metricName = [ "container" ];
-
-  monitoring.drawCpuUsage("/monitoring/pod/cpuUsage", change, searchParams, metricName, timeunit);
-  monitoring.drawMemoryUsage("/monitoring/pod/memoryUsage",change, searchParams, metricName, timeunit);
-
-  const cpuQuotaPath = 
+  const cpuQuotaPath =
   {
     cpuQuotaCpuUsage: 'usage',
     cpuQuotaCpuRequests: 'requests',
@@ -20,9 +17,7 @@ function drawPodMonitoring(change, timeunit) {
     cpuQuotaCpuLimits: 'limits',
     cpuQuotaCpuLimitsRate: 'limitsRate',
   }
-  drawCpuQuota(cpuQuotaPath, searchParams, metricName);
-
-  const memoryRequestsPath = 
+  const memoryRequestsPath =
   {
     memoryQuotaUsage: 'usage',
     memoryQuotaRequests: 'requests',
@@ -33,7 +28,18 @@ function drawPodMonitoring(change, timeunit) {
     memoryQuotaUsageCache: 'usageCache',
     memoryQuotaUsageSwap: 'usageSwap',
   }
-  drawMemoryQuota(memoryRequestsPath, searchParams, metricName);
+
+  Promise.all([
+    monitoring.drawCpuUsage("/monitoring/pod/cpuUsage", change, searchParams, metricName, idraw.timeunit),
+    monitoring.drawMemoryUsage("/monitoring/pod/memoryUsage",change, searchParams, metricName, idraw.timeunit),
+    drawCpuQuota(cpuQuotaPath, searchParams, metricName),
+    drawMemoryQuota(memoryRequestsPath, searchParams, metricName),
+  ])
+  .catch(err => {
+    notification.show('top','right', "An error occurred, please try again later.", 2);
+    clearInterval(idraw.intervalID);
+    throw err;
+  })
 }
 
 async function drawCpuQuota(arg1, arg2, arg3) {
@@ -67,7 +73,7 @@ async function drawMemoryQuota(arg1, arg2, arg3) {
   const fetchData = await monitoring.getFetchData('pod', resourcePath, searchParams, metricName, false);
   const $memoryRequestsTbody = $("#memoryQuota").find('tbody');
   $memoryRequestsTbody.html('');
-  
+
   if (fetchData) {
     fetchData.forEach(data => {
       const $tr = $('<tr></tr>');

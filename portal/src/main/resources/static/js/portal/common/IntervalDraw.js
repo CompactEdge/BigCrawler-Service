@@ -19,7 +19,7 @@ export default class IntervalDraw {
       this.timeunit = parseInt(picker.value);
     }
     this.stop();
-    callback(true, this.timeunit);
+    callback(true, this);
     // console.log('stop interval ID :', this.intervalID);
     if (this.timeunit !== 'off') {
       this.start(1000 * this.timeunit, callback);

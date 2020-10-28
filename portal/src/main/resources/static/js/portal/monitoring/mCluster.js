@@ -1,25 +1,11 @@
 import util from '../common/util.js';
 import monitoring from './monitoring.js';
+import notification from '../common/notification.js';
 
-async function drawClusterMonitoring(change, timeunit) {
-  Promise.all([
-    drawHeadlines("/monitoring/cluster/cpuUtilisation", 'head-1'),
-    drawHeadlines("/monitoring/cluster/cpuRequestsCommitment", 'head-2'),
-    drawHeadlines("/monitoring/cluster/cpuLimitsCommitment", 'head-3'),
-    drawHeadlines("/monitoring/cluster/memoryUtilisation", 'head-4'),
-    drawHeadlines("/monitoring/cluster/memoryRequestsCommitment", 'head-5'),
-    drawHeadlines("/monitoring/cluster/memoryLimitsCommitment", 'head-6'),
-  ])
-  .catch(err => {
-    // console.log(err);
-    throw err;
-  });
-
-  const metricName = [ "namespace" ];
-  monitoring.drawCpuUsage("/monitoring/cluster/cpuUsage", change, "", metricName, timeunit);
-  monitoring.drawMemoryUsage("/monitoring/cluster/memoryUsage", change, "", metricName, timeunit);
-
-  const cpuQuotaPath =
+async function drawClusterMonitoring(change, idraw) {
+  // const? let?
+  let metricName = [ "namespace" ];
+  let cpuQuotaPath =
   {
     cpuQuotaPods: 'pods',
     cpuQuotaWorkloads: 'workload',
@@ -29,10 +15,7 @@ async function drawClusterMonitoring(change, timeunit) {
     cpuQuotaCpuLimits:'limits',
     cpuQuotaCpuLimitsRate: 'limitsRate',
   }
-
-  drawCpuQuota(cpuQuotaPath, "", metricName);
-
-  const memoryRequestsPath =
+  let memoryRequestsPath =
   {
     memoryRequestsPods: 'pods',
     memoryRequestsWorkloads: 'workload',
@@ -42,7 +25,25 @@ async function drawClusterMonitoring(change, timeunit) {
     memoryRequestsLimits: 'limits',
     memoryRequestsLimitsRate: 'limitsRate',
   }
-  drawMemoryRequests(memoryRequestsPath, "", metricName);
+
+  Promise.all([
+    drawHeadlines("/monitoring/cluster/cpuUtilisation", 'head-1'),
+    drawHeadlines("/monitoring/cluster/cpuRequestsCommitment", 'head-2'),
+    drawHeadlines("/monitoring/cluster/cpuLimitsCommitment", 'head-3'),
+    drawHeadlines("/monitoring/cluster/memoryUtilisation", 'head-4'),
+    drawHeadlines("/monitoring/cluster/memoryRequestsCommitment", 'head-5'),
+    drawHeadlines("/monitoring/cluster/memoryLimitsCommitment", 'head-6'),
+    monitoring.drawCpuUsage("/monitoring/cluster/cpuUsage", change, "", metricName, idraw.timeunit),
+    monitoring.drawMemoryUsage("/monitoring/cluster/memoryUsage", change, "", metricName, idraw.timeunit),
+    drawCpuQuota(cpuQuotaPath, "", metricName),
+    drawMemoryRequests(memoryRequestsPath, "", metricName),
+  ])
+  .catch(err => {
+    // notification.show('top','center', "An error occurred, please try again later.", 2);
+    notification.show('top','right', "An error occurred, please try again later.", 2);
+    clearInterval(idraw.intervalID);
+    throw err;
+  });
 }
 
 function drawHeadlines(url, domId) {

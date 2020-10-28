@@ -1,5 +1,6 @@
 import util from '../common/util.js';
 import monitoring from './monitoring.js';
+import notification from '../common/notification.js';
 
 // (()=>{
 //   if (window.location.pathname.includes('/monitoring/namespace')) {
@@ -20,17 +21,13 @@ import monitoring from './monitoring.js';
 //   }
 // })();
 
-function drawNamespaceMonitoring(change, timeunit) {
+function drawNamespaceMonitoring(change, idraw) {
   // console.log(new Date(Date.now()));
   const _SELECT_NAMESPACE = document.querySelectorAll('.selectpicker')[0].value;
   const _SELECT_TYPE = document.querySelectorAll('.selectpicker')[1].value;
   const params = { namespace: _SELECT_NAMESPACE, type: _SELECT_TYPE };
   const searchParams = new URLSearchParams(params).toString();
   const metricName = [ "workload", "workload_type" ];
-
-  monitoring.drawCpuUsage("/monitoring/namespace/cpuUsage", change, searchParams, metricName, timeunit);
-  monitoring.drawMemoryUsage("/monitoring/namespace/memoryUsage", change, searchParams, metricName, timeunit);
-
   const cpuQuotaPath =
   {
     cpuQuotaRunningPods: 'runningPods',
@@ -40,9 +37,8 @@ function drawNamespaceMonitoring(change, timeunit) {
     cpuQuotaCpuLimits: 'limits',
     cpuQuotaCpuLimitsRate: 'limitsRate',
   }
-  drawCpuQuota(cpuQuotaPath, searchParams, metricName);
 
-  const memoryRequestsPath = 
+  const memoryRequestsPath =
   {
     memoryQuotaRunningPods: 'runningPods',
     memoryQuotaUsage: 'usage',
@@ -51,7 +47,19 @@ function drawNamespaceMonitoring(change, timeunit) {
     memoryQuotaLimits: 'limits',
     memoryQuotaLimitsRate: 'limitsRate',
   }
-  drawMemoryQuota(memoryRequestsPath, searchParams, metricName);
+
+  Promise.all([
+    monitoring.drawCpuUsage("/monitoring/namespace/cpuUsage", change, searchParams, metricName, idraw.timeunit),
+    monitoring.drawMemoryUsage("/monitoring/namespace/memoryUsage", change, searchParams, metricName, idraw.timeunit),
+    drawCpuQuota(cpuQuotaPath, searchParams, metricName),
+    drawMemoryQuota(memoryRequestsPath, searchParams, metricName),
+  ])
+  .catch(err => {
+    notification.show('top','right', "An error occurred, please try again later.", 2);
+    clearInterval(idraw.intervalID);
+    throw err;
+  })
+
 }
 
 async function drawCpuQuota(arg1, arg2, arg3) {

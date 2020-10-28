@@ -130,7 +130,9 @@ function goDashboard() {
     // _KUBE_OPS_VIEW
   );
   const pieChart = pie.initPieChart();
-  intervalDraw.getObjects(0, () => dashboard.draw(pieChart));
+  // TODO:
+  // intervalDraw.getObjects(0, () => dashboard.draw(pieChart));
+  dashboard.draw(pieChart);
 
   //차트 resize
   window.onresize = () => {
