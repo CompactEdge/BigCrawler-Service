@@ -3,9 +3,12 @@ let pieOption = {
     text: '',
     // subtext: 'subtext',
     left: 'center',
-    top: 'center',
+    // top: 'top',
+    // top: 'middle',
+    top: 'bottom',
     textStyle: {
-      color: '#fff',
+      // color: '#fff',
+      color: '#000',
       fontWeight: 'bold',
       fontSize: 18,
     }
@@ -24,6 +27,7 @@ let pieOption = {
       data: [],
       label: {
         show: true,
+        // position: 'center',
         position: 'inside',
         formatter: '{value|{c}}',
         rich: {
