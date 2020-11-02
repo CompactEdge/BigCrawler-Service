@@ -1,7 +1,11 @@
-# ceWizOnTech
+# Compact Edge Management
 
-> [위즈온텍 WizOnTech](http://wizontech.com/)
+![architecture.png](architecture.png)
 
 - service-bus
 - api-gateway
+- auth-server
 - portal
+- registry
+- message-broker
+- data-stream (simulator)

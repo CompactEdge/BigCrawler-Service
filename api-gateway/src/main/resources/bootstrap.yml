@@ -16,6 +16,16 @@ spring:
   profiles: dev
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            # - GET
+            # - POST
+            # - PUT
+            # - PATCH
+            # - DELETE
       discovery:
         locator:
           enabled: true

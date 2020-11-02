@@ -1,5 +1,0 @@
-apiVersion: v1
-version: 0.3.0
-appVersion: 0.3.0
-name: ce-api-gateway
-description: A Helm chart for Compact Edge - API Gateway

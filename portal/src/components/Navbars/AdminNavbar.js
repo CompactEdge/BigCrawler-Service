@@ -41,6 +41,7 @@ class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: "",
       collapseOpen: false,
       color: "navbar-transparent",
     };
@@ -96,6 +97,7 @@ class AdminNavbar extends React.Component {
         >
           <Container fluid>
             <div className="navbar-wrapper">
+              {/*
               <div className="navbar-minimize">
                 <Button
                   className="btn-icon btn-round"
@@ -107,6 +109,7 @@ class AdminNavbar extends React.Component {
                   <i className="nc-icon nc-minimal-left text-center visible-on-sidebar-regular" />
                 </Button>
               </div>
+              */}
               <div
                 className={classnames("navbar-toggle", {
                   toggled: this.state.sidebarOpen,
@@ -124,7 +127,8 @@ class AdminNavbar extends React.Component {
               </div>
               <NavbarBrand href="/" onClick={(e) => e.preventDefault()}>
                 <span className="d-none d-md-block">
-                  Compact Edge
+                  {/* TODO: Show a page title */}
+                  {this.props.title}
                 </span>
                 <span className="d-block d-md-none">Compact Edge</span>
               </NavbarBrand>

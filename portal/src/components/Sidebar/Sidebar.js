@@ -148,7 +148,7 @@ class Sidebar extends React.Component {
   render() {
     return (
       <div
-        className="sidebar"
+        className="sidebar sidebar-mini"
         data-color={this.props.bgColor}
         data-active-color={this.props.activeColor}
       >
@@ -165,12 +165,12 @@ class Sidebar extends React.Component {
             href="/"
             className="simple-text logo-normal"
           >
-            Portal
+            Compact Edge
           </a>
         </div>
 
         <div className="sidebar-wrapper" ref="sidebar">
-          {/* 
+          {/*
           <div className="user">
             <div className="photo">
               <img src={avatar} alt="Avatar" />

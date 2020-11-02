@@ -1,0 +1,27 @@
+= Compact Edge Portal
+:source-highlighter: highlightjs
+:doctype: book
+:icons: font
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[develop]]
+== 개발
+
+[%hardbreaks]
+NOTE: `Spring Cloud Gateway` 기반 프로젝트입니다.
+
+[source,shell]
+----
+gradle bootRunDev
+----
+
+[[build]]
+=== 빌드
+
+[source,shell]
+----
+gradle build
+gradle docker
+----

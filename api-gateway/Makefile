@@ -1,32 +1,32 @@
-BINARY := apigw
-
-.PHONY: fmt
-fmt:
-	go fmt ./...
-
-.PHONY: deps
-deps:
-	# @go get -u
-	@go get -t -d -v ./...
-	@go mod tidy
-	@go mod vendor
-
-.PHONY: docker
-docker:
-	./aio/scripts/docker.sh
-
-.PHONY: clean
-clean:
-	@rm -f ${BINARY}
+VERSION := 0.1.0
 
 .PHONY: build
 build:
-	@GOOS=linux GOARCH=amd64 go build -o ${BINARY} main.go
+	@gradle clean
+	gradle build
 
-.PHONY: dev
-dev:
-	go run main.go -profile="dev" -debug
+.PHONY: build-skip-test
+build-skip-test:
+	@gradle clean
+	grade build -x test
 
-.PHONY: server
-server:
-	@go run main.go -profile="server"
+.PHONY: docker
+docker:
+	docker build --build-arg JAR_FILE=build/libs/*.jar -t markruler/app:${VERSION} .
+
+.PHONY: run
+run:
+  # gradle bootRun --args='--spring.profiles.active=dev'
+  gradle bootRunDev
+
+.PHONY: jar
+jar:
+  @java -jar "-Dspring.profiles.active=dev" build/libs/portal-${VERSION}.jar
+
+.PHONY: check-deps
+check-deps:
+  gradle -q dependencies
+
+.PHONY: unit-test
+unit-test:
+  gradle test
