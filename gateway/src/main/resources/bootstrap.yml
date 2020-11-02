@@ -1,0 +1,65 @@
+server:
+  port: 8083
+
+---
+
+spring:
+  # main:
+  #   banner-mode: console
+  output:
+    ansi:
+      enabled: always
+  devtools:
+    add-properties: true
+  application:
+    name: gateway
+  profiles: dev
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+          url-expression: "'http://'+serviceId"
+          # route-id-prefix: 
+          # predicates:
+          # filters:
+          # include-expression: 
+      routes:
+      - id: "path_route"
+        predicates:
+        - Path=/get
+        # - Path='/*/'+serviceId+'/**'
+        filters:
+          - RemoveRequestHeader='Cookie'
+        uri: "http://httpbin.org"
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
+      discovery:
+        enabled: true
+        all-namespaces: true
+        # known-secure-ports:
+        # metadata:
+        #   labels-prefix: 
+        #   add-labels: 
+        # order: 
+        # service-labels:
+        # service-name: 
+        # filter: "metadata.labels['compact-edge']"
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+          loadbalancer: debug
+          kubernetes: debug
+    reactor:
+      netty:
+        http:
+          client: debug
