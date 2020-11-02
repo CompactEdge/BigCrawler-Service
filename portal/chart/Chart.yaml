@@ -1,6 +1,0 @@
-apiVersion: v2
-version: 0.1.1
-appVersion: 0.1.1
-description: Compact Edge Portal
-name: ce-portal
-type: application
