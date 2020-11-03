@@ -1,4 +1,4 @@
-# Compact Edge Portal
+# Compact Edge Console
 
 ## Troubleshooting
 
