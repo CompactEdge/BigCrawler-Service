@@ -14,81 +14,83 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Buttons from "views/components/Buttons.js";
+import Buttons from 'views/components/Buttons.js';
 // import Calendar from "views/Calendar.js";
 // import Charts from "views/Charts.js";
-import Dashboard from "views/Dashboard.js";
+import Dashboard from 'views/Dashboard.js';
 // import ExtendedForms from "views/forms/ExtendedForms.js";
-import ExtendedTables from "views/tables/ExtendedTables.js";
+import ExtendedTables from 'views/tables/ExtendedTables.js';
 // import FullScreenMap from "views/maps/FullScreenMap.js";
 // import GoogleMaps from "views/maps/GoogleMaps.js";
-import GridSystem from "views/components/GridSystem.js";
-import Icons from "views/components/Icons.js";
+import GridSystem from 'views/components/GridSystem.js';
+import Icons from 'views/components/Icons.js';
 // import LockScreen from "views/pages/LockScreen.js";
 // import Login from "views/pages/Login.js";
-import Notifications from "views/components/Notifications.js";
-import Panels from "views/components/Panels.js";
-import ReactTables from "views/tables/ReactTables.js";
+import Notifications from 'views/components/Notifications.js';
+import Panels from 'views/components/Panels.js';
+import ReactTables from 'views/tables/ReactTables.js';
 // import Register from "views/pages/Register.js";
 // import RegularForms from "views/forms/RegularForms.js";
-import RegularTables from "views/tables/RegularTables.js";
-import SweetAlert from "views/components/SweetAlert.js";
-import Timeline from "views/pages/Timeline.js";
-import Typography from "views/components/Typography.js";
-import UserProfile from "views/pages/UserProfile.js";
+import RegularTables from 'views/tables/RegularTables.js';
+import SweetAlert from 'views/components/SweetAlert.js';
+import Timeline from 'views/pages/Timeline.js';
+import Typography from 'views/components/Typography.js';
+import UserProfile from 'views/pages/UserProfile.js';
 // import ValidationForms from "views/forms/ValidationForms.js";
 // import VectorMap from "views/maps/VectorMap.js";
 // import Widgets from "views/Widgets.js";
 // import Wizard from "views/forms/Wizard.js";
 
+import ResourceNode from 'views/pages/ResourceNode.js';
+
 const routes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "nc-icon nc-bank",
+    path: '/dashboard',
+    name: 'Dashboard',
+    icon: 'nc-icon nc-bank',
     component: Dashboard,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
     collapse: true,
-    name: "Monitoring",
-    icon: "nc-icon nc-book-bookmark",
-    state: "pagesCollapse",
+    name: 'Monitoring',
+    icon: 'nc-icon nc-book-bookmark',
+    state: 'pagesCollapse',
     views: [
       {
-        path: "/timeline",
-        name: "Cluster",
-        mini: "C",
+        path: '/timeline',
+        name: 'Cluster',
+        mini: 'C',
         component: Timeline,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/timeline",
-        name: "Namespace",
-        mini: "NS",
+        path: '/timeline',
+        name: 'Namespace',
+        mini: 'NS',
         component: Timeline,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/timeline",
-        name: "Node",
-        mini: "NO",
+        path: '/timeline',
+        name: 'Node',
+        mini: 'NO',
         component: Timeline,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/timeline",
-        name: "Pod",
-        mini: "PO",
+        path: '/timeline',
+        name: 'Pod',
+        mini: 'PO',
         component: Timeline,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/timeline",
-        name: "Timeline",
-        mini: "T",
+        path: '/timeline',
+        name: 'Timeline',
+        mini: 'T',
         component: Timeline,
-        layout: "/admin",
+        layout: '/admin',
       },
       // {
       //   path: "/login",
@@ -115,86 +117,86 @@ const routes = [
   },
   {
     collapse: true,
-    name: "Resources",
-    icon: "nc-icon nc-layout-11",
-    state: "componentsCollapse",
+    name: 'Resources',
+    icon: 'nc-icon nc-layout-11',
+    state: 'componentsCollapse',
     views: [
       {
-        path: "/buttons",
-        name: "Node",
-        mini: "NO",
-        component: Buttons,
-        layout: "/admin",
+        path: '/resources/nodes',
+        name: 'Node',
+        mini: 'NO',
+        component: ResourceNode,
+        layout: '/admin',
       },
       {
-        path: "/buttons",
-        name: "Pod",
-        mini: "PO",
+        path: '/resources/pods',
+        name: 'Pod',
+        mini: 'PO',
         component: Buttons,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/buttons",
-        name: "Service",
-        mini: "SVC",
+        path: '/resources/services',
+        name: 'Service',
+        mini: 'SVC',
         component: Buttons,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/buttons",
-        name: "Storage",
-        mini: "STR",
+        path: '/resources/storages',
+        name: 'Storage',
+        mini: 'STR',
         component: Buttons,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/buttons",
-        name: "Buttons",
-        mini: "B",
+        path: '/buttons',
+        name: 'Buttons',
+        mini: 'B',
         component: Buttons,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/grid-system",
-        name: "Grid System",
-        mini: "GS",
+        path: '/grid-system',
+        name: 'Grid System',
+        mini: 'GS',
         component: GridSystem,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/panels",
-        name: "Panels",
-        mini: "P",
+        path: '/panels',
+        name: 'Panels',
+        mini: 'P',
         component: Panels,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/sweet-alert",
-        name: "Sweet Alert",
-        mini: "SA",
+        path: '/sweet-alert',
+        name: 'Sweet Alert',
+        mini: 'SA',
         component: SweetAlert,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/notifications",
-        name: "Notifications",
-        mini: "N",
+        path: '/notifications',
+        name: 'Notifications',
+        mini: 'N',
         component: Notifications,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/icons",
-        name: "Icons",
-        mini: "I",
+        path: '/icons',
+        name: 'Icons',
+        mini: 'I',
         component: Icons,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/typography",
-        name: "Typography",
-        mini: "T",
+        path: '/typography',
+        name: 'Typography',
+        mini: 'T',
         component: Typography,
-        layout: "/admin",
+        layout: '/admin',
       },
     ],
   },
@@ -236,30 +238,30 @@ const routes = [
   // },
   {
     collapse: true,
-    name: "Registry",
-    icon: "nc-icon nc-single-copy-04",
-    state: "tablesCollapse",
+    name: 'Registry',
+    icon: 'nc-icon nc-single-copy-04',
+    state: 'tablesCollapse',
     views: [
       {
-        path: "/regular-tables",
-        name: "Regular Tables",
-        mini: "RT",
+        path: '/regular-tables',
+        name: 'Regular Tables',
+        mini: 'RT',
         component: RegularTables,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/extended-tables",
-        name: "Extended Tables",
-        mini: "ET",
+        path: '/extended-tables',
+        name: 'Extended Tables',
+        mini: 'ET',
         component: ExtendedTables,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/react-tables",
-        name: "React Tables",
-        mini: "RT",
+        path: '/react-tables',
+        name: 'React Tables',
+        mini: 'RT',
         component: ReactTables,
-        layout: "/admin",
+        layout: '/admin',
       },
     ],
   },
@@ -314,11 +316,11 @@ const routes = [
   //   layout: "/admin",
   // },
   {
-    path: "/user-profile",
-    name: "Setting",
-    icon: "nc-icon nc-box",
+    path: '/user-profile',
+    name: 'Setting',
+    icon: 'nc-icon nc-box',
     component: UserProfile,
-    layout: "/admin",
+    layout: '/admin',
   },
 ];
 

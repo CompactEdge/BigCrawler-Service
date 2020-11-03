@@ -9,10 +9,13 @@
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "outdate": "yarn outdated",
     "install:clean": "rm -rf node_modules/ && rm -rf yarn.lock && yarn install",
     "compile-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css",
     "minify-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.min.css --output-style compressed",
-    "map-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css --source-map true"
+    "map-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css --source-map true",
+    "fmt": "npx prettier --write 'src/**/*.js'",
+    "lint": "npx eslint --fix src/"
   },
   "repository": {
     "type": "git",
@@ -31,22 +34,7 @@
     "url": "https://github.com/compactedge/cewizontech/issues"
   },
   "homepage": "",
-  "dependencies": {},
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "optionalDependencies": {
-    "@types/googlemaps": "3.39.6",
-    "@types/markerclustererplus": "2.1.33",
-    "@types/react": "16.9.35",
-    "ajv": "6.12.2",
-    "jquery": "3.5.1",
-    "typescript": "3.9.5"
-  },
-  "devDependencies": {
+  "dependencies": {
     "bootstrap": "4.5.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
@@ -73,8 +61,37 @@
     "react-select": "3.1.0",
     "react-table": "7.1.0",
     "react-tagsinput": "3.19.0",
-    "reactstrap": "8.4.1",
+    "reactstrap": "8.4.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
+    "@typescript-eslint/parser": "^4.0.0",
+    "babel-eslint": "^10.0.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "gulp": "4.0.2",
-    "gulp-append-prepend": "1.0.8"
+    "gulp-append-prepend": "1.0.8",
+    "prettier": "^2.1.2"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "optionalDependencies": {
+    "@types/googlemaps": "3.39.6",
+    "@types/markerclustererplus": "2.1.33",
+    "@types/react": "16.9.35",
+    "ajv": "6.12.2",
+    "jquery": "3.5.1",
+    "typescript": "3.9.5"
   }
 }

@@ -15,17 +15,16 @@
 
 */
 /*eslint-disable*/
-import React from "react";
-import { Container, Row } from "reactstrap";
+import React from 'react';
+import { Container, Row } from 'reactstrap';
 // used for making the prop types of this component
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 class Footer extends React.Component {
   render() {
     return (
       <footer
-        className={"footer" + (this.props.default ? " footer-default" : "")}
-      >
+        className={'footer' + (this.props.default ? ' footer-default' : '')}>
         <Container fluid={this.props.fluid ? true : false}>
           <Row>
             <nav className="footer-nav">
@@ -39,8 +38,7 @@ class Footer extends React.Component {
                 <li>
                   <a
                     href="https://www.creative-tim.com/license"
-                    target="_blank"
-                  >
+                    target="_blank">
                     Licenses
                   </a>
                 </li>
@@ -48,7 +46,7 @@ class Footer extends React.Component {
             </nav>
             <div className="credits ml-auto">
               <span className="copyright">
-                &copy; {1900 + new Date().getYear()}, made with{" "}
+                &copy; {1900 + new Date().getYear()}, made with{' '}
                 <i className="fa fa-heart heart" /> by Creative Tim
               </span>
             </div>

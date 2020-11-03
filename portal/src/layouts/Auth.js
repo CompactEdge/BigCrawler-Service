@@ -14,35 +14,37 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
-import { Route, Switch } from "react-router-dom";
+import PerfectScrollbar from 'perfect-scrollbar';
+import { Route, Switch } from 'react-router-dom';
 
-import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import Footer from "components/Footer/Footer.js";
+import AuthNavbar from 'components/Navbars/AuthNavbar.js';
+import Footer from 'components/Footer/Footer.js';
 
-import routes from "routes.js";
+import routes from 'routes.js';
 
-var ps;
+let ps;
 
 class Pages extends React.Component {
   componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
+    if (navigator.platform.indexOf('Win') > -1) {
       ps = new PerfectScrollbar(this.refs.fullPages);
     }
   }
+
   componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
+    if (navigator.platform.indexOf('Win') > -1) {
       ps.destroy();
     }
   }
-  getRoutes = (routes) => {
+
+  getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout === "/auth") {
+      if (prop.layout === '/auth') {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -50,11 +52,11 @@ class Pages extends React.Component {
             key={key}
           />
         );
-      } else {
-        return null;
       }
+      return null;
     });
   };
+
   render() {
     return (
       <>

@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -29,7 +29,7 @@ import {
   PaginationLink,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Buttons extends React.Component {
   render() {
@@ -83,7 +83,7 @@ class Buttons extends React.Component {
                     Left
                   </Button>
                   <Button color="default">
-                    Right{" "}
+                    Right{' '}
                     <span className="btn-label btn-label-right">
                       <i className="nc-icon nc-minimal-right" />
                     </span>
@@ -137,45 +137,39 @@ class Buttons extends React.Component {
                   <nav aria-label="Page navigation example">
                     <Pagination
                       className="pagination pagination-primary"
-                      listClassName="pagination-primary"
-                    >
+                      listClassName="pagination-primary">
                       <PaginationItem className="active">
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           1
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           2
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           3
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           4
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           5
                         </PaginationLink>
                       </PaginationItem>
@@ -185,11 +179,10 @@ class Buttons extends React.Component {
                         <PaginationLink
                           aria-label="Previous"
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <span aria-hidden={true}>
+                          onClick={e => e.preventDefault()}>
+                          <span aria-hidden>
                             <i
-                              aria-hidden={true}
+                              aria-hidden
                               className="fa fa-angle-double-left"
                             />
                           </span>
@@ -198,24 +191,21 @@ class Buttons extends React.Component {
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           1
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem className="active">
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           2
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
+                          onClick={e => e.preventDefault()}>
                           3
                         </PaginationLink>
                       </PaginationItem>
@@ -223,11 +213,10 @@ class Buttons extends React.Component {
                         <PaginationLink
                           aria-label="Next"
                           href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <span aria-hidden={true}>
+                          onClick={e => e.preventDefault()}>
+                          <span aria-hidden>
                             <i
-                              aria-hidden={true}
+                              aria-hidden
                               className="fa fa-angle-double-right"
                             />
                           </span>
@@ -247,24 +236,21 @@ class Buttons extends React.Component {
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       Left
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       Middle
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       Right
                     </Button>
                   </ButtonGroup>
@@ -275,32 +261,28 @@ class Buttons extends React.Component {
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       1
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       2
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       3
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       4
                     </Button>
                   </ButtonGroup>
@@ -309,24 +291,21 @@ class Buttons extends React.Component {
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       5
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       6
                     </Button>
                     <Button
                       className="btn-round"
                       color="info"
                       outline
-                      type="button"
-                    >
+                      type="button">
                       7
                     </Button>
                   </ButtonGroup>
@@ -480,8 +459,7 @@ class Buttons extends React.Component {
                     <Col md="1" sm="1" xs="3">
                       <Button
                         className="btn-icon btn-neutral"
-                        color="pinterest"
-                      >
+                        color="pinterest">
                         <i className="fa fa-pinterest" />
                       </Button>
                     </Col>

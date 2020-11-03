@@ -14,17 +14,17 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react plugin used to create datetimepicker
-import ReactDatetime from "react-datetime";
+import ReactDatetime from 'react-datetime';
 // react plugin that creates an input with badges
-import TagsInput from "react-tagsinput";
+import TagsInput from 'react-tagsinput';
 // react plugin used to create DropdownMenu for selecting items
-import Select from "react-select";
+import Select from 'react-select';
 // react plugin used to create switch buttons
-import Switch from "react-bootstrap-switch";
+import Switch from 'react-bootstrap-switch';
 // plugin that creates slider
-import Slider from "nouislider";
+import Slider from 'nouislider';
 
 // reactstrap components
 import {
@@ -40,10 +40,10 @@ import {
   Progress,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import ImageUpload from "components/CustomUpload/ImageUpload.js";
+import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 
 class ExtendedForms extends React.Component {
   constructor(props) {
@@ -51,12 +51,13 @@ class ExtendedForms extends React.Component {
     this.state = {
       singleSelect: null,
       multipleSelect: null,
-      tagsinput: ["Amsterdam", "Washington", "Sydney", "Beijing"],
+      tagsinput: ['Amsterdam', 'Washington', 'Sydney', 'Beijing'],
     };
   }
+
   componentDidMount() {
-    var slider1 = this.refs.slider1;
-    var slider2 = this.refs.slider2;
+    const { slider1 } = this.refs;
+    const { slider2 } = this.refs;
     Slider.create(slider1, {
       start: [40],
       connect: [true, false],
@@ -70,9 +71,11 @@ class ExtendedForms extends React.Component {
       range: { min: 0, max: 100 },
     });
   }
-  handleTagsinput = (tagsinput) => {
+
+  handleTagsinput = tagsinput => {
     this.setState({ tagsinput });
   };
+
   render() {
     return (
       <>
@@ -87,8 +90,8 @@ class ExtendedForms extends React.Component {
                   <FormGroup>
                     <ReactDatetime
                       inputProps={{
-                        className: "form-control",
-                        placeholder: "Datetime Picker Here",
+                        className: 'form-control',
+                        placeholder: 'Datetime Picker Here',
                       }}
                     />
                   </FormGroup>
@@ -104,8 +107,8 @@ class ExtendedForms extends React.Component {
                   <FormGroup>
                     <ReactDatetime
                       inputProps={{
-                        className: "form-control",
-                        placeholder: "Date Picker Here",
+                        className: 'form-control',
+                        placeholder: 'Date Picker Here',
                       }}
                       timeFormat={false}
                     />
@@ -123,8 +126,8 @@ class ExtendedForms extends React.Component {
                     <ReactDatetime
                       dateFormat={false}
                       inputProps={{
-                        className: "form-control",
-                        placeholder: "Time Picker Here",
+                        className: 'form-control',
+                        placeholder: 'Time Picker Here',
                       }}
                     />
                   </FormGroup>
@@ -142,7 +145,7 @@ class ExtendedForms extends React.Component {
                       <Row>
                         <Col md="4">
                           <p className="category">Default</p>
-                          <Switch onColor="default" offColor="default" />{" "}
+                          <Switch onColor="default" offColor="default" />{' '}
                           <Switch
                             defaultValue={false}
                             onColor="default"
@@ -156,7 +159,7 @@ class ExtendedForms extends React.Component {
                             offText=""
                             onColor="primary"
                             onText=""
-                          />{" "}
+                          />{' '}
                           <Switch
                             defaultValue={false}
                             offColor="primary"
@@ -172,7 +175,7 @@ class ExtendedForms extends React.Component {
                             offText={<i className="nc-icon nc-simple-remove" />}
                             onColor="success"
                             onText={<i className="nc-icon nc-check-2" />}
-                          />{" "}
+                          />{' '}
                           <Switch
                             defaultValue={false}
                             offColor="success"
@@ -192,17 +195,17 @@ class ExtendedForms extends React.Component {
                             classNamePrefix="react-select"
                             name="singleSelect"
                             value={this.state.singleSelect}
-                            onChange={(value) =>
+                            onChange={value =>
                               this.setState({ singleSelect: value })
                             }
                             options={[
                               {
-                                value: "",
-                                label: "Single Option",
+                                value: '',
+                                label: 'Single Option',
                                 isDisabled: true,
                               },
-                              { value: "2", label: "Foobar" },
-                              { value: "3", label: "Is great" },
+                              { value: '2', label: 'Foobar' },
+                              { value: '3', label: 'Is great' },
                             ]}
                             placeholder="Single Select"
                           />
@@ -216,33 +219,33 @@ class ExtendedForms extends React.Component {
                             closeMenuOnSelect={false}
                             isMulti
                             value={this.state.multipleSelect}
-                            onChange={(value) =>
+                            onChange={value =>
                               this.setState({ multipleSelect: value })
                             }
                             options={[
                               {
-                                value: "",
-                                label: " Multiple Options",
+                                value: '',
+                                label: ' Multiple Options',
                                 isDisabled: true,
                               },
-                              { value: "2", label: "Paris " },
-                              { value: "3", label: "Bucharest" },
-                              { value: "4", label: "Rome" },
-                              { value: "5", label: "New York" },
-                              { value: "6", label: "Miami " },
-                              { value: "7", label: "Piatra Neamt" },
-                              { value: "8", label: "Paris " },
-                              { value: "9", label: "Bucharest" },
-                              { value: "10", label: "Rome" },
-                              { value: "11", label: "New York" },
-                              { value: "12", label: "Miami " },
-                              { value: "13", label: "Piatra Neamt" },
-                              { value: "14", label: "Paris " },
-                              { value: "15", label: "Bucharest" },
-                              { value: "16", label: "Rome" },
-                              { value: "17", label: "New York" },
-                              { value: "18", label: "Miami " },
-                              { value: "19", label: "Piatra Neamt" },
+                              { value: '2', label: 'Paris ' },
+                              { value: '3', label: 'Bucharest' },
+                              { value: '4', label: 'Rome' },
+                              { value: '5', label: 'New York' },
+                              { value: '6', label: 'Miami ' },
+                              { value: '7', label: 'Piatra Neamt' },
+                              { value: '8', label: 'Paris ' },
+                              { value: '9', label: 'Bucharest' },
+                              { value: '10', label: 'Rome' },
+                              { value: '11', label: 'New York' },
+                              { value: '12', label: 'Miami ' },
+                              { value: '13', label: 'Piatra Neamt' },
+                              { value: '14', label: 'Paris ' },
+                              { value: '15', label: 'Bucharest' },
+                              { value: '16', label: 'Rome' },
+                              { value: '17', label: 'New York' },
+                              { value: '18', label: 'Miami ' },
+                              { value: '19', label: 'Piatra Neamt' },
                             ]}
                           />
                         </Col>
@@ -255,7 +258,7 @@ class ExtendedForms extends React.Component {
                       <TagsInput
                         value={this.state.tagsinput}
                         onChange={this.handleTagsinput}
-                        tagProps={{ className: "react-tagsinput-tag success" }}
+                        tagProps={{ className: 'react-tagsinput-tag success' }}
                       />
                     </Col>
                     <Col md="6">
@@ -265,40 +268,35 @@ class ExtendedForms extends React.Component {
                           <UncontrolledDropdown>
                             <DropdownToggle
                               aria-expanded={false}
-                              aria-haspopup={true}
+                              aria-haspopup
                               caret
                               className="btn-round btn-block"
                               color="primary"
                               data-toggle="dropdown"
                               id="dropdownMenuButton"
-                              type="button"
-                            >
+                              type="button">
                               Dropdown
                             </DropdownToggle>
                             <DropdownMenu
                               persist
                               aria-labelledby="dropdownMenuButton"
-                              right
-                            >
+                              right>
                               <DropdownItem header tag="div">
                                 Dropdown header
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Another action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Something else
                               </DropdownItem>
                             </DropdownMenu>
@@ -311,8 +309,7 @@ class ExtendedForms extends React.Component {
                               className="btn-round btn-block"
                               color="primary"
                               data-toggle="dropdown"
-                              type="button"
-                            >
+                              type="button">
                               Dropup
                             </DropdownToggle>
                             <DropdownMenu persist>
@@ -321,20 +318,17 @@ class ExtendedForms extends React.Component {
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Another action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Something else here
                               </DropdownItem>
                             </DropdownMenu>

@@ -14,10 +14,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
-import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from 'reactstrap';
 
 class GridSystem extends React.Component {
   render() {
@@ -131,7 +131,7 @@ class GridSystem extends React.Component {
                 </Col>
               </Row>
               <CardTitle className="pl-3" tag="h4">
-                Mixed Grid{" "}
+                Mixed Grid{' '}
                 <small>Showing different sizes on different screens</small>
               </CardTitle>
               <Row>

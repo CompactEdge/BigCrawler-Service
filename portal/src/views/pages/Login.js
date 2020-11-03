@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -33,15 +33,17 @@ import {
   Container,
   Col,
   Row,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Login extends React.Component {
   componentDidMount() {
-    document.body.classList.toggle("login-page");
+    document.body.classList.toggle('login-page');
   }
+
   componentWillUnmount() {
-    document.body.classList.toggle("login-page");
+    document.body.classList.toggle('login-page');
   }
+
   render() {
     return (
       <div className="login-page">
@@ -97,8 +99,7 @@ class Login extends React.Component {
                       className="btn-round mb-3"
                       color="warning"
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                      onClick={e => e.preventDefault()}>
                       Get Started
                     </Button>
                   </CardFooter>
@@ -110,7 +111,7 @@ class Login extends React.Component {
         <div
           className="full-page-background"
           style={{
-            backgroundImage: `url(${require("assets/img/bg/fabio-mangione.jpg")})`,
+            backgroundImage: `url(${require('assets/img/bg/fabio-mangione.jpg')})`,
           }}
         />
       </div>

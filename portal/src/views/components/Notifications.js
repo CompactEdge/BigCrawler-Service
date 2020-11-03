@@ -14,9 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react plugin for creating notifications over the dashboard
-import NotificationAlert from "react-notification-alert";
+import NotificationAlert from 'react-notification-alert';
 
 // reactstrap components
 import {
@@ -30,7 +30,7 @@ import {
   Modal,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Notifications extends React.Component {
   constructor(props) {
@@ -42,46 +42,50 @@ class Notifications extends React.Component {
       modalNotice: false,
     };
   }
+
   toggleModalClassic = () => {
     this.setState({
       modalClassic: !this.state.modalClassic,
     });
   };
+
   toggleModalNotice = () => {
     this.setState({
       modalNotice: !this.state.modalNotice,
     });
   };
+
   toggleModalMini = () => {
     this.setState({
       modalMini: !this.state.modalMini,
     });
   };
-  notify = (place) => {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
+
+  notify = place => {
+    const color = Math.floor(Math.random() * 5 + 1);
+    let type;
     switch (color) {
       case 1:
-        type = "primary";
+        type = 'primary';
         break;
       case 2:
-        type = "success";
+        type = 'success';
         break;
       case 3:
-        type = "danger";
+        type = 'danger';
         break;
       case 4:
-        type = "warning";
+        type = 'warning';
         break;
       case 5:
-        type = "info";
+        type = 'info';
         break;
       default:
         break;
     }
-    var options = {};
+    let options = {};
     options = {
-      place: place,
+      place,
       message: (
         <div>
           <div>
@@ -90,12 +94,13 @@ class Notifications extends React.Component {
           </div>
         </div>
       ),
-      type: type,
-      icon: "now-ui-icons ui-1_bell-53",
+      type,
+      icon: 'now-ui-icons ui-1_bell-53',
       autoDismiss: 7,
     };
     this.refs.notificationAlert.notificationAlert(options);
   };
+
   render() {
     return (
       <>
@@ -107,20 +112,18 @@ class Notifications extends React.Component {
                 <CardHeader>
                   <CardTitle>Notifications</CardTitle>
                   <p className="card-category">
-                    Handcrafted by our friend{" "}
+                    Handcrafted by our friend{' '}
                     <a
                       href="https://github.com/mouse0270"
                       rel="noopener noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       Robert McIntosh
                     </a>
-                    . Please checkout the{" "}
+                    . Please checkout the{' '}
                     <a
                       href="http://bootstrap-notify.remabledesigns.com/"
                       rel="noopener noreferrer"
-                      target="_blank"
-                    >
+                      target="_blank">
                       full documentation.
                     </a>
                   </p>
@@ -144,8 +147,7 @@ class Notifications extends React.Component {
                           <UncontrolledAlert
                             className="alert-with-icon"
                             color="info"
-                            fade={false}
-                          >
+                            fade={false}>
                             <span
                               data-notify="icon"
                               className="nc-icon nc-bell-55"
@@ -157,8 +159,7 @@ class Notifications extends React.Component {
                           <UncontrolledAlert
                             className="alert-with-icon"
                             color="info"
-                            fade={false}
-                          >
+                            fade={false}>
                             <span
                               data-notify="icon"
                               className="nc-icon nc-chart-pie-36"
@@ -246,9 +247,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("tl")}
-                              outline
-                            >
+                              onClick={() => this.notify('tl')}
+                              outline>
                               Top Left
                             </Button>
                           </Col>
@@ -257,9 +257,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("tc")}
-                              outline
-                            >
+                              onClick={() => this.notify('tc')}
+                              outline>
                               Top Center
                             </Button>
                           </Col>
@@ -268,9 +267,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("tr")}
-                              outline
-                            >
+                              onClick={() => this.notify('tr')}
+                              outline>
                               Top Right
                             </Button>
                           </Col>
@@ -285,9 +283,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("bl")}
-                              outline
-                            >
+                              onClick={() => this.notify('bl')}
+                              outline>
                               Bottom Left
                             </Button>
                           </Col>
@@ -296,9 +293,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("bc")}
-                              outline
-                            >
+                              onClick={() => this.notify('bc')}
+                              outline>
                               Bottom Center
                             </Button>
                           </Col>
@@ -307,9 +303,8 @@ class Notifications extends React.Component {
                               block
                               className="btn-round"
                               color="default"
-                              onClick={() => this.notify("br")}
-                              outline
-                            >
+                              onClick={() => this.notify('br')}
+                              outline>
                               Bottom Right
                             </Button>
                           </Col>
@@ -334,16 +329,14 @@ class Notifications extends React.Component {
                       {/* Classic Modal */}
                       <Modal
                         isOpen={this.state.modalClassic}
-                        toggle={this.toggleModalClassic}
-                      >
+                        toggle={this.toggleModalClassic}>
                         <div className="modal-header justify-content-center">
                           <button
                             aria-label="Close"
                             className="close"
                             data-dismiss="modal"
                             type="button"
-                            onClick={this.toggleModalClassic}
-                          >
+                            onClick={this.toggleModalClassic}>
                             <i className="nc-icon nc-simple-remove" />
                           </button>
                           <h4 className="title title-up">Modal title</h4>
@@ -368,8 +361,7 @@ class Notifications extends React.Component {
                               color="default"
                               data-dismiss="modal"
                               type="button"
-                              onClick={this.toggleModalClassic}
-                            >
+                              onClick={this.toggleModalClassic}>
                               Never mind
                             </Button>
                           </div>
@@ -378,8 +370,7 @@ class Notifications extends React.Component {
                             <Button
                               className="btn-link"
                               color="danger"
-                              type="button"
-                            >
+                              type="button">
                               Delete
                             </Button>
                           </div>
@@ -389,16 +380,14 @@ class Notifications extends React.Component {
                       {/* notice modal */}
                       <Modal
                         isOpen={this.state.modalNotice}
-                        toggle={this.toggleModalNotice}
-                      >
+                        toggle={this.toggleModalNotice}>
                         <div className="modal-header">
                           <button
-                            aria-hidden={true}
+                            aria-hidden
                             className="close"
                             data-dismiss="modal"
                             type="button"
-                            onClick={this.toggleModalNotice}
-                          >
+                            onClick={this.toggleModalNotice}>
                             <i className="nc-icon nc-simple-remove" />
                           </button>
                           <h5 className="modal-title" id="myModalLabel">
@@ -411,7 +400,7 @@ class Notifications extends React.Component {
                               <Col md="8">
                                 <strong>1. Register</strong>
                                 <p className="description">
-                                  The first step is to create an account at{" "}
+                                  The first step is to create an account at{' '}
                                   <a href="http://www.creative-tim.com/">
                                     Creative Tim
                                   </a>
@@ -425,7 +414,7 @@ class Notifications extends React.Component {
                                   <img
                                     alt="..."
                                     className="rounded img-raised"
-                                    src={require("assets/img/bg/daniel-olahs.jpg")}
+                                    src={require('assets/img/bg/daniel-olahs.jpg')}
                                   />
                                 </div>
                               </Col>
@@ -436,7 +425,7 @@ class Notifications extends React.Component {
                               <Col md="8">
                                 <strong>2. Apply</strong>
                                 <p className="description">
-                                  The first step is to create an account at{" "}
+                                  The first step is to create an account at{' '}
                                   <a href="http://www.creative-tim.com/">
                                     Creative Tim
                                   </a>
@@ -450,7 +439,7 @@ class Notifications extends React.Component {
                                   <img
                                     alt="..."
                                     className="rounded img-raised"
-                                    src={require("assets/img/bg/david-marcu.jpg")}
+                                    src={require('assets/img/bg/david-marcu.jpg')}
                                   />
                                 </div>
                               </Col>
@@ -468,8 +457,7 @@ class Notifications extends React.Component {
                             color="info"
                             data-dismiss="modal"
                             type="button"
-                            onClick={this.toggleModalNotice}
-                          >
+                            onClick={this.toggleModalNotice}>
                             Sounds good!
                           </Button>
                         </div>
@@ -480,8 +468,7 @@ class Notifications extends React.Component {
                         className="modal-sm"
                         modalClassName="modal-primary"
                         isOpen={this.state.modalMini}
-                        toggle={this.toggleModalMini}
-                      >
+                        toggle={this.toggleModalMini}>
                         <div className="modal-header justify-content-center">
                           <div className="modal-profile ml-auto mr-auto">
                             <i className="nc-icon nc-bulb-63" />
@@ -502,8 +489,7 @@ class Notifications extends React.Component {
                               color="link"
                               data-dismiss="modal"
                               type="button"
-                              onClick={this.toggleModalMini}
-                            >
+                              onClick={this.toggleModalMini}>
                               Close
                             </Button>
                           </div>

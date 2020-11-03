@@ -14,11 +14,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import classnames from "classnames";
+import React from 'react';
+import classnames from 'classnames';
 
 // reactstrap components
-import { Row, Col } from "reactstrap";
+import { Row, Col } from 'reactstrap';
 
 class Wizard extends React.Component {
   constructor(props) {
@@ -29,11 +29,13 @@ class Wizard extends React.Component {
       develop: false,
     };
   }
-  clickChoice = (choiceName) => {
+
+  clickChoice = choiceName => {
     this.setState({
       [choiceName]: !this.state[choiceName],
     });
   };
+
   render() {
     return (
       <>
@@ -43,12 +45,11 @@ class Wizard extends React.Component {
             <Row>
               <Col sm="4">
                 <div
-                  className={classnames("choice", {
+                  className={classnames('choice', {
                     active: this.state.design,
                   })}
                   data-toggle="wizard-checkbox"
-                  onClick={() => this.clickChoice("design")}
-                >
+                  onClick={() => this.clickChoice('design')}>
                   <input
                     defaultValue="Design"
                     name="jobb"
@@ -63,10 +64,9 @@ class Wizard extends React.Component {
               </Col>
               <Col sm="4">
                 <div
-                  className={classnames("choice", { active: this.state.code })}
+                  className={classnames('choice', { active: this.state.code })}
                   data-toggle="wizard-checkbox"
-                  onClick={() => this.clickChoice("code")}
-                >
+                  onClick={() => this.clickChoice('code')}>
                   <input
                     defaultValue="Code"
                     name="jobb"
@@ -81,12 +81,11 @@ class Wizard extends React.Component {
               </Col>
               <Col sm="4">
                 <div
-                  className={classnames("choice", {
+                  className={classnames('choice', {
                     active: this.state.develop,
                   })}
                   data-toggle="wizard-checkbox"
-                  onClick={() => this.clickChoice("develop")}
-                >
+                  onClick={() => this.clickChoice('develop')}>
                   <input
                     defaultValue="Develop"
                     name="jobb"

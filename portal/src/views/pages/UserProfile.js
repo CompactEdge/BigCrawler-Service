@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -29,7 +29,7 @@ import {
   Input,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class UserProfile extends React.Component {
   render() {
@@ -49,11 +49,11 @@ class UserProfile extends React.Component {
                 </div>
                 <CardBody>
                   <div className="author">
-                    <a href="#valid" onClick={(e) => e.preventDefault()}>
+                    <a href="#valid" onClick={e => e.preventDefault()}>
                       <img
                         alt="..."
                         className="avatar border-gray"
-                        src={require("assets/img/default-avatar.png")}
+                        src={require('assets/img/default-avatar.png')}
                       />
                       <h5 className="title">Admin</h5>
                     </a>
@@ -61,7 +61,7 @@ class UserProfile extends React.Component {
                   </div>
                   <p className="description text-center">
                     "Compact Edge <br />
-                      관리자"
+                    관리자"
                   </p>
                 </CardBody>
                 {/*

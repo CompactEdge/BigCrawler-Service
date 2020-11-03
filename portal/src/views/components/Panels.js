@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -30,33 +30,35 @@ import {
   TabPane,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Panels extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      horizontalTabs: "home",
-      verticalTabs: "info",
-      pageTabs: "homePages",
-      openedCollapses: ["collapseOne", "collapse1"],
+      horizontalTabs: 'home',
+      verticalTabs: 'info',
+      pageTabs: 'homePages',
+      openedCollapses: ['collapseOne', 'collapse1'],
     };
   }
+
   // with this function we create an array with the opened collapses
   // it is like a toggle function for all collapses from this page
-  collapsesToggle = (collapse) => {
-    let openedCollapses = this.state.openedCollapses;
+  collapsesToggle = collapse => {
+    const { openedCollapses } = this.state;
     if (openedCollapses.includes(collapse)) {
       this.setState({
-        openedCollapses: openedCollapses.filter((item) => item !== collapse),
+        openedCollapses: openedCollapses.filter(item => item !== collapse),
       });
     } else {
       openedCollapses.push(collapse);
       this.setState({
-        openedCollapses: openedCollapses,
+        openedCollapses,
       });
     }
   };
+
   render() {
     return (
       <>
@@ -66,33 +68,30 @@ class Panels extends React.Component {
               <Card>
                 <CardBody>
                   <div
-                    aria-multiselectable={true}
+                    aria-multiselectable
                     className="card-collapse"
                     id="accordion"
-                    role="tablist"
-                  >
+                    role="tablist">
                     <CardTitle tag="h4">Collapsible Accordion</CardTitle>
                     <Card className="card-plain">
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapseOne"
+                            'collapseOne',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapseOne")}
-                        >
-                          Collapsible Group Item #1{" "}
+                          onClick={() => this.collapsesToggle('collapseOne')}>
+                          Collapsible Group Item #1{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapseOne"
-                        )}
-                      >
+                          'collapseOne',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -113,23 +112,21 @@ class Panels extends React.Component {
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapseTwo"
+                            'collapseTwo',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapseTwo")}
-                        >
-                          Collapsible Group Item #2{" "}
+                          onClick={() => this.collapsesToggle('collapseTwo')}>
+                          Collapsible Group Item #2{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapseTwo"
-                        )}
-                      >
+                          'collapseTwo',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -150,23 +147,21 @@ class Panels extends React.Component {
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapseThree"
+                            'collapseThree',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapseThree")}
-                        >
-                          Collapsible Group Item #3{" "}
+                          onClick={() => this.collapsesToggle('collapseThree')}>
+                          Collapsible Group Item #3{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapseThree"
-                        )}
-                      >
+                          'collapseThree',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -191,11 +186,10 @@ class Panels extends React.Component {
               <Card className="card-plain">
                 <CardBody>
                   <div
-                    aria-multiselectable={true}
+                    aria-multiselectable
                     className="card-collapse"
                     id="accordion"
-                    role="tablist"
-                  >
+                    role="tablist">
                     <CardTitle tag="h4">
                       Collapsible Accordion on Plain Card
                     </CardTitle>
@@ -203,23 +197,21 @@ class Panels extends React.Component {
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapse1"
+                            'collapse1',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapse1")}
-                        >
-                          Collapsible Group Item #1{" "}
+                          onClick={() => this.collapsesToggle('collapse1')}>
+                          Collapsible Group Item #1{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapse1"
-                        )}
-                      >
+                          'collapse1',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -240,23 +232,21 @@ class Panels extends React.Component {
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapse2"
+                            'collapse2',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapse2")}
-                        >
-                          Collapsible Group Item #2{" "}
+                          onClick={() => this.collapsesToggle('collapse2')}>
+                          Collapsible Group Item #2{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapse2"
-                        )}
-                      >
+                          'collapse2',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -277,23 +267,21 @@ class Panels extends React.Component {
                       <CardHeader role="tab">
                         <a
                           aria-expanded={this.state.openedCollapses.includes(
-                            "collapse3"
+                            'collapse3',
                           )}
                           href="#pablo"
                           data-parent="#accordion"
                           data-toggle="collapse"
-                          onClick={() => this.collapsesToggle("collapse3")}
-                        >
-                          Collapsible Group Item #3{" "}
+                          onClick={() => this.collapsesToggle('collapse3')}>
+                          Collapsible Group Item #3{' '}
                           <i className="nc-icon nc-minimal-down" />
                         </a>
                       </CardHeader>
                       <Collapse
                         role="tabpanel"
                         isOpen={this.state.openedCollapses.includes(
-                          "collapse3"
-                        )}
-                      >
+                          'collapse3',
+                        )}>
                         <CardBody>
                           Anim pariatur cliche reprehenderit, enim eiusmod high
                           life accusamus terry richardson ad squid. 3 wolf moon
@@ -328,59 +316,56 @@ class Panels extends React.Component {
                       <Nav id="tabs" role="tablist" tabs>
                         <NavItem>
                           <NavLink
-                            aria-expanded={this.state.horizontalTabs === "home"}
+                            aria-expanded={this.state.horizontalTabs === 'home'}
                             data-toggle="tab"
                             href="#pablo"
                             role="tab"
                             className={
-                              this.state.horizontalTabs === "home"
-                                ? "active"
-                                : ""
+                              this.state.horizontalTabs === 'home'
+                                ? 'active'
+                                : ''
                             }
                             onClick={() =>
-                              this.setState({ horizontalTabs: "home" })
-                            }
-                          >
+                              this.setState({ horizontalTabs: 'home' })
+                            }>
                             Home
                           </NavLink>
                         </NavItem>
                         <NavItem>
                           <NavLink
                             aria-expanded={
-                              this.state.horizontalTabs === "profile"
+                              this.state.horizontalTabs === 'profile'
                             }
                             data-toggle="tab"
                             href="#pablo"
                             role="tab"
                             className={
-                              this.state.horizontalTabs === "profile"
-                                ? "active"
-                                : ""
+                              this.state.horizontalTabs === 'profile'
+                                ? 'active'
+                                : ''
                             }
                             onClick={() =>
-                              this.setState({ horizontalTabs: "profile" })
-                            }
-                          >
+                              this.setState({ horizontalTabs: 'profile' })
+                            }>
                             Profile
                           </NavLink>
                         </NavItem>
                         <NavItem>
                           <NavLink
                             aria-expanded={
-                              this.state.horizontalTabs === "messages"
+                              this.state.horizontalTabs === 'messages'
                             }
                             data-toggle="tab"
                             href="#pablo"
                             role="tab"
                             className={
-                              this.state.horizontalTabs === "messages"
-                                ? "active"
-                                : ""
+                              this.state.horizontalTabs === 'messages'
+                                ? 'active'
+                                : ''
                             }
                             onClick={() =>
-                              this.setState({ horizontalTabs: "messages" })
-                            }
-                          >
+                              this.setState({ horizontalTabs: 'messages' })
+                            }>
                             Messages
                           </NavLink>
                         </NavItem>
@@ -390,8 +375,7 @@ class Panels extends React.Component {
                   <TabContent
                     className="text-center"
                     id="my-tab-content"
-                    activeTab={this.state.horizontalTabs}
-                  >
+                    activeTab={this.state.horizontalTabs}>
                     <TabPane tabId="home" role="tabpanel">
                       <p>
                         Larger, yet dramatically thinner. More powerful, but
@@ -422,22 +406,20 @@ class Panels extends React.Component {
                           <Nav
                             className="flex-column nav-stacked"
                             role="tablist"
-                            tabs
-                          >
+                            tabs>
                             <NavItem>
                               <NavLink
                                 data-toggle="tab"
                                 href="#pablo"
                                 role="tab"
                                 className={
-                                  this.state.verticalTabs === "info"
-                                    ? "active"
-                                    : ""
+                                  this.state.verticalTabs === 'info'
+                                    ? 'active'
+                                    : ''
                                 }
                                 onClick={() =>
-                                  this.setState({ verticalTabs: "info" })
-                                }
-                              >
+                                  this.setState({ verticalTabs: 'info' })
+                                }>
                                 Info
                               </NavLink>
                             </NavItem>
@@ -447,14 +429,13 @@ class Panels extends React.Component {
                                 href="#pablo"
                                 role="tab"
                                 className={
-                                  this.state.verticalTabs === "description"
-                                    ? "active"
-                                    : ""
+                                  this.state.verticalTabs === 'description'
+                                    ? 'active'
+                                    : ''
                                 }
                                 onClick={() =>
-                                  this.setState({ verticalTabs: "description" })
-                                }
-                              >
+                                  this.setState({ verticalTabs: 'description' })
+                                }>
                                 Description
                               </NavLink>
                             </NavItem>
@@ -464,14 +445,13 @@ class Panels extends React.Component {
                                 href="#pablo"
                                 role="tab"
                                 className={
-                                  this.state.verticalTabs === "concept"
-                                    ? "active"
-                                    : ""
+                                  this.state.verticalTabs === 'concept'
+                                    ? 'active'
+                                    : ''
                                 }
                                 onClick={() =>
-                                  this.setState({ verticalTabs: "concept" })
-                                }
-                              >
+                                  this.setState({ verticalTabs: 'concept' })
+                                }>
                                 Concept
                               </NavLink>
                             </NavItem>
@@ -481,14 +461,13 @@ class Panels extends React.Component {
                                 href="#pablo"
                                 role="tab"
                                 className={
-                                  this.state.verticalTabs === "support"
-                                    ? "active"
-                                    : ""
+                                  this.state.verticalTabs === 'support'
+                                    ? 'active'
+                                    : ''
                                 }
                                 onClick={() =>
-                                  this.setState({ verticalTabs: "support" })
-                                }
-                              >
+                                  this.setState({ verticalTabs: 'support' })
+                                }>
                                 Support
                               </NavLink>
                             </NavItem>
@@ -498,14 +477,13 @@ class Panels extends React.Component {
                                 href="#pablo"
                                 role="tab"
                                 className={
-                                  this.state.verticalTabs === "extra"
-                                    ? "active"
-                                    : ""
+                                  this.state.verticalTabs === 'extra'
+                                    ? 'active'
+                                    : ''
                                 }
                                 onClick={() =>
-                                  this.setState({ verticalTabs: "extra" })
-                                }
-                              >
+                                  this.setState({ verticalTabs: 'extra' })
+                                }>
                                 Extra
                               </NavLink>
                             </NavItem>
@@ -603,18 +581,18 @@ class Panels extends React.Component {
                   <Nav
                     className="nav-pills-primary nav-pills-icons justify-content-center"
                     pills
-                    role="tablist"
-                  >
+                    role="tablist">
                     <NavItem>
                       <NavLink
                         data-toggle="tab"
                         href="#pablo"
                         role="tablist"
                         className={
-                          this.state.pageTabs === "homePages" ? "active" : ""
+                          this.state.pageTabs === 'homePages' ? 'active' : ''
                         }
-                        onClick={() => this.setState({ pageTabs: "homePages" })}
-                      >
+                        onClick={() =>
+                          this.setState({ pageTabs: 'homePages' })
+                        }>
                         <i className="now-ui-icons objects_umbrella-13" />
                         Home
                       </NavLink>
@@ -625,14 +603,13 @@ class Panels extends React.Component {
                         href="#pablo"
                         role="tablist"
                         className={
-                          this.state.pageTabs === "messagesPages"
-                            ? "active"
-                            : ""
+                          this.state.pageTabs === 'messagesPages'
+                            ? 'active'
+                            : ''
                         }
                         onClick={() =>
-                          this.setState({ pageTabs: "messagesPages" })
-                        }
-                      >
+                          this.setState({ pageTabs: 'messagesPages' })
+                        }>
                         <i className="now-ui-icons shopping_shop" />
                         Messages
                       </NavLink>
@@ -643,14 +620,13 @@ class Panels extends React.Component {
                         href="#pablo"
                         role="tablist"
                         className={
-                          this.state.pageTabs === "settingsPages"
-                            ? "active"
-                            : ""
+                          this.state.pageTabs === 'settingsPages'
+                            ? 'active'
+                            : ''
                         }
                         onClick={() =>
-                          this.setState({ pageTabs: "settingsPages" })
-                        }
-                      >
+                          this.setState({ pageTabs: 'settingsPages' })
+                        }>
                         <i className="now-ui-icons ui-2_settings-90" />
                         Settings
                       </NavLink>
@@ -658,8 +634,7 @@ class Panels extends React.Component {
                   </Nav>
                   <TabContent
                     className="tab-space tab-subcategories"
-                    activeTab={this.state.pageTabs}
-                  >
+                    activeTab={this.state.pageTabs}>
                     <TabPane tabId="homePages">
                       Collaboratively administrate empowered markets via
                       plug-and-play networks. Dynamically procrastinate B2C

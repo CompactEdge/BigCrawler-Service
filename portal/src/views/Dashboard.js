@@ -14,13 +14,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // import { Component, Fragment } from "react";
 // react plugin used to create charts
 // import { Line, Bar, Doughnut } from "react-chartjs-2";
 // react plugin for creating vector maps
 // import { VectorMap } from "react-jvectormap";
-import ReactTable from "components/ReactTable/ReactTable.js";
+// import ReactTable from 'components/ReactTable/ReactTable.js';
 
 // reactstrap components
 import {
@@ -38,7 +38,7 @@ import {
   Row,
   Col,
   // UncontrolledTooltip,
-} from "reactstrap";
+} from 'reactstrap';
 
 // import {
 //   chartExample1,
@@ -70,7 +70,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       data: [], // not null
-      isLoading: true,
+      isLoading: false,
       error: null,
     };
   }
@@ -78,9 +78,12 @@ class Dashboard extends React.Component {
   // shouldComponentUpdate() { // infinite loop?
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch("http://127.0.0.1:8083/bus/pods")
-      .then((response) => response.json())
-      .then((data) => {console.log(data); this.setState({ data, isLoading: false })})
+    fetch('http://127.0.0.1:8083/bus/pods')
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.setState({ data: json.items, isLoading: false });
+      })
       .catch(error => this.setState({ error, isLoading: false }));
   }
 
@@ -98,55 +101,15 @@ class Dashboard extends React.Component {
     return (
       <>
         <div className="content">
-        <Row>
+          <Row>
             <Col md="12">
               <Card>
                 <CardHeader>
                   <CardTitle tag="h4">Workload Status</CardTitle>
-                  <p className="card-category">
-                    Objects
-                  </p>
+                  <p className="card-category">Objects</p>
                 </CardHeader>
                 <CardBody>
-                  <ReactTable
-                    data={this.state.data.items}
-                    columns={[
-                      {
-                        Header: "Name",
-                        accessor: "metadata.name",
-                      },
-                      {
-                        Header: "Image",
-                        accessor: "spec",
-                      },
-                      {
-                        Header: "Namespace",
-                        accessor: "office",
-                      },
-                      {
-                        Header: "Containers",
-                        accessor: "age",
-                      },
-                      {
-                        Header: "Status",
-                        accessor: "",
-                      },
-                      {
-                        Header: "Pod-IP",
-                        accessor: "status.podIPs[0].ip",
-                      },
-                      // {
-                      //   Header: "Actions",
-                      //   accessor: "actions",
-                      //   sortable: false,
-                      //   filterable: false,
-                      // },
-                    ]}
-                    /*
-                      You can choose between primary-pagination, info-pagination, success-pagination, warning-pagination, danger-pagination or none - which will make the pagination buttons gray
-                    */
-                    className="-striped -highlight primary-pagination"
-                  />
+                  d3.js Pie chart
                 </CardBody>
               </Card>
             </Col>

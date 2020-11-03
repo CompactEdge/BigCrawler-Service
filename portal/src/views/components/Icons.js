@@ -14,10 +14,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
+import React from 'react';
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from 'reactstrap';
 
-import icons from "variables/icons";
+import icons from 'variables/icons';
 
 class Icons extends React.Component {
   render() {
@@ -29,7 +29,7 @@ class Icons extends React.Component {
               <CardHeader>
                 <CardTitle>100 Awesome Nucleo Icons</CardTitle>
                 <p className="card-category">
-                  Handcrafted by our friends from{" "}
+                  Handcrafted by our friends from{' '}
                   <a href="https://nucleoapp.com/?ref=1712">NucleoApp</a>
                 </p>
               </CardHeader>

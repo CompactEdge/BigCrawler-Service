@@ -14,9 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import classnames from "classnames";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 // reactstrap components
 import {
@@ -26,42 +26,44 @@ import {
   NavItem,
   Nav,
   Container,
-} from "reactstrap";
+} from 'reactstrap';
 
 class AuthNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       collapseOpen: false,
-      color: "navbar-transparent",
+      color: 'navbar-transparent',
     };
   }
+
   componentDidMount() {
-    window.addEventListener("resize", this.updateColor);
+    window.addEventListener('resize', this.updateColor);
   }
+
   // this function opens and closes the collapse on small devices
   // it also adds navbar-transparent class to the navbar when closed
   // ad bg-white when opened
   toggleCollapse = () => {
-    let newState = {
+    const newState = {
       collapseOpen: !this.state.collapseOpen,
     };
     if (!this.state.collapseOpen) {
-      newState["color"] = "bg-white";
+      newState.color = 'bg-white';
     } else {
-      newState["color"] = "navbar-transparent";
+      newState.color = 'navbar-transparent';
     }
     this.setState(newState);
   };
+
   render() {
     return (
       <Navbar
-        className={classnames("navbar-absolute fixed-top", this.state.color)}
-        expand="lg"
-      >
+        className={classnames('navbar-absolute fixed-top', this.state.color)}
+        expand="lg">
         <Container>
           <div className="navbar-wrapper">
-            <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+            <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
               Paper Dashboard PRO React
             </NavbarBrand>
           </div>
@@ -72,8 +74,7 @@ class AuthNavbar extends React.Component {
             className="navbar-toggler"
             data-toggle="collapse"
             type="button"
-            onClick={this.toggleCollapse}
-          >
+            onClick={this.toggleCollapse}>
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
@@ -81,8 +82,7 @@ class AuthNavbar extends React.Component {
           <Collapse
             isOpen={this.state.collapseOpen}
             className="justify-content-end"
-            navbar
-          >
+            navbar>
             <Nav navbar>
               <NavItem>
                 <NavLink to="/admin/dashboard" className="nav-link">

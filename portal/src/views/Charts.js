@@ -14,9 +14,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react plugin used to create charts
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Line, Bar, Pie } from 'react-chartjs-2';
 
 // reactstrap components
 import {
@@ -27,7 +27,7 @@ import {
   CardTitle,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
 import {
@@ -37,7 +37,7 @@ import {
   chartExample10,
   chartExample11,
   chartExample12,
-} from "variables/charts.js";
+} from 'variables/charts.js';
 
 class Charts extends React.Component {
   render() {
@@ -46,38 +46,34 @@ class Charts extends React.Component {
         <div className="content">
           <p>
             Simple yet flexible React charting for designers &amp; developers.
-            Made by our friends from{" "}
+            Made by our friends from{' '}
             <a
               target="_blank"
               href="https://jerairrest.github.io/react-chartjs-2/"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               react-chartjs-2
             </a>
-            , a react based wrapper over{" "}
+            , a react based wrapper over{' '}
             <a
               target="_blank"
               href="https://www.chartjs.org"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               Chart.js
             </a>
-            . Please check{" "}
+            . Please check{' '}
             <a
               target="_blank"
               href="https://github.com/jerairrest/react-chartjs-2"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               react-chartjs-2 documentation
-            </a>{" "}
-            and{" "}
+            </a>{' '}
+            and{' '}
             <a
               target="_blank"
               href="https://www.chartjs.org/docs/latest/"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               Chart.js documentation
-            </a>{" "}
+            </a>{' '}
             .
           </p>
           <Row>

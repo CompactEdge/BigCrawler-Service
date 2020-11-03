@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -31,7 +31,7 @@ import {
   FormText,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class RegularForms extends React.Component {
   render() {
@@ -62,7 +62,7 @@ class RegularForms extends React.Component {
                       <FormGroup check>
                         <Label check>
                           <Input defaultValue="" type="checkbox" />
-                          Subscribe to newsletter{" "}
+                          Subscribe to newsletter{' '}
                           <span className="form-check-sign" />
                         </Label>
                       </FormGroup>
@@ -243,13 +243,13 @@ class RegularForms extends React.Component {
                             <Input defaultChecked type="checkbox" />
                             <span className="form-check-sign" />a
                           </Label>
-                        </FormGroup>{" "}
+                        </FormGroup>{' '}
                         <FormGroup check inline>
                           <Label check>
                             <Input type="checkbox" />
                             <span className="form-check-sign" />b
                           </Label>
-                        </FormGroup>{" "}
+                        </FormGroup>{' '}
                         <FormGroup check inline>
                           <Label check>
                             <Input type="checkbox" />
@@ -334,7 +334,7 @@ class RegularForms extends React.Component {
                               name="exampleRadios"
                               type="radio"
                             />
-                            Disabled radio is off{" "}
+                            Disabled radio is off{' '}
                             <span className="form-check-sign" />
                           </Label>
                         </div>
@@ -348,7 +348,7 @@ class RegularForms extends React.Component {
                               name="exampleRadioz"
                               type="radio"
                             />
-                            Disabled radio is on{" "}
+                            Disabled radio is on{' '}
                             <span className="form-check-sign" />
                           </Label>
                         </div>

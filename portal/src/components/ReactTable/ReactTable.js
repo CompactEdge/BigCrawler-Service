@@ -1,20 +1,20 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react';
 import {
   useTable,
   useFilters,
   useAsyncDebounce,
   useSortBy,
   usePagination,
-} from "react-table";
-import classnames from "classnames";
+} from 'react-table';
+import classnames from 'classnames';
 // A great library for fuzzy filtering/sorting items
-import matchSorter from "match-sorter";
+import matchSorter from 'match-sorter';
 // react plugin used to create DropdownMenu for selecting items
-import Select from "react-select";
+import Select from 'react-select';
 
 // reactstrap components
-import { Container, Row, Col, FormGroup, Input } from "reactstrap";
+import { Container, Row, Col, FormGroup, Input } from 'reactstrap';
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
@@ -27,7 +27,7 @@ function DefaultColumnFilter({
       <Input
         placeholder={`Search ${count} records...`}
         type="text"
-        onChange={(e) => {
+        onChange={e => {
           setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
         }}
       />
@@ -36,21 +36,21 @@ function DefaultColumnFilter({
 }
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
-  return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
+  return matchSorter(rows, filterValue, { keys: [row => row.values[id]] });
 }
 
 // Let the table remove the filter if the string is empty
-fuzzyTextFilterFn.autoRemove = (val) => !val;
+fuzzyTextFilterFn.autoRemove = val => !val;
 
 // Our table component
 function Table({ columns, data }) {
   const [numberOfRows, setNumberOfRows] = React.useState({
     value: 10,
-    label: "10 rows",
+    label: '10 rows',
   });
   const [pageSelect, handlePageSelect] = React.useState({
     value: 0,
-    label: "Page 1",
+    label: 'Page 1',
   });
   const filterTypes = React.useMemo(
     () => ({
@@ -59,7 +59,7 @@ function Table({ columns, data }) {
       // Or, override the default text filter to use
       // "startWith"
       text: (rows, id, filterValue) => {
-        return rows.filter((row) => {
+        return rows.filter(row => {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
@@ -69,7 +69,7 @@ function Table({ columns, data }) {
         });
       },
     }),
-    []
+    [],
   );
 
   const defaultColumn = React.useMemo(
@@ -77,7 +77,7 @@ function Table({ columns, data }) {
       // Let's set up our default Filter UI
       Filter: DefaultColumnFilter,
     }),
-    []
+    [],
   );
 
   const {
@@ -106,7 +106,7 @@ function Table({ columns, data }) {
     },
     useFilters, // useFilters!
     useSortBy,
-    usePagination
+    usePagination,
   );
 
   // We don't want to render all of the rows for this example, so cap
@@ -114,7 +114,7 @@ function Table({ columns, data }) {
   // const firstPageRows = rows.slice(0, 10);
   let pageSelectData = Array.apply(
     null,
-    Array(pageOptions.length)
+    Array(pageOptions.length),
   ).map(function () {});
   let numberOfRowsData = [5, 10, 20, 25, 50, 100];
   return (
@@ -127,8 +127,7 @@ function Table({ columns, data }) {
                 type="button"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
-                className="-btn"
-              >
+                className="-btn">
                 Previous
               </button>
             </div>
@@ -141,14 +140,14 @@ function Table({ columns, data }) {
                       classNamePrefix="react-select"
                       name="pageSelect"
                       value={pageSelect}
-                      onChange={(value) => {
+                      onChange={value => {
                         gotoPage(value.value);
                         handlePageSelect(value);
                       }}
                       options={pageSelectData.map((prop, key) => {
                         return {
                           value: key,
-                          label: "Page " + (key + 1),
+                          label: 'Page ' + (key + 1),
                         };
                       })}
                       placeholder="Choose Page"
@@ -160,14 +159,14 @@ function Table({ columns, data }) {
                       classNamePrefix="react-select"
                       name="numberOfRows"
                       value={numberOfRows}
-                      onChange={(value) => {
+                      onChange={value => {
                         setPageSize(value.value);
                         setNumberOfRows(value);
                       }}
-                      options={numberOfRowsData.map((prop) => {
+                      options={numberOfRowsData.map(prop => {
                         return {
                           value: prop,
-                          label: prop + " rows",
+                          label: prop + ' rows',
                         };
                       })}
                       placeholder="Choose Rows"
@@ -181,8 +180,7 @@ function Table({ columns, data }) {
                 type="button"
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
-                className="-btn"
-              >
+                className="-btn">
                 Next
               </button>
             </div>
@@ -190,26 +188,25 @@ function Table({ columns, data }) {
         </div>
         <table {...getTableProps()} className="rt-table">
           <thead className="rt-thead -header">
-            {headerGroups.map((headerGroup) => (
+            {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()} className="rt-tr">
                 {headerGroup.headers.map((column, key) => (
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={classnames("rt-th rt-resizable-header", {
-                      "-cursor-pointer": headerGroup.headers.length - 1 !== key,
-                      "-sort-asc": column.isSorted && !column.isSortedDesc,
-                      "-sort-desc": column.isSorted && column.isSortedDesc,
-                    })}
-                  >
+                    className={classnames('rt-th rt-resizable-header', {
+                      '-cursor-pointer': headerGroup.headers.length - 1 !== key,
+                      '-sort-asc': column.isSorted && !column.isSortedDesc,
+                      '-sort-desc': column.isSorted && column.isSortedDesc,
+                    })}>
                     <div className="rt-resizable-header-content">
-                      {column.render("Header")}
+                      {column.render('Header')}
                     </div>
                     {/* Render the columns filter UI */}
                     <div>
                       {headerGroup.headers.length - 1 === key
                         ? null
                         : column.canFilter
-                        ? column.render("Filter")
+                        ? column.render('Filter')
                         : null}
                     </div>
                   </th>
@@ -224,15 +221,14 @@ function Table({ columns, data }) {
                 <tr
                   {...row.getRowProps()}
                   className={classnames(
-                    "rt-tr",
-                    { " -odd": i % 2 === 0 },
-                    { " -even": i % 2 === 1 }
-                  )}
-                >
-                  {row.cells.map((cell) => {
+                    'rt-tr',
+                    { ' -odd': i % 2 === 0 },
+                    { ' -even': i % 2 === 1 },
+                  )}>
+                  {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()} className="rt-td">
-                        {cell.render("Cell")}
+                        {cell.render('Cell')}
                       </td>
                     );
                   })}
@@ -249,7 +245,7 @@ function Table({ columns, data }) {
 
 // Define a custom filter filter function!
 function filterGreaterThan(rows, id, filterValue) {
-  return rows.filter((row) => {
+  return rows.filter(row => {
     const rowValue = row.values[id];
     return rowValue >= filterValue;
   });
@@ -259,6 +255,6 @@ function filterGreaterThan(rows, id, filterValue) {
 // when given the new filter value and returns true, the filter
 // will be automatically removed. Normally this is just an undefined
 // check, but here, we want to remove the filter if it's not a number
-filterGreaterThan.autoRemove = (val) => typeof val !== "number";
+filterGreaterThan.autoRemove = val => typeof val !== 'number';
 
 export default Table;

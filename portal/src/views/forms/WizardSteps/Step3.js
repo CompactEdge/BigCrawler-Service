@@ -14,15 +14,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react plugin used to create DropdownMenu for selecting items
-import Select from "react-select";
+import Select from 'react-select';
 
 // reactstrap components
-import { FormGroup, Input, Row, Col } from "reactstrap";
+import { FormGroup, Input, Row, Col } from 'reactstrap';
 
 class Wizard extends React.Component {
   state = {};
+
   render() {
     return (
       <>
@@ -57,22 +58,22 @@ class Wizard extends React.Component {
                 placeholder="Single Select"
                 classNamePrefix="react-select"
                 value={this.state.select}
-                onChange={(value) => this.setState({ select: value })}
+                onChange={value => this.setState({ select: value })}
                 options={[
                   {
-                    value: "Afghanistan",
-                    label: " Afghanistan ",
+                    value: 'Afghanistan',
+                    label: ' Afghanistan ',
                   },
-                  { value: "Albania", label: " Albania " },
-                  { value: "Algeria", label: " Algeria " },
+                  { value: 'Albania', label: ' Albania ' },
+                  { value: 'Algeria', label: ' Algeria ' },
                   {
-                    value: "American Samoa",
-                    label: " American Samoa ",
+                    value: 'American Samoa',
+                    label: ' American Samoa ',
                   },
-                  { value: "Andorra", label: " Andorra " },
-                  { value: "Angola", label: " Angola " },
-                  { value: "Anguilla", label: " Anguilla " },
-                  { value: "Antarctica", label: " Antarctica " },
+                  { value: 'Andorra', label: ' Andorra ' },
+                  { value: 'Angola', label: ' Angola ' },
+                  { value: 'Anguilla', label: ' Anguilla ' },
+                  { value: 'Antarctica', label: ' Antarctica ' },
                 ]}
               />
             </FormGroup>

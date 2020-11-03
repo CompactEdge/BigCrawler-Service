@@ -14,14 +14,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react plugin for creating vector maps
-import { VectorMap as JVectorMap } from "react-jvectormap";
+import { VectorMap as JVectorMap } from 'react-jvectormap';
 
 // reactstrap components
-import { Card, CardBody, Row, Col } from "reactstrap";
+import { Card, CardBody, Row, Col } from 'reactstrap';
 
-var mapData = {
+const mapData = {
   AU: 760,
   BR: 550,
   CA: 120,
@@ -45,51 +45,49 @@ class VectorMap extends React.Component {
               <h4 className="text-center">
                 World Map <br />
                 <small>
-                  Looks great on any resolution.{" "}
+                  Looks great on any resolution.{' '}
                   <a
                     href="https://www.npmjs.com/package/react-jvectormap"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
                     React wrapper component
-                  </a>{" "}
-                  of jQuery{" "}
+                  </a>{' '}
+                  of jQuery{' '}
                   <a
                     href="http://jvectormap.com/"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
                     jVector Map
-                  </a>{" "}
+                  </a>{' '}
                   pluging.
                 </small>
               </h4>
               <Card className="card-plain">
                 <CardBody>
                   <JVectorMap
-                    map={"world_mill"}
+                    map="world_mill"
                     backgroundColor="transparent"
                     zoomOnScroll={false}
                     containerStyle={{
-                      width: "100%",
-                      height: "400px",
+                      width: '100%',
+                      height: '400px',
                     }}
                     containerClassName="map map-big"
                     regionStyle={{
                       initial: {
-                        fill: "#e4e4e4",
-                        "fill-opacity": 0.9,
-                        stroke: "none",
-                        "stroke-width": 0,
-                        "stroke-opacity": 0,
+                        fill: '#e4e4e4',
+                        'fill-opacity': 0.9,
+                        stroke: 'none',
+                        'stroke-width': 0,
+                        'stroke-opacity': 0,
                       },
                     }}
                     series={{
                       regions: [
                         {
                           values: mapData,
-                          scale: ["#AAAAAA", "#444444"],
-                          normalizeFunction: "polynomial",
+                          scale: ['#AAAAAA', '#444444'],
+                          normalizeFunction: 'polynomial',
                         },
                       ],
                     }}

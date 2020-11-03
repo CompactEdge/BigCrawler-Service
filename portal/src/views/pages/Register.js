@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -34,15 +34,17 @@ import {
   Container,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Register extends React.Component {
   componentDidMount() {
-    document.body.classList.toggle("register-page");
+    document.body.classList.toggle('register-page');
   }
+
   componentWillUnmount() {
-    document.body.classList.toggle("register-page");
+    document.body.classList.toggle('register-page');
   }
+
   render() {
     return (
       <div className="register-page">
@@ -132,8 +134,8 @@ class Register extends React.Component {
                     <FormGroup check className="text-left">
                       <Label check>
                         <Input defaultChecked type="checkbox" />
-                        <span className="form-check-sign" />I agree to the{" "}
-                        <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                        <span className="form-check-sign" />I agree to the{' '}
+                        <a href="#pablo" onClick={e => e.preventDefault()}>
                           terms and conditions
                         </a>
                         .
@@ -146,8 +148,7 @@ class Register extends React.Component {
                     className="btn-round"
                     color="info"
                     href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
+                    onClick={e => e.preventDefault()}>
                     Get Started
                   </Button>
                 </CardFooter>
@@ -158,7 +159,7 @@ class Register extends React.Component {
         <div
           className="full-page-background"
           style={{
-            backgroundImage: `url(${require("assets/img/bg/jan-sendereks.jpg")})`,
+            backgroundImage: `url(${require('assets/img/bg/jan-sendereks.jpg')})`,
           }}
         />
       </div>

@@ -14,65 +14,65 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-const Chart = require("chart.js");
+const Chart = require('chart.js');
 
 Chart.pluginService.register({
-  beforeDraw: function (chart) {
+  beforeDraw(chart) {
     if (chart.config.options.elements.center) {
-      //Get ctx from string
-      var ctx = chart.chart.ctx;
+      // Get ctx from string
+      const { ctx } = chart.chart;
 
-      //Get options from the center object in options
-      var centerConfig = chart.config.options.elements.center;
-      var fontStyle = centerConfig.fontStyle || "Arial";
-      var txt = centerConfig.text;
-      var color = centerConfig.color || "#000";
-      var sidePadding = centerConfig.sidePadding || 20;
-      var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
-      //Start with a base font of 30px
-      ctx.font = "30px " + fontStyle;
+      // Get options from the center object in options
+      const centerConfig = chart.config.options.elements.center;
+      const fontStyle = centerConfig.fontStyle || 'Arial';
+      const txt = centerConfig.text;
+      const color = centerConfig.color || '#000';
+      const sidePadding = centerConfig.sidePadding || 20;
+      const sidePaddingCalculated =
+        (sidePadding / 100) * (chart.innerRadius * 2);
+      // Start with a base font of 30px
+      ctx.font = `30px ${fontStyle}`;
 
-      //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-      var stringWidth = ctx.measureText(txt).width;
-      var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+      // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+      const stringWidth = ctx.measureText(txt).width;
+      const elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
       // Find out how much the font can grow in width.
-      var widthRatio = elementWidth / stringWidth;
-      var newFontSize = Math.floor(30 * widthRatio);
-      var elementHeight = chart.innerRadius * 2;
+      const widthRatio = elementWidth / stringWidth;
+      const newFontSize = Math.floor(30 * widthRatio);
+      const elementHeight = chart.innerRadius * 2;
 
       // Pick a new font size so it will not be larger than the height of label.
-      var fontSizeToUse = Math.min(newFontSize, elementHeight);
+      const fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-      //Set font settings to draw it correctly.
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-      var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-      ctx.font = fontSizeToUse + "px " + fontStyle;
+      // Set font settings to draw it correctly.
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+      const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+      ctx.font = `${fontSizeToUse}px ${fontStyle}`;
       ctx.fillStyle = color;
 
-      //Draw text in center
+      // Draw text in center
       ctx.fillText(txt, centerX, centerY);
     }
   },
 });
 
 // default color for the charts
-let chartColor = "#FFFFFF";
+const chartColor = '#FFFFFF';
 // ##############################
 // // // Function that converts a hex color number to a RGB color number
 // #############################
 const hexToRGB = (hex, alpha) => {
-  var r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
 
   if (alpha) {
-    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-  } else {
-    return "rgb(" + r + ", " + g + ", " + b + ")";
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
+  return `rgb(${r}, ${g}, ${b})`;
 };
 
 // ##############################
@@ -85,21 +85,21 @@ const hexToRGB = (hex, alpha) => {
 const chartExample1 = {
   data: {
     labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
     ],
     datasets: [
       {
-        label: "Active Users",
-        borderColor: "#6bd098",
+        label: 'Active Users',
+        borderColor: '#6bd098',
         pointRadius: 0,
         pointHoverRadius: 0,
         fill: false,
@@ -122,15 +122,15 @@ const chartExample1 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
             beginAtZero: false,
             maxTicksLimit: 5,
-            //padding: 20
+            // padding: 20
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -139,13 +139,13 @@ const chartExample1 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
             display: false,
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
           },
         },
       ],
@@ -157,22 +157,22 @@ const chartExample1 = {
 // // // used inside src/views/Dashboard.js
 // #########################################
 const chartExample2 = {
-  data: (canvas) => {
-    let ctx = canvas.getContext("2d");
+  data: canvas => {
+    const ctx = canvas.getContext('2d');
 
-    let gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, "#18ce0f");
+    const gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke.addColorStop(0, '#18ce0f');
     gradientStroke.addColorStop(1, chartColor);
 
-    let gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, hexToRGB("#18ce0f", 0.4));
+    const gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, hexToRGB('#18ce0f', 0.4));
     return {
-      labels: ["12pm", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
+      labels: ['12pm', '3pm', '6pm', '9pm', '12am', '3am', '6am', '9am'],
       datasets: [
         {
-          label: "Email Stats",
-          borderColor: "#ef8156",
+          label: 'Email Stats',
+          borderColor: '#ef8156',
           pointHoverRadius: 0,
           pointRadius: 0,
           fill: false,
@@ -195,14 +195,14 @@ const chartExample2 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
             beginAtZero: false,
             maxTicksLimit: 5,
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -210,13 +210,13 @@ const chartExample2 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
             display: false,
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
           },
         },
       ],
@@ -228,34 +228,34 @@ const chartExample2 = {
 // // // used inside src/views/Dashboard.js
 // #########################################
 const chartExample3 = {
-  data: (canvas) => {
-    let ctx = canvas.getContext("2d");
+  data: canvas => {
+    const ctx = canvas.getContext('2d');
 
-    let gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, "#2CA8FF");
+    const gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke.addColorStop(0, '#2CA8FF');
     gradientStroke.addColorStop(1, chartColor);
 
-    let gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, hexToRGB("#2CA8FF", 0.4));
+    const gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.4));
     return {
       labels: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
       ],
       datasets: [
         {
-          label: "Active Countries",
+          label: 'Active Countries',
           backgroundColor: gradientFill,
-          borderColor: "#fbc658",
+          borderColor: '#fbc658',
           pointHoverRadius: 0,
           pointRadius: 0,
           fill: false,
@@ -277,14 +277,14 @@ const chartExample3 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
             beginAtZero: false,
             maxTicksLimit: 5,
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -292,13 +292,13 @@ const chartExample3 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
             display: false,
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
           },
         },
       ],
@@ -336,11 +336,11 @@ const chartExample4 = {
     ],
     datasets: [
       {
-        label: "Data",
-        borderColor: "#fcc468",
+        label: 'Data',
+        borderColor: '#fcc468',
         fill: true,
-        backgroundColor: "#fcc468",
-        hoverBorderColor: "#fcc468",
+        backgroundColor: '#fcc468',
+        hoverBorderColor: '#fcc468',
         borderWidth: 8,
         barPercentage: 0.4,
         data: [
@@ -367,11 +367,11 @@ const chartExample4 = {
         ],
       },
       {
-        label: "Data",
-        borderColor: "#4cbdd7",
+        label: 'Data',
+        borderColor: '#4cbdd7',
         fill: true,
-        backgroundColor: "#4cbdd7",
-        hoverBorderColor: "#4cbdd7",
+        backgroundColor: '#4cbdd7',
+        hoverBorderColor: '#4cbdd7',
         borderWidth: 8,
         barPercentage: 0.4,
         data: [
@@ -401,16 +401,16 @@ const chartExample4 = {
   },
   options: {
     tooltips: {
-      tooltipFillColor: "rgba(0,0,0,0.5)",
+      tooltipFillColor: 'rgba(0,0,0,0.5)',
       tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
       tooltipFontSize: 14,
-      tooltipFontStyle: "normal",
-      tooltipFontColor: "#fff",
+      tooltipFontStyle: 'normal',
+      tooltipFontColor: '#fff',
       tooltipTitleFontFamily:
         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
       tooltipTitleFontSize: 14,
-      tooltipTitleFontStyle: "bold",
-      tooltipTitleFontColor: "#fff",
+      tooltipTitleFontStyle: 'bold',
+      tooltipTitleFontColor: '#fff',
       tooltipYPadding: 6,
       tooltipXPadding: 6,
       tooltipCaretSize: 8,
@@ -424,33 +424,33 @@ const chartExample4 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
-            fontStyle: "bold",
+            fontColor: '#9f9f9f',
+            fontStyle: 'bold',
             beginAtZero: true,
             maxTicksLimit: 5,
             padding: 20,
           },
           gridLines: {
-            zeroLineColor: "transparent",
+            zeroLineColor: 'transparent',
             display: true,
             drawBorder: false,
-            color: "#9f9f9f",
+            color: '#9f9f9f',
           },
         },
       ],
       xAxes: [
         {
           gridLines: {
-            zeroLineColor: "white",
+            zeroLineColor: 'white',
             display: false,
 
             drawBorder: false,
-            color: "transparent",
+            color: 'transparent',
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
-            fontStyle: "bold",
+            fontColor: '#9f9f9f',
+            fontStyle: 'bold',
           },
         },
       ],
@@ -466,10 +466,10 @@ const chartExample5 = {
     labels: [1, 2],
     datasets: [
       {
-        label: "Emails",
+        label: 'Emails',
         pointRadius: 0,
         pointHoverRadius: 0,
-        backgroundColor: ["#4acccd", "#f4f3ef"],
+        backgroundColor: ['#4acccd', '#f4f3ef'],
         borderWidth: 0,
         barPercentage: 1.6,
         data: [60, 40],
@@ -479,9 +479,9 @@ const chartExample5 = {
   options: {
     elements: {
       center: {
-        text: "60%",
-        color: "#66615c", // Default is #000000
-        fontStyle: "Arial", // Default is Arial
+        text: '60%',
+        color: '#66615c', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
         sidePadding: 60, // Defualt is 20 (as a percentage)
       },
     },
@@ -500,8 +500,8 @@ const chartExample5 = {
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -509,8 +509,8 @@ const chartExample5 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             display: false,
@@ -529,10 +529,10 @@ const chartExample6 = {
     labels: [1, 2],
     datasets: [
       {
-        label: "Emails",
+        label: 'Emails',
         pointRadius: 0,
         pointHoverRadius: 0,
-        backgroundColor: ["#fcc468", "#f4f3ef"],
+        backgroundColor: ['#fcc468', '#f4f3ef'],
         borderWidth: 0,
         barPercentage: 1.6,
         data: [34, 66],
@@ -542,9 +542,9 @@ const chartExample6 = {
   options: {
     elements: {
       center: {
-        text: "34%",
-        color: "#66615c", // Default is #000000
-        fontStyle: "Arial", // Default is Arial
+        text: '34%',
+        color: '#66615c', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
         sidePadding: 60, // Defualt is 20 (as a percentage)
       },
     },
@@ -563,8 +563,8 @@ const chartExample6 = {
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -572,8 +572,8 @@ const chartExample6 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             display: false,
@@ -592,10 +592,10 @@ const chartExample7 = {
     labels: [1, 2],
     datasets: [
       {
-        label: "Emails",
+        label: 'Emails',
         pointRadius: 0,
         pointHoverRadius: 0,
-        backgroundColor: ["#f17e5d", "#f4f3ef"],
+        backgroundColor: ['#f17e5d', '#f4f3ef'],
         borderWidth: 0,
         barPercentage: 1.6,
         data: [80, 20],
@@ -605,9 +605,9 @@ const chartExample7 = {
   options: {
     elements: {
       center: {
-        text: "80%",
-        color: "#66615c", // Default is #000000
-        fontStyle: "Arial", // Default is Arial
+        text: '80%',
+        color: '#66615c', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
         sidePadding: 60, // Defualt is 20 (as a percentage)
       },
     },
@@ -626,8 +626,8 @@ const chartExample7 = {
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -635,8 +635,8 @@ const chartExample7 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             display: false,
@@ -655,10 +655,10 @@ const chartExample8 = {
     labels: [1, 2],
     datasets: [
       {
-        label: "Emails",
+        label: 'Emails',
         pointRadius: 0,
         pointHoverRadius: 0,
-        backgroundColor: ["#66615b", "#f4f3ef"],
+        backgroundColor: ['#66615b', '#f4f3ef'],
         borderWidth: 0,
         barPercentage: 1.6,
         data: [11, 89],
@@ -668,9 +668,9 @@ const chartExample8 = {
   options: {
     elements: {
       center: {
-        text: "11%",
-        color: "#66615c", // Default is #000000
-        fontStyle: "Arial", // Default is Arial
+        text: '11%',
+        color: '#66615c', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
         sidePadding: 60, // Defualt is 20 (as a percentage)
       },
     },
@@ -689,8 +689,8 @@ const chartExample8 = {
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -698,8 +698,8 @@ const chartExample8 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             display: false,
@@ -716,12 +716,12 @@ const chartExample8 = {
 
 const chartExample9 = {
   data: {
-    labels: ["6pm", "9pm", "11pm", "2am", "4am", "6am", "8am"],
+    labels: ['6pm', '9pm', '11pm', '2am', '4am', '6am', '8am'],
     datasets: [
       {
-        label: "Active Users",
-        borderColor: "#f17e5d",
-        pointBackgroundColor: "#f17e5d",
+        label: 'Active Users',
+        borderColor: '#f17e5d',
+        pointBackgroundColor: '#f17e5d',
         pointRadius: 3,
         pointHoverRadius: 3,
         lineTension: 0,
@@ -743,15 +743,15 @@ const chartExample9 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
             beginAtZero: false,
             maxTicksLimit: 5,
           },
           gridLines: {
             drawBorder: false,
             borderDash: [8, 5],
-            zeroLineColor: "transparent",
-            color: "#9f9f9f",
+            zeroLineColor: 'transparent',
+            color: '#9f9f9f',
           },
         },
       ],
@@ -760,12 +760,12 @@ const chartExample9 = {
           gridLines: {
             drawBorder: false,
             borderDash: [8, 5],
-            color: "#9f9f9f",
-            zeroLineColor: "transparent",
+            color: '#9f9f9f',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
           },
         },
       ],
@@ -804,11 +804,11 @@ const chartExample10 = {
     ],
     datasets: [
       {
-        label: "Data",
-        borderColor: "#fcc468",
+        label: 'Data',
+        borderColor: '#fcc468',
         fill: true,
-        backgroundColor: "#fcc468",
-        hoverBorderColor: "#fcc468",
+        backgroundColor: '#fcc468',
+        hoverBorderColor: '#fcc468',
         borderWidth: 5,
         barPercentage: 0.4,
         data: [
@@ -838,16 +838,16 @@ const chartExample10 = {
   },
   options: {
     tooltips: {
-      tooltipFillColor: "rgba(0,0,0,0.5)",
+      tooltipFillColor: 'rgba(0,0,0,0.5)',
       tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
       tooltipFontSize: 14,
-      tooltipFontStyle: "normal",
-      tooltipFontColor: "#fff",
+      tooltipFontStyle: 'normal',
+      tooltipFontColor: '#fff',
       tooltipTitleFontFamily:
         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
       tooltipTitleFontSize: 14,
-      tooltipTitleFontStyle: "bold",
-      tooltipTitleFontColor: "#fff",
+      tooltipTitleFontStyle: 'bold',
+      tooltipTitleFontColor: '#fff',
       tooltipYPadding: 6,
       tooltipXPadding: 6,
       tooltipCaretSize: 8,
@@ -861,32 +861,32 @@ const chartExample10 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
-            fontStyle: "bold",
+            fontColor: '#9f9f9f',
+            fontStyle: 'bold',
             beginAtZero: true,
             maxTicksLimit: 5,
             padding: 20,
           },
           gridLines: {
-            zeroLineColor: "transparent",
+            zeroLineColor: 'transparent',
             display: true,
             drawBorder: false,
-            color: "#9f9f9f",
+            color: '#9f9f9f',
           },
         },
       ],
       xAxes: [
         {
           gridLines: {
-            zeroLineColor: "white",
+            zeroLineColor: 'white',
             display: false,
             drawBorder: false,
-            color: "transparent",
+            color: 'transparent',
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
-            fontStyle: "bold",
+            fontColor: '#9f9f9f',
+            fontStyle: 'bold',
           },
         },
       ],
@@ -903,10 +903,10 @@ const chartExample11 = {
     labels: [1, 2, 3],
     datasets: [
       {
-        label: "Emails",
+        label: 'Emails',
         pointRadius: 0,
         pointHoverRadius: 0,
-        backgroundColor: ["#e3e3e3", "#4acccd", "#fcc468"],
+        backgroundColor: ['#e3e3e3', '#4acccd', '#fcc468'],
         borderWidth: 0,
         barPercentage: 1.6,
         data: [542, 480, 430],
@@ -928,8 +928,8 @@ const chartExample11 = {
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -937,8 +937,8 @@ const chartExample11 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
           },
           ticks: {
             display: false,
@@ -956,21 +956,21 @@ const chartExample11 = {
 const chartExample12 = {
   data: {
     labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
     ],
     datasets: [
       {
-        borderColor: "#6bd098",
-        backgroundColor: "#6bd098",
+        borderColor: '#6bd098',
+        backgroundColor: '#6bd098',
         pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 3,
@@ -978,8 +978,8 @@ const chartExample12 = {
         data: [300, 310, 316, 322, 330, 326, 333, 345, 338, 354],
       },
       {
-        borderColor: "#f17e5d",
-        backgroundColor: "#f17e5d",
+        borderColor: '#f17e5d',
+        backgroundColor: '#f17e5d',
         pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 3,
@@ -987,8 +987,8 @@ const chartExample12 = {
         data: [320, 340, 365, 360, 370, 385, 390, 384, 408, 420],
       },
       {
-        borderColor: "#fcc468",
-        backgroundColor: "#fcc468",
+        borderColor: '#fcc468',
+        backgroundColor: '#fcc468',
         pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 3,
@@ -1008,14 +1008,14 @@ const chartExample12 = {
       yAxes: [
         {
           ticks: {
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
             beginAtZero: false,
             maxTicksLimit: 5,
           },
           gridLines: {
             drawBorder: false,
-            zeroLineColor: "transparent",
-            color: "rgba(255,255,255,0.05)",
+            zeroLineColor: 'transparent',
+            color: 'rgba(255,255,255,0.05)',
           },
         },
       ],
@@ -1023,13 +1023,13 @@ const chartExample12 = {
         {
           gridLines: {
             drawBorder: false,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent",
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent',
             display: false,
           },
           ticks: {
             padding: 20,
-            fontColor: "#9f9f9f",
+            fontColor: '#9f9f9f',
           },
         },
       ],

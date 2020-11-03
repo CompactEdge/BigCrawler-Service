@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -31,7 +31,7 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
-} from "reactstrap";
+} from 'reactstrap';
 
 class ExtendedTables extends React.Component {
   render() {
@@ -69,14 +69,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip264453216"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip264453216"
-                          >
+                            target="tooltip264453216">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -84,14 +82,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip366246651"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip366246651"
-                          >
+                            target="tooltip366246651">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -99,14 +95,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip476609793"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip476609793"
-                          >
+                            target="tooltip476609793">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -123,14 +117,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip269174504"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip269174504"
-                          >
+                            target="tooltip269174504">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -138,14 +130,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip495755671"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip495755671"
-                          >
+                            target="tooltip495755671">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -153,14 +143,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip94395840"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip94395840"
-                          >
+                            target="tooltip94395840">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -177,14 +165,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip667520750"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip667520750"
-                          >
+                            target="tooltip667520750">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -192,14 +178,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip793231916"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip793231916"
-                          >
+                            target="tooltip793231916">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -207,14 +191,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip884055770"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip884055770"
-                          >
+                            target="tooltip884055770">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -231,14 +213,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip289345217"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip289345217"
-                          >
+                            target="tooltip289345217">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -246,14 +226,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip247076752"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip247076752"
-                          >
+                            target="tooltip247076752">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -261,14 +239,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip1643763"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip1643763"
-                          >
+                            target="tooltip1643763">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -285,14 +261,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip67723462"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
-                          </Button>{" "}
+                          </Button>{' '}
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip67723462"
-                          >
+                            target="tooltip67723462">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -300,14 +274,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip120598831"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip120598831"
-                          >
+                            target="tooltip120598831">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -315,14 +287,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip66076761"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip66076761"
-                          >
+                            target="tooltip66076761">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -339,14 +309,12 @@ class ExtendedTables extends React.Component {
                             color="info"
                             id="tooltip747701937"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-user" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip747701937"
-                          >
+                            target="tooltip747701937">
                             Like
                           </UncontrolledTooltip>
                           <Button
@@ -354,14 +322,12 @@ class ExtendedTables extends React.Component {
                             color="success"
                             id="tooltip159182735"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-edit" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip159182735"
-                          >
+                            target="tooltip159182735">
                             Edit
                           </UncontrolledTooltip>
                           <Button
@@ -369,14 +335,12 @@ class ExtendedTables extends React.Component {
                             color="danger"
                             id="tooltip808966390"
                             size="sm"
-                            type="button"
-                          >
+                            type="button">
                             <i className="fa fa-times" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip808966390"
-                          >
+                            target="tooltip808966390">
                             Delete
                           </UncontrolledTooltip>
                         </td>
@@ -519,12 +483,12 @@ class ExtendedTables extends React.Component {
                           <div className="img-container">
                             <img
                               alt="..."
-                              src={require("assets/img/agenda.png")}
+                              src={require('assets/img/agenda.png')}
                             />
                           </div>
                         </td>
                         <td className="td-name">
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                          <a href="#pablo" onClick={e => e.preventDefault()}>
                             Get Shit Done Notebook
                           </a>
                           <br />
@@ -537,20 +501,18 @@ class ExtendedTables extends React.Component {
                           3,390
                         </td>
                         <td className="td-number">
-                          1{" "}
+                          1{' '}
                           <ButtonGroup className="btn-group-sm">
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-delete" />
                             </Button>
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-add" />
                             </Button>
                           </ButtonGroup>
@@ -566,15 +528,13 @@ class ExtendedTables extends React.Component {
                             data-placement="left"
                             id="tooltip848814788"
                             title=""
-                            type="button"
-                          >
+                            type="button">
                             <i className="nc-icon nc-simple-remove" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
                             placement="left"
-                            target="tooltip848814788"
-                          >
+                            target="tooltip848814788">
                             Remove item
                           </UncontrolledTooltip>
                         </td>
@@ -584,12 +544,12 @@ class ExtendedTables extends React.Component {
                           <div className="img-container">
                             <img
                               alt="..."
-                              src={require("assets/img/stylus.jpg")}
+                              src={require('assets/img/stylus.jpg')}
                             />
                           </div>
                         </td>
                         <td className="td-name">
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                          <a href="#pablo" onClick={e => e.preventDefault()}>
                             Stylus
                           </a>
                           <br />
@@ -605,20 +565,18 @@ class ExtendedTables extends React.Component {
                           499
                         </td>
                         <td className="td-number">
-                          2{" "}
+                          2{' '}
                           <ButtonGroup className="btn-group-sm">
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-delete" />
                             </Button>
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-add" />
                             </Button>
                           </ButtonGroup>
@@ -634,15 +592,13 @@ class ExtendedTables extends React.Component {
                             data-placement="left"
                             id="tooltip822160608"
                             title=""
-                            type="button"
-                          >
+                            type="button">
                             <i className="nc-icon nc-simple-remove" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
                             placement="left"
-                            target="tooltip822160608"
-                          >
+                            target="tooltip822160608">
                             Remove item
                           </UncontrolledTooltip>
                         </td>
@@ -652,12 +608,12 @@ class ExtendedTables extends React.Component {
                           <div className="img-container">
                             <img
                               alt="..."
-                              src={require("assets/img/agenda.png")}
+                              src={require('assets/img/agenda.png')}
                             />
                           </div>
                         </td>
                         <td className="td-name">
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                          <a href="#pablo" onClick={e => e.preventDefault()}>
                             Evernote iPad Stander
                           </a>
                           <br />
@@ -673,20 +629,18 @@ class ExtendedTables extends React.Component {
                           200
                         </td>
                         <td className="td-number">
-                          1{" "}
+                          1{' '}
                           <ButtonGroup className="btn-group-sm">
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-delete" />
                             </Button>
                             <Button
                               className="btn-round"
                               color="default"
-                              outline
-                            >
+                              outline>
                               <i className="nc-icon nc-simple-add" />
                             </Button>
                           </ButtonGroup>
@@ -702,15 +656,13 @@ class ExtendedTables extends React.Component {
                             data-placement="left"
                             id="tooltip799358710"
                             title=""
-                            type="button"
-                          >
+                            type="button">
                             <i className="nc-icon nc-simple-remove" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
                             placement="left"
-                            target="tooltip799358710"
-                          >
+                            target="tooltip799358710">
                             Remove item
                           </UncontrolledTooltip>
                         </td>
@@ -729,15 +681,13 @@ class ExtendedTables extends React.Component {
                             id="tooltip861527148"
                             outline
                             title=""
-                            type="button"
-                          >
-                            Complete Purchase{" "}
+                            type="button">
+                            Complete Purchase{' '}
                             <i className="nc-icon nc-minimal-right" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip861527148"
-                          >
+                            target="tooltip861527148">
                             Buy now
                           </UncontrolledTooltip>
                         </td>

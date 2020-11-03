@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -28,15 +28,17 @@ import {
   Input,
   Container,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 class LockScreen extends React.Component {
   componentDidMount() {
-    document.body.classList.toggle("lock-page");
+    document.body.classList.toggle('lock-page');
   }
+
   componentWillUnmount() {
-    document.body.classList.toggle("lock-page");
+    document.body.classList.toggle('lock-page');
   }
+
   render() {
     return (
       <div className="lock-page">
@@ -46,7 +48,7 @@ class LockScreen extends React.Component {
               <CardHeader>
                 <img
                   alt="..."
-                  src={require("assets/img/faces/joe-gardner-2.jpg")}
+                  src={require('assets/img/faces/joe-gardner-2.jpg')}
                 />
               </CardHeader>
               <CardBody>
@@ -64,9 +66,8 @@ class LockScreen extends React.Component {
                   className="btn-round"
                   color="default"
                   href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  outline
-                >
+                  onClick={e => e.preventDefault()}
+                  outline>
                   Unlock
                 </Button>
               </CardFooter>
@@ -76,7 +77,7 @@ class LockScreen extends React.Component {
         <div
           className="full-page-background"
           style={{
-            backgroundImage: `url(${require("assets/img/bg/bruno-abatti.jpg")})`,
+            backgroundImage: `url(${require('assets/img/bg/bruno-abatti.jpg')})`,
           }}
         />
       </div>

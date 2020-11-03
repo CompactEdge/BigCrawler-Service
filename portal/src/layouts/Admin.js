@@ -14,59 +14,63 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
-import { Route, Switch } from "react-router-dom";
+import PerfectScrollbar from 'perfect-scrollbar';
+import { Route, Switch } from 'react-router-dom';
 
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import AdminNavbar from 'components/Navbars/AdminNavbar.js';
 // import Footer from "components/Footer/Footer.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import Sidebar from 'components/Sidebar/Sidebar.js';
 // import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import routes from "routes.js";
+import routes from 'routes.js';
 
-var ps;
+let ps;
 
 class Admin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      backgroundColor: "black",
-      activeColor: "danger",
+      backgroundColor: 'black',
+      activeColor: 'danger',
       sidebarMini: false,
     };
   }
+
   componentDidMount() {
     // TODO:
-    document.body.classList.add("sidebar-mini");
+    document.body.classList.add('sidebar-mini');
 
-    if (navigator.platform.indexOf("Win") > -1) {
-      document.documentElement.className += " perfect-scrollbar-on";
-      document.documentElement.classList.remove("perfect-scrollbar-off");
+    if (navigator.platform.indexOf('Win') > -1) {
+      document.documentElement.className += ' perfect-scrollbar-on';
+      document.documentElement.classList.remove('perfect-scrollbar-off');
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
   }
+
   componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
+    if (navigator.platform.indexOf('Win') > -1) {
       ps.destroy();
-      document.documentElement.className += " perfect-scrollbar-off";
-      document.documentElement.classList.remove("perfect-scrollbar-on");
+      document.documentElement.className += ' perfect-scrollbar-off';
+      document.documentElement.classList.remove('perfect-scrollbar-on');
     }
   }
+
   componentDidUpdate(e) {
-    if (e.history.action === "PUSH") {
+    if (e.history.action === 'PUSH') {
       document.documentElement.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
       this.refs.mainPanel.scrollTop = 0;
     }
   }
-  getRoutes = (routes) => {
+
+  getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout === "/admin") {
+      if (prop.layout === '/admin') {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -74,25 +78,28 @@ class Admin extends React.Component {
             key={key}
           />
         );
-      } else {
-        return null;
       }
+      return null;
     });
   };
-  handleActiveClick = (color) => {
+
+  handleActiveClick = color => {
     this.setState({ activeColor: color });
   };
-  handleBgClick = (color) => {
+
+  handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };
+
   handleMiniClick = () => {
-    if (document.body.classList.contains("sidebar-mini")) {
+    if (document.body.classList.contains('sidebar-mini')) {
       this.setState({ sidebarMini: false });
     } else {
       this.setState({ sidebarMini: true });
     }
-    document.body.classList.toggle("sidebar-mini");
+    document.body.classList.toggle('sidebar-mini');
   };
+
   render() {
     return (
       <div className="wrapper">

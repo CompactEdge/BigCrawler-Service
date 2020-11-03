@@ -14,21 +14,21 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 // react component used to create a calendar with events on it
 import {
   Calendar as ReactBigCalendar,
   momentLocalizer,
-} from "react-big-calendar";
+} from 'react-big-calendar';
 // dependency plugin for react-big-calendar
-import moment from "moment";
+import moment from 'moment';
 // react component used to create alerts
-import SweetAlert from "react-bootstrap-sweetalert";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 // reactstrap components
-import { Card, CardBody, Row, Col } from "reactstrap";
+import { Card, CardBody, Row, Col } from 'reactstrap';
 
-import { events } from "variables/general.js";
+import { events } from 'variables/general.js';
 
 const localizer = momentLocalizer(moment);
 
@@ -36,22 +36,24 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: events,
+      events,
       alert: null,
     };
   }
-  selectedEvent = (event) => {
+
+  selectedEvent = event => {
     alert(event.title);
   };
-  addNewEventAlert = (slotInfo) => {
+
+  addNewEventAlert = slotInfo => {
     this.setState({
       alert: (
         <SweetAlert
           input
           showCancel
-          style={{ display: "block", marginTop: "-100px" }}
+          style={{ display: 'block', marginTop: '-100px' }}
           title="Input something"
-          onConfirm={(e) => this.addNewEvent(e, slotInfo)}
+          onConfirm={e => this.addNewEvent(e, slotInfo)}
           onCancel={() => this.hideAlert()}
           confirmBtnBsStyle="info"
           cancelBtnBsStyle="danger"
@@ -59,8 +61,9 @@ class Calendar extends React.Component {
       ),
     });
   };
+
   addNewEvent = (e, slotInfo) => {
-    var newEvents = this.state.events;
+    const newEvents = this.state.events;
     newEvents.push({
       title: e,
       start: slotInfo.start,
@@ -71,20 +74,23 @@ class Calendar extends React.Component {
       events: newEvents,
     });
   };
+
   hideAlert = () => {
     this.setState({
       alert: null,
     });
   };
+
   eventColors = (event, start, end, isSelected) => {
-    var backgroundColor = "event-";
+    let backgroundColor = 'event-';
     event.color
-      ? (backgroundColor = backgroundColor + event.color)
-      : (backgroundColor = backgroundColor + "default");
+      ? (backgroundColor += event.color)
+      : (backgroundColor += 'default');
     return {
       className: backgroundColor,
     };
   };
+
   render() {
     return (
       <>
@@ -101,8 +107,8 @@ class Calendar extends React.Component {
                     defaultView="month"
                     scrollToTime={new Date(1970, 1, 1, 6)}
                     defaultDate={new Date()}
-                    onSelectEvent={(event) => this.selectedEvent(event)}
-                    onSelectSlot={(slotInfo) => this.addNewEventAlert(slotInfo)}
+                    onSelectEvent={event => this.selectedEvent(event)}
+                    onSelectSlot={slotInfo => this.addNewEventAlert(slotInfo)}
                     eventPropGetter={this.eventColors}
                   />
                 </CardBody>

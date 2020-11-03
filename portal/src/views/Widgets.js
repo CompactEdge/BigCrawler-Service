@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
 import {
@@ -37,7 +37,7 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
-} from "reactstrap";
+} from 'reactstrap';
 
 class Widgets extends React.Component {
   render() {
@@ -69,7 +69,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require("assets/img/faces/ayo-ogunseinde-2.jpg")}
+                                src={require('assets/img/faces/ayo-ogunseinde-2.jpg')}
                               />
                             </div>
                           </td>
@@ -83,14 +83,12 @@ class Widgets extends React.Component {
                               color="info"
                               id="tooltip42906017"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-ruler-pencil" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip42906017"
-                            >
+                              target="tooltip42906017">
                               Edit Task
                             </UncontrolledTooltip>
                             <Button
@@ -98,14 +96,12 @@ class Widgets extends React.Component {
                               color="danger"
                               id="tooltip570363224"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-simple-remove" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip570363224"
-                            >
+                              target="tooltip570363224">
                               Remove
                             </UncontrolledTooltip>
                           </td>
@@ -124,7 +120,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require("assets/img/faces/erik-lucatero-2.jpg")}
+                                src={require('assets/img/faces/erik-lucatero-2.jpg')}
                               />
                             </div>
                           </td>
@@ -138,14 +134,12 @@ class Widgets extends React.Component {
                               color="info"
                               id="tooltip584875601"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-ruler-pencil" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip584875601"
-                            >
+                              target="tooltip584875601">
                               Edit Task
                             </UncontrolledTooltip>
                             <Button
@@ -153,14 +147,12 @@ class Widgets extends React.Component {
                               color="danger"
                               id="tooltip517629613"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-simple-remove" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip517629613"
-                            >
+                              target="tooltip517629613">
                               Remove
                             </UncontrolledTooltip>
                           </td>
@@ -179,7 +171,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require("assets/img/faces/kaci-baum-2.jpg")}
+                                src={require('assets/img/faces/kaci-baum-2.jpg')}
                               />
                             </div>
                           </td>
@@ -194,14 +186,12 @@ class Widgets extends React.Component {
                               color="info"
                               id="tooltip792337830"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-ruler-pencil" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip792337830"
-                            >
+                              target="tooltip792337830">
                               Edit Task
                             </UncontrolledTooltip>
                             <Button
@@ -209,14 +199,12 @@ class Widgets extends React.Component {
                               color="danger"
                               id="tooltip731952378"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-simple-remove" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip731952378"
-                            >
+                              target="tooltip731952378">
                               Remove
                             </UncontrolledTooltip>
                           </td>
@@ -235,7 +223,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require("assets/img/faces/joe-gardner-2.jpg")}
+                                src={require('assets/img/faces/joe-gardner-2.jpg')}
                               />
                             </div>
                           </td>
@@ -249,14 +237,12 @@ class Widgets extends React.Component {
                               color="info"
                               id="tooltip825783733"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-ruler-pencil" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip825783733"
-                            >
+                              target="tooltip825783733">
                               Edit Task
                             </UncontrolledTooltip>
                             <Button
@@ -264,14 +250,12 @@ class Widgets extends React.Component {
                               color="danger"
                               id="tooltip285089652"
                               title=""
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-simple-remove" />
                             </Button>
                             <UncontrolledTooltip
                               delay={0}
-                              target="tooltip285089652"
-                            >
+                              target="tooltip285089652">
                               Remove
                             </UncontrolledTooltip>
                           </td>
@@ -420,27 +404,23 @@ class Widgets extends React.Component {
                               className="btn-round"
                               color="info"
                               data-toggle="dropdown"
-                              type="button"
-                            >
+                              type="button">
                               <i className="nc-icon nc-settings-gear-65" />
                             </DropdownToggle>
                             <DropdownMenu persist>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Another action
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
+                                onClick={e => e.preventDefault()}>
                                 Something else here
                               </DropdownItem>
                             </DropdownMenu>
@@ -476,8 +456,7 @@ class Widgets extends React.Component {
                         className="btn-round"
                         color="primary"
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
+                        onClick={e => e.preventDefault()}>
                         Add to Cart
                       </Button>
                     </CardFooter>
@@ -503,8 +482,7 @@ class Widgets extends React.Component {
                         className="btn-round btn-neutral"
                         color="warning"
                         href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
+                        onClick={e => e.preventDefault()}>
                         Add to Cart
                       </Button>
                     </CardFooter>
@@ -527,11 +505,11 @@ class Widgets extends React.Component {
                   <CardTitle tag="h4">Gina Andrew</CardTitle>
                   <h6 className="card-category">@ginaandrew</h6>
                   <div className="card-avatar">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                    <a href="#pablo" onClick={e => e.preventDefault()}>
                       <img
                         alt="..."
                         className="img"
-                        src={require("assets/img/faces/joe-gardner-2.jpg")}
+                        src={require('assets/img/faces/joe-gardner-2.jpg')}
                       />
                     </a>
                   </div>
