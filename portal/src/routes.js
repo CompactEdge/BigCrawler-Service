@@ -14,141 +14,152 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Buttons from 'views/components/Buttons.js';
-// import Calendar from "views/Calendar.js";
-// import Charts from "views/Charts.js";
+// Dashboard
 import Dashboard from 'views/Dashboard.js';
-// import ExtendedForms from "views/forms/ExtendedForms.js";
-import ExtendedTables from 'views/tables/ExtendedTables.js';
-// import FullScreenMap from "views/maps/FullScreenMap.js";
-// import GoogleMaps from "views/maps/GoogleMaps.js";
+
+// Monitoring
+
+// Kubernetes
+import KubernetesNode from 'views/pages/KubernetesNode.js';
+import KubernetesPod from 'views/pages/KubernetesPod.js';
+import KubernetesService from 'views/pages/KubernetesService.js';
+import KubernetesStorage from 'views/pages/KubernetesStorage.js';
+
+// User
+import UserProfile from 'views/pages/UserProfile.js';
+
+// Components
+import Buttons from 'views/components/Buttons.js';
 import GridSystem from 'views/components/GridSystem.js';
 import Icons from 'views/components/Icons.js';
-// import LockScreen from "views/pages/LockScreen.js";
-// import Login from "views/pages/Login.js";
 import Notifications from 'views/components/Notifications.js';
 import Panels from 'views/components/Panels.js';
-import ReactTables from 'views/tables/ReactTables.js';
-// import Register from "views/pages/Register.js";
-// import RegularForms from "views/forms/RegularForms.js";
-import RegularTables from 'views/tables/RegularTables.js';
 import SweetAlert from 'views/components/SweetAlert.js';
-import Timeline from 'views/pages/Timeline.js';
 import Typography from 'views/components/Typography.js';
-import UserProfile from 'views/pages/UserProfile.js';
-// import ValidationForms from "views/forms/ValidationForms.js";
-// import VectorMap from "views/maps/VectorMap.js";
-// import Widgets from "views/Widgets.js";
-// import Wizard from "views/forms/Wizard.js";
+import ExtendedTables from 'views/tables/ExtendedTables.js';
+import ReactTables from 'views/tables/ReactTables.js';
+import RegularTables from 'views/tables/RegularTables.js';
+import Timeline from 'views/pages/Timeline.js';
 
-import ResourceNode from 'views/pages/ResourceNode.js';
+// Deprecated
+import Calendar from "views/Calendar.js";
+import Charts from "views/Charts.js";
+import ExtendedForms from "views/forms/ExtendedForms.js";
+import FullScreenMap from "views/maps/FullScreenMap.js";
+import GoogleMaps from "views/maps/GoogleMaps.js";
+import LockScreen from "views/pages/LockScreen.js";
+import Login from "views/pages/Login.js";
+import Register from "views/pages/Register.js";
+import RegularForms from "views/forms/RegularForms.js";
+import ValidationForms from "views/forms/ValidationForms.js";
+import VectorMap from "views/maps/VectorMap.js";
+import Widgets from "views/Widgets.js";
+import Wizard from "views/forms/Wizard.js";
 
 const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    icon: 'nc-icon nc-bank',
+    // icon: 'nc-icon nc-chart-pie-36',
+    icon: 'nc-icon nc-layout-11',
     component: Dashboard,
     layout: '/admin',
   },
   {
     collapse: true,
     name: 'Monitoring',
-    icon: 'nc-icon nc-book-bookmark',
-    state: 'pagesCollapse',
+    // icon: 'nc-icon nc-laptop',
+    icon: 'nc-icon nc-tv-2',
+    state: 'monitoringCollapse',
     views: [
       {
-        path: '/timeline',
+        path: '/monitoring/cluster',
         name: 'Cluster',
         mini: 'C',
         component: Timeline,
         layout: '/admin',
       },
       {
-        path: '/timeline',
+        path: '/monitoring/namespace',
         name: 'Namespace',
         mini: 'NS',
         component: Timeline,
         layout: '/admin',
       },
       {
-        path: '/timeline',
+        path: '/monitoring/node',
         name: 'Node',
         mini: 'NO',
         component: Timeline,
         layout: '/admin',
       },
       {
-        path: '/timeline',
+        path: '/monitoring/pod',
         name: 'Pod',
         mini: 'PO',
         component: Timeline,
         layout: '/admin',
       },
-      {
-        path: '/timeline',
-        name: 'Timeline',
-        mini: 'T',
-        component: Timeline,
-        layout: '/admin',
-      },
-      // {
-      //   path: "/login",
-      //   name: "Login",
-      //   mini: "L",
-      //   component: Login,
-      //   layout: "/auth",
-      // },
-      // {
-      //   path: "/register",
-      //   name: "Register",
-      //   mini: "R",
-      //   component: Register,
-      //   layout: "/auth",
-      // },
-      // {
-      //   path: "/lock-screen",
-      //   name: "LockScreen",
-      //   mini: "LS",
-      //   component: LockScreen,
-      //   layout: "/auth",
-      // },
     ],
   },
   {
     collapse: true,
-    name: 'Resources',
-    icon: 'nc-icon nc-layout-11',
-    state: 'componentsCollapse',
+    name: 'Kubernetes',
+    icon: 'nc-icon nc-cloud-upload-94',
+    state: 'resourcesCollapse',
     views: [
       {
-        path: '/resources/nodes',
+        path: '/kubernetes/nodes',
         name: 'Node',
         mini: 'NO',
-        component: ResourceNode,
+        component: KubernetesNode,
         layout: '/admin',
       },
       {
-        path: '/resources/pods',
+        path: '/kubernetes/pods',
         name: 'Pod',
         mini: 'PO',
-        component: Buttons,
+        component: KubernetesPod,
         layout: '/admin',
       },
       {
-        path: '/resources/services',
+        path: '/kubernetes/services',
         name: 'Service',
         mini: 'SVC',
-        component: Buttons,
+        component: KubernetesService,
         layout: '/admin',
       },
       {
-        path: '/resources/storages',
+        path: '/kubernetes/storages',
         name: 'Storage',
         mini: 'STR',
-        component: Buttons,
+        component: KubernetesStorage,
         layout: '/admin',
       },
+    ],
+  },
+  {
+    path: '/registry',
+    name: 'Registry',
+    icon: 'nc-icon nc-app',
+    component: UserProfile,
+    layout: '/admin',
+  },
+  {
+    path: '/user-profile',
+    name: 'Setting',
+    // icon: 'nc-icon nc-settings',
+    icon: 'nc-icon nc-circle-10',
+    component: UserProfile,
+    layout: '/admin',
+  },
+  // Deprecated
+  {
+    collapse: true,
+    name: 'Components',
+    icon: 'nc-icon nc-world-2',
+    state: 'componentsCollapse',
+    views: [
       {
         path: '/buttons',
         name: 'Buttons',
@@ -200,46 +211,10 @@ const routes = [
       },
     ],
   },
-  // {
-  //   collapse: true,
-  //   name: "Forms",
-  //   icon: "nc-icon nc-ruler-pencil",
-  //   state: "formsCollapse",
-  //   views: [
-  //     {
-  //       path: "/regular-forms",
-  //       name: "Regular Forms",
-  //       mini: "RF",
-  //       component: RegularForms,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/extended-forms",
-  //       name: "Extended Forms",
-  //       mini: "EF",
-  //       component: ExtendedForms,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/validation-forms",
-  //       name: "Validation Forms",
-  //       mini: "VF",
-  //       component: ValidationForms,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/wizard",
-  //       name: "Wizard",
-  //       mini: "W",
-  //       component: Wizard,
-  //       layout: "/admin",
-  //     },
-  //   ],
-  // },
   {
     collapse: true,
-    name: 'Registry',
-    icon: 'nc-icon nc-single-copy-04',
+    name: 'Table',
+    icon: 'nc-icon nc-mobile',
     state: 'tablesCollapse',
     views: [
       {
@@ -265,62 +240,120 @@ const routes = [
       },
     ],
   },
-  // {
-  //   collapse: true,
-  //   name: "Maps",
-  //   icon: "nc-icon nc-pin-3",
-  //   state: "mapsCollapse",
-  //   views: [
-  //     {
-  //       path: "/google-maps",
-  //       name: "Google Maps",
-  //       mini: "GM",
-  //       component: GoogleMaps,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/full-screen-map",
-  //       name: "Full Screen Map",
-  //       mini: "FSM",
-  //       component: FullScreenMap,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/vector-map",
-  //       name: "Vector Map",
-  //       mini: "VM",
-  //       component: VectorMap,
-  //       layout: "/admin",
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/widgets",
-  //   name: "Widgets",
-  //   icon: "nc-icon nc-box",
-  //   component: Widgets,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/charts",
-  //   name: "Charts",
-  //   icon: "nc-icon nc-chart-bar-32",
-  //   component: Charts,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/calendar",
-  //   name: "Calendar",
-  //   icon: "nc-icon nc-calendar-60",
-  //   component: Calendar,
-  //   layout: "/admin",
-  // },
   {
-    path: '/user-profile',
-    name: 'Setting',
-    icon: 'nc-icon nc-box',
-    component: UserProfile,
-    layout: '/admin',
+    collapse: true,
+    name: "Forms",
+    icon: "nc-icon nc-planet",
+    state: "formsCollapse",
+    views: [
+      {
+        path: "/regular-forms",
+        name: "Regular Forms",
+        mini: "RF",
+        component: RegularForms,
+        layout: "/admin",
+      },
+      {
+        path: "/extended-forms",
+        name: "Extended Forms",
+        mini: "EF",
+        component: ExtendedForms,
+        layout: "/admin",
+      },
+      {
+        path: "/validation-forms",
+        name: "Validation Forms",
+        mini: "VF",
+        component: ValidationForms,
+        layout: "/admin",
+      },
+      {
+        path: "/wizard",
+        name: "Wizard",
+        mini: "W",
+        component: Wizard,
+        layout: "/admin",
+      },
+    ],
+  },
+  {
+    collapse: true,
+    name: "Maps",
+    icon: "nc-icon nc-support-17",
+    state: "mapsCollapse",
+    views: [
+      {
+        path: "/google-maps",
+        name: "Google Maps",
+        mini: "GM",
+        component: GoogleMaps,
+        layout: "/admin",
+      },
+      {
+        path: "/full-screen-map",
+        name: "Full Screen Map",
+        mini: "FSM",
+        component: FullScreenMap,
+        layout: "/admin",
+      },
+      {
+        path: "/vector-map",
+        name: "Vector Map",
+        mini: "VM",
+        component: VectorMap,
+        layout: "/admin",
+      },
+    ],
+  },
+  {
+    collapse: true,
+    name: "View",
+    icon: "nc-icon nc-tag-content",
+    state: "viewsCollapse",
+    views: [
+      {
+        path: "/login",
+        name: "Login",
+        mini: "L",
+        component: Login,
+        layout: "/auth",
+      },
+      {
+        path: "/register",
+        name: "Register",
+        mini: "R",
+        component: Register,
+        layout: "/auth",
+      },
+      {
+        path: "/lock-screen",
+        name: "LockScreen",
+        mini: "LS",
+        component: LockScreen,
+        layout: "/auth",
+      },
+    ],
+  },
+  {
+    path: "/widgets",
+    name: "Widgets",
+    icon: "nc-icon nc-tile-56",
+    component: Widgets,
+    layout: "/admin",
+  },
+  {
+    path: "/charts",
+    name: "Charts",
+    icon: "nc-icon nc-zoom-split",
+    component: Charts,
+    layout: "/admin",
+  },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    icon: "nc-icon nc-delivery-fast",
+    component: Calendar,
+    layout: "/admin",
   },
 ];
 

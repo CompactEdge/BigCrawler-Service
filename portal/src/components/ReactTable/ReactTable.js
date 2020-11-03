@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from 'react';
+// https://react-table.tanstack.com/docs/api/useTable
 import {
   useTable,
   useFilters,
@@ -194,6 +195,7 @@ function Table({ columns, data }) {
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     className={classnames('rt-th rt-resizable-header', {
+                      // '-cursor-pointer': headerGroup.headers.length !== key,
                       '-cursor-pointer': headerGroup.headers.length - 1 !== key,
                       '-sort-asc': column.isSorted && !column.isSortedDesc,
                       '-sort-desc': column.isSorted && column.isSortedDesc,

@@ -18,8 +18,8 @@ public class RouteLocatorConfig {
     //@formatter:off
     return builder.routes()
         // .route("path_route", r -> r.path("/get").uri(HTTP_BIN)) // => bootstrap.yml
-        .route("service_bus", r -> r.path("/bus/**")
-            .filters(f -> f.rewritePath("/bus/(?<segment>.*)", "/api/v1/core/${segment}"))
+        .route("service_bus", r -> r.path("/kube/**")
+            .filters(f -> f.rewritePath("/kube/(?<segment>.*)", "/api/v1/${segment}"))
             .uri(LOCAL_SERVICE_BUS))
         .route("prometheus_query", r -> r.path("/prom/**")
             .filters(f -> f.rewritePath("/prom/(?<segment>.*)", "/api/v1/query?query=${segment}"))

@@ -38,7 +38,7 @@ func newCoreController(v1 *echo.Group) {
 	core.GET("/limitranges", service.ListLimitRangesForAllNamespaces)
 	core.GET("/limitranges/:namespace", service.ListNamespacedLimitRanges)
 	core.GET("/namespaces", service.ListNamespaces)
-	core.GET("/node", service.ListNode)
+	core.GET("/nodes", service.ListNode)
 	core.GET("/persistentvolumes", service.ListNamespacedPersistentVolumes)
 	core.GET("/persistentvolumeclaims", service.ListPersistentVolumeClaimsForAllNamespaces)
 	core.GET("/persistentvolumeclaims/:namespace", service.ListNamespacedPersistentVolumeClaims)

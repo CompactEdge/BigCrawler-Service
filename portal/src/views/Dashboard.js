@@ -78,7 +78,7 @@ class Dashboard extends React.Component {
   // shouldComponentUpdate() { // infinite loop?
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch('http://127.0.0.1:8083/bus/pods')
+    fetch('http://127.0.0.1:8083/kube/core/nodes')
       .then(response => response.json())
       .then(json => {
         console.log(json);

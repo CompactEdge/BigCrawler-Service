@@ -69,7 +69,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require('assets/img/faces/ayo-ogunseinde-2.jpg')}
+                                src={require('assets/img/default-avatar.png')}
                               />
                             </div>
                           </td>
@@ -120,7 +120,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require('assets/img/faces/erik-lucatero-2.jpg')}
+                                src={require('assets/img/default-avatar.png')}
                               />
                             </div>
                           </td>
@@ -171,7 +171,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require('assets/img/faces/kaci-baum-2.jpg')}
+                                src={require('assets/img/default-avatar.png')}
                               />
                             </div>
                           </td>
@@ -223,7 +223,7 @@ class Widgets extends React.Component {
                               <img
                                 alt="..."
                                 className="img-raised"
-                                src={require('assets/img/faces/joe-gardner-2.jpg')}
+                                src={require('assets/img/default-avatar.png')}
                               />
                             </div>
                           </td>
@@ -509,7 +509,7 @@ class Widgets extends React.Component {
                       <img
                         alt="..."
                         className="img"
-                        src={require('assets/img/faces/joe-gardner-2.jpg')}
+                        src={require('assets/img/default-avatar.png')}
                       />
                     </a>
                   </div>

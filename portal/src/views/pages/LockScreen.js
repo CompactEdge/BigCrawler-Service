@@ -48,7 +48,7 @@ class LockScreen extends React.Component {
               <CardHeader>
                 <img
                   alt="..."
-                  src={require('assets/img/faces/joe-gardner-2.jpg')}
+                  src={require('assets/img/default-avatar.png')}
                 />
               </CardHeader>
               <CardBody>

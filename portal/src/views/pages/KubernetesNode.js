@@ -24,10 +24,9 @@ class ResourceNode extends React.Component {
     };
   }
 
-  // shouldComponentUpdate() { // infinite loop?
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch('http://127.0.0.1:8083/bus/pods')
+    fetch('http://127.0.0.1:8083/kube/core/nodes')
       .then(response => response.json())
       .then(json => {
         console.log(json);
@@ -54,8 +53,8 @@ class ResourceNode extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Workload Status</CardTitle>
-                  <p className="card-category">Objects</p>
+                  <CardTitle tag="h4">Node</CardTitle>
+                  <p className="card-category">노드</p>
                 </CardHeader>
                 <CardBody>
                   <ReactTable
@@ -66,32 +65,40 @@ class ResourceNode extends React.Component {
                         accessor: 'metadata.name',
                       },
                       {
-                        Header: 'Image',
-                        // accessor: '',
-                        accessor: (item)=> item.spec.containers[0].image
+                        Header: 'Role',
+                        accessor: item => {
+                          // console.log(item.metadata.labels)
+                          // Object.keys(item.metadata.labels).forEach(key => {
+                          //   console.log(key)
+                          //   if (key.includes('master')) {
+                          //     return 'master'
+                          //   }
+                          // })
+                          for (let key of Object.keys(item.metadata.labels)) {
+                            if (key.includes('master')) {
+                              return 'master'
+                            }
+                          }
+                        }
                       },
                       {
-                        Header: 'Namespace',
-                        accessor: 'metadata.namespace',
+                        Header: 'Ready',
+                        accessor: item => item.status.conditions.find((condition) => condition.type === 'Ready').status
                       },
                       {
-                        Header: 'Containers',
-                        accessor: '',
+                        Header: 'Internal-IP',
+                        accessor: item => item.status.addresses.find((address) => address.type === 'InternalIP').address
                       },
                       {
-                        Header: 'Status',
-                        accessor: 'status.phase',
+                        Header: 'Kernel',
+                        accessor: 'status.nodeInfo.kernelVersion',
                       },
                       {
-                        Header: 'Pod-IP',
-                        accessor: 'status.podIp',
+                        Header: "Actions",
+                        accessor: "actions",
+                        sortable: false,
+                        filterable: false,
                       },
-                      // {
-                      //   Header: "Actions",
-                      //   accessor: "actions",
-                      //   sortable: false,
-                      //   filterable: false,
-                      // },
                     ]}
                     /*
                       You can choose between primary-pagination, info-pagination, success-pagination, warning-pagination, danger-pagination or none - which will make the pagination buttons gray
