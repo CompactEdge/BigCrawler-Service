@@ -21,7 +21,7 @@ run:
 
 .PHONY: jar
 jar:
-  @java -jar "-Dspring.profiles.active=dev" build/libs/portal-${VERSION}.jar
+  @java -jar "-Dspring.profiles.active=dev" build/libs/apigw-${VERSION}.jar
 
 .PHONY: check-deps
 check-deps:

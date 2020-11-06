@@ -1,11 +1,11 @@
 # Compact Edge Management
 
-![architecture.png](architecture.png)
+![architecture-console.png](architecture-console.png)
 
 - service-bus
 - api-gateway
 - auth-server
-- portal
+- console
 - registry
 - message-broker
 - data-stream (simulator)

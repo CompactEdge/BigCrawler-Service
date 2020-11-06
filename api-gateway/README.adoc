@@ -1,4 +1,4 @@
-= Compact Edge Portal
+= API Gateway for Compact Edge
 :source-highlighter: highlightjs
 :doctype: book
 :icons: font
