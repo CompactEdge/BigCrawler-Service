@@ -18,6 +18,7 @@
 import Dashboard from 'views/Dashboard.js';
 
 // Monitoring
+import MetricCluster from 'views/pages/MetricCluster.js';
 
 // Kubernetes
 import KubernetesNode from 'views/pages/KubernetesNode.js';
@@ -76,28 +77,28 @@ const routes = [
         path: '/monitoring/cluster',
         name: 'Cluster',
         mini: 'C',
-        component: UserProfile,
+        component: MetricCluster,
         layout: '/admin',
       },
       {
         path: '/monitoring/namespace',
         name: 'Namespace',
         mini: 'NS',
-        component: UserProfile,
+        component: MetricCluster,
         layout: '/admin',
       },
       {
         path: '/monitoring/node',
         name: 'Node',
         mini: 'NO',
-        component: UserProfile,
+        component: MetricCluster,
         layout: '/admin',
       },
       {
         path: '/monitoring/pod',
         name: 'Pod',
         mini: 'PO',
-        component: UserProfile,
+        component: MetricCluster,
         layout: '/admin',
       },
     ],

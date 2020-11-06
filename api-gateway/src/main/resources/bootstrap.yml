@@ -20,8 +20,9 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins: "*"
-            allowedMethods: "*"
-            # - GET
+            # allowedMethods: "*"
+            allowedMethods:
+            - GET
             # - POST
             # - PUT
             # - PATCH

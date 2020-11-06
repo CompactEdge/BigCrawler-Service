@@ -18,15 +18,24 @@ public class RouteLocatorConfig {
     //@formatter:off
     return builder.routes()
         // .route("path_route", r -> r.path("/get").uri(HTTP_BIN)) // => bootstrap.yml
-        .route("service_bus", r -> r.path("/kube/**")
-            .filters(f -> f.rewritePath("/kube/(?<segment>.*)", "/api/v1/${segment}"))
-            .uri(LOCAL_SERVICE_BUS))
-        .route("prometheus_query", r -> r.path("/prom/**")
-            .filters(f -> f.rewritePath("/prom/(?<segment>.*)", "/api/v1/query?query=${segment}"))
-            .uri(LOCAL_PROMETHEUS))
-        .route("prometheus_query_range", r -> r.path("/promr/**")
-            .filters(f -> f.rewritePath("/promr/(?<segment>.*)", "/api/v1/query_range?query=${segment}"))
-            .uri(LOCAL_PROMETHEUS))
+        .route("service_bus", r -> r
+          .path("/kube/**")
+          .filters(f -> f.rewritePath("/kube/(?<segment>.*)", "/api/v1/${segment}"))
+          .uri(LOCAL_SERVICE_BUS))
+        .route("prometheus_query", r -> r
+          .path("/prom/**")
+          .filters(f -> {
+            f.setResponseHeader("Access-Control-Allow-Origin", "*");
+            return f.rewritePath("/prom/(?<segment>.*)", "/api/v1/query?query=${segment}");
+          })
+          .uri(LOCAL_PROMETHEUS))
+        .route("prometheus_query_range", r -> r
+          .path("/promr/**")
+          .filters(f -> {
+            f.setResponseHeader("Access-Control-Allow-Origin", "*");
+            return f.rewritePath("/promr/(?<segment>.*)", "/api/v1/query_range?query=${segment}");
+          })
+          .uri(LOCAL_PROMETHEUS))
         .build();
     //@formatter:on
   }
