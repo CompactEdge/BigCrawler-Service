@@ -23,7 +23,18 @@ class D3PieChart extends React.Component {
   };
 
   componentDidMount() {
+    // console.log('componentDidMount');
     if (!this.props.init) {
+      this.handleCreatePieChart();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // console.log('componentDidUpdate');
+    if (this.props.data !== prevProps.data) {
+      // TODO: change props or state
+      this.refPieChart.current.replaceChildren('');
+      this.refPieChart.current.parentElement.removeChild(this.refPieChart.current.parentElement.children[1])
       this.handleCreatePieChart();
     }
   }
@@ -101,13 +112,13 @@ class D3PieChart extends React.Component {
           .duration(200)
           .style('opacity', '.3');
 
-        tooltip
+          tooltip
           .select('.label')
           .html(d.data.name.toUpperCase())
           .style('color', 'black');
-        tooltip.select('.count').html(d.data.value);
+          tooltip.select('.count').html(d.data.value);
 
-        tooltip.style('display', 'block').style('opacity', 1);
+          tooltip.style('display', 'block').style('opacity', 1);
       })
       .on('mousemove', function (e) {
         // console.log(e);

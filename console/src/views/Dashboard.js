@@ -16,28 +16,20 @@
 */
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Row,
-  Col,
-} from 'reactstrap';
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from 'reactstrap';
 import PieChart from 'views/components/D3PieChart.js';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      node: [],
-      pod: [],
-      deployment: [],
+      init: true,
       isLoading: false,
       error: null,
       redirect: null,
-      init: true,
+      delay: 5000,
     };
+    this.handleCreateDashboard = this.handleCreateDashboard.bind(this);
     this.handleCountObjects = this.handleCountObjects.bind(this);
     this.handleRedirectToPieChartResource = this.handleRedirectToPieChartResource.bind(
       this,
@@ -46,59 +38,110 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    if (this.state.init) {
-      Promise.all([
-        fetch('http://127.0.0.1:8083/kube/core/nodes'),
-        fetch('http://127.0.0.1:8083/kube/core/pods'),
-        fetch('http://127.0.0.1:8083/kube/apps/deployments'),
-        fetch('http://127.0.0.1:8083/kube/apps/statefulsets'),
-        fetch('http://127.0.0.1:8083/kube/apps/daemonsets'),
-      ])
-        .then(
-          ([
-            resNodes,
-            resPods,
-            resDeployments,
-            resStatefulSets,
-            resDaemonSets,
-          ]) =>
-            Promise.all([
-              resNodes.json(),
-              resPods.json(),
-              resDeployments.json(),
-              resStatefulSets.json(),
-              resDaemonSets.json(),
-            ]),
-        )
-        .then(([nodes, pods, deployments, statefulsets, daemonsets]) => {
+    this.interval = setInterval(this.handleCreateDashboard, this.state.delay);
+    // this.interval = setInterval(() => this.handleCreateDashboard(), this.state.delay);
+    // this.handleCreateDashboard();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.delay !== this.state.delay) {
+      clearInterval(this.interval);
+      this.interval = setInterval(this.handleCreateDashboard, this.state.delay);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  handleCreateDashboard() {
+    Promise.all([
+      fetch('http://127.0.0.1:8083/kube/core/nodes'),
+      fetch('http://127.0.0.1:8083/kube/core/pods'),
+      fetch('http://127.0.0.1:8083/kube/apps/deployments'),
+      fetch('http://127.0.0.1:8083/kube/apps/daemonsets'),
+      fetch('http://127.0.0.1:8083/kube/apps/replicasets'),
+      fetch('http://127.0.0.1:8083/kube/core/replicationcontrollers'),
+      fetch('http://127.0.0.1:8083/kube/apps/statefulsets'),
+      fetch('http://127.0.0.1:8083/kube/batch/jobs'),
+    ])
+      .then(
+        ([
+          resNodes,
+          resPods,
+          resDeployments,
+          resDaemonSets,
+          resReplicaSets,
+          resReplicaControllers,
+          resStatefulSets,
+          resJobs,
+        ]) =>
+          Promise.all([
+            resNodes.json(),
+            resPods.json(),
+            resDeployments.json(),
+            resDaemonSets.json(),
+            resReplicaSets.json(),
+            resReplicaControllers.json(),
+            resStatefulSets.json(),
+            resJobs.json(),
+          ]),
+      )
+      .then(
+        ([
+          nodes,
+          pods,
+          deployments,
+          daemonsets,
+          replicasets,
+          replicationcontrollers,
+          statefulsets,
+          jobs,
+        ]) => {
+          console.log(deployments);
           this.setState({
             node: this.handleCountObjects('node', nodes),
             pod: this.handleCountObjects('pod', pods),
             deployment: this.handleCountObjects('deployment', deployments),
-            statefulset: this.handleCountObjects('statefulset', statefulsets),
             daemonset: this.handleCountObjects('daemonset', daemonsets),
+            replicaset: this.handleCountObjects('replicaset', replicasets),
+            replicationcontroller: this.handleCountObjects(
+              'replicationcontroller',
+              replicationcontrollers,
+            ),
+            statefulset: this.handleCountObjects('statefulset', statefulsets),
+            job: this.handleCountObjects('job', jobs),
             isLoading: false,
-            init: false,
           });
-        })
-        .catch(error =>
-          this.setState({
-            error,
-            isLoading: false,
-          }),
-        );
+        },
+      )
+      .catch(error =>
+        this.setState({
+          error,
+          isLoading: false,
+        }),
+      );
+
+    if (this.state.init) {
+      this.setState({ init: false });
     }
   }
 
   handleCountObjects(key, data) {
     if (!key) return;
     let ready = data.items.filter(d => {
-      // console.log(d);
-      return (
-        d.status.readyReplicas > 0 ||
-        d.status.numberReady ||
-        d.status.conditions.find(v => v.type === 'Ready')['status'] === 'True'
-      );
+      if (key === 'node' || key === 'pod') {
+        return (
+          d.status.conditions.find(v => v.type === 'Ready')['status'] === 'True'
+        );
+      }
+      if (key === 'deployment') {
+        return (
+          d.status.conditions.find(v => v.type === 'Available')['status'] ===
+            'True' && d.status.readyReplicas > 0
+        );
+      }
+      return d.status.numberReady;
     }).length;
 
     return [
@@ -117,10 +160,12 @@ class Dashboard extends React.Component {
   render() {
     const { isLoading, error } = this.state;
 
+    // TODO:
     if (error) {
       return <p>{error.message}</p>;
     }
 
+    // TODO:
     if (isLoading) {
       return <p>Loading ...</p>;
     }
@@ -151,22 +196,22 @@ class Dashboard extends React.Component {
                       md="3"
                       className="my-5"
                       onClick={() =>
+                        this.handleRedirectToPieChartResource(
+                          '/admin/kubernetes/nodes',
+                        )
+                      }>
+                      <PieChart init={this.state.init} data={this.state.node} />
+                    </Col>
+                    <Col
+                      md="3"
+                      className="my-5"
+                      onClick={() =>
                         // window.location.href='/admin/kubernetes/pods'
                         this.handleRedirectToPieChartResource(
                           '/admin/kubernetes/pods',
                         )
                       }>
                       <PieChart init={this.state.init} data={this.state.pod} />
-                    </Col>
-                    <Col
-                      md="3"
-                      className="my-5"
-                      onClick={() =>
-                        this.handleRedirectToPieChartResource(
-                          '/admin/kubernetes/nodes',
-                        )
-                      }>
-                      <PieChart init={this.state.init} data={this.state.node} />
                     </Col>
                     <Col
                       md="3"
@@ -191,7 +236,7 @@ class Dashboard extends React.Component {
                       }>
                       <PieChart
                         init={this.state.init}
-                        data={this.state.statefulset}
+                        data={this.state.daemonset}
                       />
                     </Col>
                     <Col
@@ -204,8 +249,44 @@ class Dashboard extends React.Component {
                       }>
                       <PieChart
                         init={this.state.init}
-                        data={this.state.daemonset}
+                        data={this.state.replicaset}
                       />
+                    </Col>
+                    <Col
+                      md="3"
+                      className="my-5"
+                      onClick={() =>
+                        this.handleRedirectToPieChartResource(
+                          '/admin/kubernetes/pods',
+                        )
+                      }>
+                      <PieChart
+                        init={this.state.init}
+                        data={this.state.replicationcontroller}
+                      />
+                    </Col>
+                    <Col
+                      md="3"
+                      className="my-5"
+                      onClick={() =>
+                        this.handleRedirectToPieChartResource(
+                          '/admin/kubernetes/pods',
+                        )
+                      }>
+                      <PieChart
+                        init={this.state.init}
+                        data={this.state.statefulset}
+                      />
+                    </Col>
+                    <Col
+                      md="3"
+                      className="my-5"
+                      onClick={() =>
+                        this.handleRedirectToPieChartResource(
+                          '/admin/kubernetes/pods',
+                        )
+                      }>
+                      <PieChart init={this.state.init} data={this.state.job} />
                     </Col>
                   </Row>
                 </CardBody>
