@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from 'reactstrap';
-import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
+// import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 
 class MetricCluster extends React.Component {
   constructor(props) {

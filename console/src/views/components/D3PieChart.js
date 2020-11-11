@@ -23,10 +23,6 @@ class D3PieChart extends React.Component {
   };
 
   componentDidMount() {
-    // console.log(this.props.data);
-    // console.log(this.props.data.filter(d => d.name !== 'object'));
-    // console.log(this.refPieChart.current);
-    // console.log('init pie charts: ' + this.props.init);
     if (!this.props.init) {
       this.handleCreatePieChart();
     }
@@ -66,22 +62,17 @@ class D3PieChart extends React.Component {
       return d.name === 'object';
     });
 
+    // The SVG <text> element draws a graphics element consisting of text.
     svg
       .append('text')
       .attr('text-anchor', 'middle')
       .attr('font-size', '30')
       .attr('font-weight', '500')
-      .text(title.value)
-      // .on('click', function (e) {
-      //   // console.log(e);
-      //   console.log(this);
-      // });
+      .text(title.value);
+
     // The <g> SVG element is a container used to group other SVG elements.
     const g = svg
       .append('g')
-      // .attr("class", "arc")
-      // .attr('opacity', '.6')
-      // .attr('stroke', 'transparent')
       .selectAll('path')
       .data(
         pie(this.props.data.filter(d => d.name !== 'object' && d.value !== 0)),
@@ -144,7 +135,6 @@ class D3PieChart extends React.Component {
     // The <title> element provides an accessible, short-text description of any SVG container element or graphics element.
     // g.append('title').text(d => `${d.data.name}: ${d.data.value}`);
 
-    // The SVG <text> element draws a graphics element consisting of text.
     // g.join('text')
     //   // .enter()
     //   // .append('text')
@@ -167,8 +157,6 @@ class D3PieChart extends React.Component {
   render() {
     return (
       <>
-        {/* TODO: */}
-        {/* <h3>{this.props.data[1].name}</h3> */}
         <svg className="chart-container" ref={this.refPieChart} />
       </>
     );

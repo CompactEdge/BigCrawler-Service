@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 
 // core components
-// import ReactTable from 'components/ReactTable/ReactTable.js';
+import ReactTable from 'components/ReactTable/ReactTable.js';
 
 class ResourceStorage extends React.Component {
   constructor(props) {
@@ -26,8 +26,8 @@ class ResourceStorage extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch('http://127.0.0.1:8083/kube/core/pods')
-      .then(response => response.json())
+    fetch('http://127.0.0.1:8083/kube/core/persistentvolumeclaims')
+    .then(response => response.json())
       .then(json => {
         console.log(json);
         this.setState({ data: json.items, isLoading: false });
@@ -53,11 +53,45 @@ class ResourceStorage extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Storage</CardTitle>
-                  <p className="card-category">스토리지</p>
+                  <CardTitle tag="h4">Persistent Volume Claim</CardTitle>
+                  <p className="card-category">퍼시스턴트 볼륨 클레임</p>
                 </CardHeader>
                 <CardBody>
-                  Not Found
+                  <ReactTable
+                    data={this.state.data}
+                    columns={[
+                      {
+                        Header: 'PVC',
+                        accessor: 'metadata.name',
+                      },
+                      {
+                        Header: 'Namespace',
+                        accessor: 'metadata.namespace',
+                      },
+                      {
+                        Header: 'Status',
+                        accessor: 'status.phase',
+                      },
+                      {
+                        Header: 'Volume',
+                        accessor: 'spec.volumeName',
+                      },
+                      {
+                        Header: 'Access Modes',
+                        accessor: item => {
+                          return item.spec.accessModes.join(':');
+                        }
+                      },
+                      {
+                        Header: 'Storage Class',
+                        accessor: 'spec.storageClassName',
+                      },
+                    ]}
+                    /*
+                      You can choose between primary-pagination, info-pagination, success-pagination, warning-pagination, danger-pagination or none - which will make the pagination buttons gray
+                    */
+                    className="-striped -highlight primary-pagination"
+                  />
                 </CardBody>
               </Card>
             </Col>

@@ -15,22 +15,14 @@
 
 */
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
-  // Badge,
-  // Button,
   Card,
   CardHeader,
   CardBody,
-  // CardFooter,
   CardTitle,
-  // Label,
-  // FormGroup,
-  // Input,
-  // Table,
   Row,
   Col,
-  // UncontrolledTooltip,
 } from 'reactstrap';
 import PieChart from 'views/components/D3PieChart.js';
 
