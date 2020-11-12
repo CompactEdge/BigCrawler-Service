@@ -56,14 +56,14 @@ class Dashboard extends React.Component {
 
   handleCreateDashboard() {
     Promise.all([
-      fetch('http://127.0.0.1:8083/kube/core/nodes'),
-      fetch('http://127.0.0.1:8083/kube/core/pods'),
-      fetch('http://127.0.0.1:8083/kube/apps/deployments'),
-      fetch('http://127.0.0.1:8083/kube/apps/daemonsets'),
-      fetch('http://127.0.0.1:8083/kube/apps/replicasets'),
-      fetch('http://127.0.0.1:8083/kube/core/replicationcontrollers'),
-      fetch('http://127.0.0.1:8083/kube/apps/statefulsets'),
-      fetch('http://127.0.0.1:8083/kube/batch/jobs'),
+      fetch('http://192.168.213.243:18083/kube/core/nodes'),
+      fetch('http://192.168.213.243:18083/kube/core/pods'),
+      fetch('http://192.168.213.243:18083/kube/apps/deployments'),
+      fetch('http://192.168.213.243:18083/kube/apps/daemonsets'),
+      fetch('http://192.168.213.243:18083/kube/apps/replicasets'),
+      fetch('http://192.168.213.243:18083/kube/core/replicationcontrollers'),
+      fetch('http://192.168.213.243:18083/kube/apps/statefulsets'),
+      fetch('http://192.168.213.243:18083/kube/batch/jobs'),
     ])
       .then(
         ([

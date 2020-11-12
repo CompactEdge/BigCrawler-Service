@@ -51,13 +51,13 @@ class MetricCluster extends React.Component {
       const range = 60 * 60 * 3; // s * m * h
       const step = 30;
       Promise.all([
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`1 - avg(rate(node_cpu_seconds_total{mode="${mode}", cluster=""}[1m]))`)}`),
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_requests_cpu_cores{cluster="${cluster}"}) / sum(kube_node_status_allocatable_cpu_cores{cluster="${cluster}"})`)}`),
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_limits_cpu_cores{cluster="${cluster}"}) / sum(kube_node_status_allocatable_cpu_cores{cluster="${cluster}"})`)}`),
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`1 - sum(:node_memory_MemAvailable_bytes:sum{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_requests_memory_bytes{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
-        fetch(`http://127.0.0.1:8083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_limits_memory_bytes{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
-        fetch(`http://127.0.0.1:8083/promr/${encodeURIComponent(`sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster="${cluster}"}) by (namespace)`)}&start=${now - range}&end=${now}&step=${step}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`1 - avg(rate(node_cpu_seconds_total{mode="${mode}", cluster=""}[1m]))`)}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_requests_cpu_cores{cluster="${cluster}"}) / sum(kube_node_status_allocatable_cpu_cores{cluster="${cluster}"})`)}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_limits_cpu_cores{cluster="${cluster}"}) / sum(kube_node_status_allocatable_cpu_cores{cluster="${cluster}"})`)}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`1 - sum(:node_memory_MemAvailable_bytes:sum{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_requests_memory_bytes{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
+        fetch(`http://192.168.213.243:18083/prom/${encodeURIComponent(`sum(kube_pod_container_resource_limits_memory_bytes{cluster="${cluster}"}) / sum(kube_node_status_allocatable_memory_bytes{cluster="${cluster}"})`)}`),
+        fetch(`http://192.168.213.243:18083/promr/${encodeURIComponent(`sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster="${cluster}"}) by (namespace)`)}&start=${now - range}&end=${now}&step=${step}`),
       ])
         .then(([
           res1,

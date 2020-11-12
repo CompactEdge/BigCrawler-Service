@@ -15,17 +15,8 @@ rules:
   resources:
   - configmaps
   - secrets
-  verbs:
-  # - '*'
-  - get
-  # - list
-  # - watch
-  # - create
-  # - delete
-- apiGroups:
-  - ""
-  resources:
   - services
+  - services/proxy
   - services/finalizers
   - endpoints
   verbs:

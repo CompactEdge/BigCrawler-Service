@@ -26,7 +26,7 @@ class ResourcePod extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch('http://127.0.0.1:8083/kube/core/pods')
+    fetch('http://192.168.213.243:18083/kube/core/pods')
       .then(response => response.json())
       .then(json => {
         console.log(json);
