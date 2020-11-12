@@ -2,9 +2,7 @@ server:
   port: 8083
 ---
 spring:
-  profiles: dev
-  # main:
-  #   banner-mode: console
+  profiles: server
   output:
     ansi:
       enabled: always
@@ -18,32 +16,21 @@ spring:
         cors-configurations:
           "[/**]":
             allowedOrigins: "*"
-            # allowedMethods: "*"
             allowedMethods:
               - GET
-            # - POST
-            # - PUT
-            # - PATCH
-            # - DELETE
-      # discovery:
-      #   locator:
-      #     enabled: true
-      #     lower-case-service-id: true
-      #     url-expression: "'http://'+serviceId"
-      # route-id-prefix:
-      # predicates:
-      # filters:
-      # include-expression:
+      discovery:
+        locator:
+          enabled: true
       routes:
         - id: service_bus
-          uri: http://127.0.0.1:7000
+          uri: http://service-bus.default:7000
           predicates:
             - Path=/kube/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
             - RewritePath=/kube/(?<segment>/?.*), /api/v1/$\{segment}
         - id: prometheus_query
-          uri: http://127.0.0.1:9090
+          uri: http://prometheus-operated.gigamec-monitor:9090
           predicates:
             - Path=/prom/**
           filters:
@@ -51,29 +38,13 @@ spring:
             - AddResponseHeader=Access-Control-Allow-Origin, *
             - RewritePath=/prom/(?<segment>/?.*), /api/v1/query?query=$\{segment}
         - id: prometheus_query_range
-          uri: http://127.0.0.1:9090
+          uri: http://prometheus-operated.gigamec-monitor:9090
           predicates:
             - Path=/promr/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
             - AddResponseHeader=Access-Control-Allow-Origin, *
             - RewritePath=/promr/(?<segment>/?.*), /api/v1/query_range?query=$\{segment}
-    # kubernetes:
-    #   reload:
-    #     enabled: true
-    #     mode: polling
-    #     period: 5000
-    #   discovery:
-    #     enabled: true
-    #     all-namespaces: true
-    # known-secure-ports:
-    # metadata:
-    #   labels-prefix:
-    #   add-labels:
-    # order:
-    # service-labels:
-    # service-name:
-    # filter: "metadata.labels['compact-edge']"
 
 management:
   endpoint:
@@ -88,6 +59,7 @@ management:
       exposure:
         include: health,gateway
 
+
 logging:
   level:
     root: info
@@ -96,7 +68,6 @@ logging:
         cloud:
           gateway: trace
           loadbalancer: debug
-          # kubernetes: debug
     reactor:
       netty:
         http:

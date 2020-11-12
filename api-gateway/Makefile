@@ -8,25 +8,25 @@ build:
 .PHONY: build-skip-test
 build-skip-test:
 	@gradle clean
-	grade build -x test
+	gradle build -x test
 
 .PHONY: docker
 docker:
-	docker build --build-arg JAR_FILE=build/libs/*.jar -t markruler/app:${VERSION} .
+	./aio/scripts/docker.sh
 
 .PHONY: run
 run:
   # gradle bootRun --args='--spring.profiles.active=dev'
-  gradle bootRunDev
+	gradle bootRunDev
 
 .PHONY: jar
 jar:
-  @java -jar "-Dspring.profiles.active=dev" build/libs/apigw-${VERSION}.jar
+  @java -jar "-Dspring.profiles.active=dev" build/libs/gateway-${VERSION}.jar
 
 .PHONY: check-deps
 check-deps:
-  gradle -q dependencies
+	gradle -q dependencies
 
 .PHONY: unit-test
 unit-test:
-  gradle test
+	gradle test
