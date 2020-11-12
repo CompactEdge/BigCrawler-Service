@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "ce-service-bus.fullname" . }}
+  name: {{ template "service-bus.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "ce-service-bus.name" . }}
+    app: {{ template "service-bus.name" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -12,11 +12,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "ce-service-bus.name" . }}
+      app: {{ template "service-bus.name" . }}
   template:
     metadata:
       labels:
-        app: {{ template "ce-service-bus.name" . }}
+        app: {{ template "service-bus.name" . }}
         release: "{{ .Release.Name }}"
 {{- if .Values.podAnnotations }}
       annotations:
@@ -25,7 +25,7 @@ spec:
     spec:
       hostNetwork: {{ .Values.hostNetwork }}
       {{/*nodeName: mec02*/}}
-      serviceAccountName: {{ template "ce-service-bus.serviceAccountName" . }}
+      serviceAccountName: {{ template "service-bus.serviceAccountName" . }}
       {{- if .Values.securityContext.enabled }}
       securityContext:
         fsGroup: {{ .Values.securityContext.fsGroup }}
@@ -35,7 +35,7 @@ spec:
       - name: {{ .Chart.Name }}
         args:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
         ports:
         - containerPort: {{ .Values.service.port }}
         resources:
@@ -43,7 +43,7 @@ spec:
         volumeMounts:
 {{- if .Values.configMapName }}
         - name: conf
-          mountPath: /root/mec-vim/conf
+          mountPath: /root/service-bus/config
 {{- end }}
         - name: localtime
           mountPath: /etc/localtime

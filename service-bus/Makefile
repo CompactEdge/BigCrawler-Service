@@ -13,7 +13,7 @@ deps:
 
 .PHONY: docker
 docker:
-	./scripts/docker.sh
+	./aio/scripts/docker.sh
 
 .PHONY: clean
 clean:

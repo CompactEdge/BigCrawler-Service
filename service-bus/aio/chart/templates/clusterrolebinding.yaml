@@ -3,18 +3,18 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app: {{ template "ce-service-bus.name" . }}
+    app: {{ template "service-bus.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ template "ce-service-bus.fullname" . }}
+  name: {{ template "service-bus.fullname" . }}
   namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "ce-service-bus.fullname" . }}
+  name: {{ template "service-bus.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ template "ce-service-bus.fullname" . }}
+  name: {{ template "service-bus.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 {{- end -}}

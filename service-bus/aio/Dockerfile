@@ -6,5 +6,7 @@ WORKDIR /root/service-bus
 ADD config/service-bus.yaml /conf/
 ADD svcbus /root/service-bus/
 EXPOSE $EXPOSE_PORT
+
 # CMD ["sleep", "1000000000"]
-ENTRYPOINT ["./svcbus", "-profile=server"]
+ENTRYPOINT ["./svcbus", "-profile=dev", "-debug"]
+# ENTRYPOINT ["./svcbus", "-profile=server"]

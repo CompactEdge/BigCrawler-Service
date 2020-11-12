@@ -12,8 +12,6 @@ import (
 	"github.com/compactedge/cewizontech/service-bus/pkg/mq"
 	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 
-	// "github.com/compactedge/cewizontech/service-bus/pkg/controller"
-
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"

@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.namespace }}
   labels:
-    app: {{ template "ce-service-bus.name" . }}
+    app: {{ template "service-bus.name" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -19,5 +19,5 @@ spec:
   {{- end }}
 #    targetPort: {{ .Values.service.targetPort }}
   selector:
-    app: {{ template "ce-service-bus.name" . }}
+    app: {{ template "service-bus.name" . }}
     release: {{ .Release.Name }}

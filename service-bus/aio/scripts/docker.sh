@@ -1,25 +1,62 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-SETTINGS_FILE=config/service-bus.yaml
-PORT=7000
+remove::docker_images() {
+	image_hash=$(docker images | grep service-bus | awk '{print $3}')
+	if [ -z "$image_hash" ]; then
+		echo "\$image_hash is NULL"
+	else
+		echo "\$image_hash is NOT NULL"
+		docker rmi -f $image_hash
+	fi
+}
 
-REPO=markruler
-# REPO_PORT=":5000"
-REPO_PORT=""
-IMAGE=service-bus
-VERSION=$(cat ./VERSION)\
+parse::yaml() {
+	local prefix=$2
+	local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @ | tr @ '\034')
+	sed -ne "s|^\($s\):|\1|" \
+		-e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+		-e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p" $1 |
+		awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+				vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+				printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+		}'
+}
 
-if [ -f $SETTINGS_FILE ];then
-	while read LINE; do
-		if [[ "$(awk '{print $1}' <<<"$LINE")" == 'svcbus.server.port:' ]]; then
-			PORT="$(awk '{print $2}' <<<"$LINE")"
-			#echo $PORT
-		else
-			continue
-		fi
-	done < $SETTINGS_FILE
+# remove old images
+remove::docker_images
+
+SETTINGS_FILE="config/service-bus.yaml"
+eval $(parse::yaml $SETTINGS_FILE "config_")
+
+BINARY=svcbus
+# check if file exists
+if [ -e $BINARY ]; then
+	echo "Binary File Exists"
+	echo "Remove it"
+	rm -f $BINARY
+else
+	echo "Not Found $BINARY"
 fi
 
-docker build --build-arg EXPOSE_PORT=$PORT -t $IMAGE:$VERSION -f ./Dockerfile .
+echo "Build $BINARY"
+make build
+echo "Build Complete"
+
+# build docker image
+REPO="markruler"
+REPO_PORT=""
+IMAGE="service-bus"
+VERSION=$(cat ./VERSION)
+
+docker build --build-arg EXPOSE_PORT=$config_svcbus_server_port -t $IMAGE:$VERSION -f ./aio/Dockerfile .
 docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:$VERSION
-# docker push $REPO$REPO_PORT/$IMAGE:$VERSION
+docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:latest
+docker push $REPO$REPO_PORT/$IMAGE:$VERSION
+
+echo -e "\n>>> PRINT IMAGES <<<"
+echo "$(docker images | grep service-bus | awk '{ printf ("%s\n", $0) }')"

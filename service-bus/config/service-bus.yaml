@@ -2,8 +2,8 @@
 profile: "develop"
 
 enable:
-  defaultkubeconfig: true
-  rabbitmq: true
+  defaultkubeconfig: false
+  rabbitmq: false
   # ping: false
   # predefinedKey: false
 
