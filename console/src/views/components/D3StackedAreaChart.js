@@ -19,6 +19,7 @@ class D3StackedAreaChart extends React.Component {
   static propTypes = {
     url: PropTypes.string,
     id: PropTypes.string,
+    unit: PropTypes.string,
     data: PropTypes.array,
     init: PropTypes.bool,
   };
@@ -26,6 +27,7 @@ class D3StackedAreaChart extends React.Component {
   static defaultProps = {
     url: '',
     id: '',
+    unit: '',
     data: [{ name: '', value: '' }],
     init: true,
   };
@@ -37,6 +39,10 @@ class D3StackedAreaChart extends React.Component {
     if (!this.props.init) {
       this.handleCreateStackedAreaChart();
     }
+  }
+
+  componentDidUpdate() {
+    d3.select(this.refStackedAreaChart.current).remove();
   }
 
   /*
@@ -185,7 +191,7 @@ class D3StackedAreaChart extends React.Component {
     const stackedData = d3.stack().keys(namespaces)(mergeData);
     // console.log('stackedData :', stackedData);
 
-    const margin = { top: 60, right: 230, bottom: 50, left: 80 };
+    const margin = { top: 30, right: 230, bottom: 30, left: 80 };
     const width = 1500 - margin.left - margin.right;
     const height = 260 - margin.top - margin.bottom;
 
@@ -233,9 +239,9 @@ class D3StackedAreaChart extends React.Component {
     svg
       .append('text')
       .attr('text-anchor', 'end')
-      .attr('x', 0)
-      .attr('y', -20)
-      .text('# of Usage')
+      .attr('x', -40)
+      .attr('y', -10)
+      .text(this.props.unit)
       .attr('text-anchor', 'start');
 
     // Add Y axis
@@ -271,6 +277,7 @@ class D3StackedAreaChart extends React.Component {
       .on('end', updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
 
     // Create the scatter variable: where both the circles and the brush take place
+    // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
     const areaChart = svg.append('g').attr('clip-path', 'url(#clip)');
 
     // Area generator
@@ -333,7 +340,8 @@ class D3StackedAreaChart extends React.Component {
     };
 
     // And when it is not hovered anymore
-    const noHighlight = () => d3.selectAll(`.myArea.${this.props.id}`).style('opacity', 1);
+    const noHighlight = () =>
+      d3.selectAll(`.myArea.${this.props.id}`).style('opacity', 1);
 
     //////////
     // LEGEND //

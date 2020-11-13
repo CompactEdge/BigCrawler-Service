@@ -34,10 +34,8 @@ class D3PieChart extends React.Component {
     // console.log('componentDidUpdate');
     if (this.props.data !== prevProps.data) {
       // TODO: change props or state
-      this.refPieChart.current.replaceChildren('');
-      this.refPieChart.current.parentElement.removeChild(
-        this.refPieChart.current.parentElement.children[1],
-      );
+      d3.select(this.refPieChart.current).select('svg').remove();
+      d3.select(this.refPieChart.current).select('.tooltip').remove();
       this.handleCreatePieChart();
     }
   }
@@ -62,6 +60,7 @@ class D3PieChart extends React.Component {
 
     const svg = d3
       .select(this.refPieChart.current)
+      .append('svg')
       .attr('viewBox', [-width / 2, -height / 2, width, height]);
 
     const title = this.props.data.find(d => {
@@ -88,7 +87,7 @@ class D3PieChart extends React.Component {
       );
 
     // prettier-ignore
-    const tooltip = d3.select(this.refPieChart.current.parentElement).append('div').attr('class', 'tooltip');
+    const tooltip = d3.select(this.refPieChart.current).append('div').attr('class', 'tooltip');
     tooltip.append('div').attr('class', 'label');
     tooltip.append('div').attr('class', 'count');
 
@@ -159,6 +158,16 @@ class D3PieChart extends React.Component {
         tooltip.style('display', 'none').style('opacity', 0);
       })
       .attr('d', arc);
+      // TODO: update data with transition animation
+      // .transition()
+      // .duration(750)
+      // .attrTween('d', function (d) {
+      //   var interpolate = d3.interpolate(this._current, d);
+      //   this._current = interpolate(0);
+      //   return function (t) {
+      //     return arc(interpolate(t));
+      //   };
+      // });
 
     // The <title> element provides an accessible, short-text description of any SVG container element or graphics element.
     // g.append('title').text(d => `${d.data.name}: ${d.data.value}`);
@@ -185,7 +194,7 @@ class D3PieChart extends React.Component {
   render() {
     return (
       <>
-        <svg className="chart-container" ref={this.refPieChart} />
+        <div className="chart-container" ref={this.refPieChart} />
       </>
     );
   }

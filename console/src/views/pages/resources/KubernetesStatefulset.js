@@ -73,7 +73,7 @@ class KubernetesStatefulSet extends React.Component {
                         accessor: item => {
                           const ready = item.status.readyReplicas;
                           const replicas = item.status.replicas;
-                          return `${ready}/${replicas}`;
+                          return `${ready ? ready : 0}/${replicas}`;
                         },
                       },
                       {
