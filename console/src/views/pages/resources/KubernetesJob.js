@@ -14,7 +14,7 @@ import {
 // core components
 import ReactTable from 'components/ReactTable/ReactTable.js';
 
-class KubernetesPod extends React.Component {
+class KubernetesJob extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class KubernetesPod extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    fetch('http://192.168.213.243:18083/kube/core/pods')
+    fetch('http://192.168.213.243:18083/kube/batch/jobs')
       .then(response => response.json())
       .then(json => {
         console.log(json);
@@ -53,8 +53,8 @@ class KubernetesPod extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Pod</CardTitle>
-                  <p className="card-category">파드</p>
+                  <CardTitle tag="h4">Job</CardTitle>
+                  <p className="card-category">잡</p>
                 </CardHeader>
                 <CardBody>
                   <ReactTable
@@ -67,32 +67,6 @@ class KubernetesPod extends React.Component {
                       {
                         Header: 'Namespace',
                         accessor: 'metadata.namespace',
-                      },
-                      {
-                        Header: 'Containers',
-                        accessor: item => {
-                          const num = item.spec.containers.length;
-                          // const running = item.status.containerStatuses.reduce((counter, obj) => {
-                          //   if (obj.ready === true) {
-                          //     counter++;
-                          //   }
-                          //   return counter;
-                          // }, 0);
-                          const running = item.status.containerStatuses.reduce(
-                            (counter, obj) =>
-                              obj.ready === true ? counter += 1 : counter,
-                            0,
-                          );
-                          return `${running}/${num}`;
-                        },
-                      },
-                      {
-                        Header: 'Status',
-                        accessor: 'status.phase',
-                      },
-                      {
-                        Header: 'Pod-IP',
-                        accessor: 'status.podIP',
                       },
                       {
                         Header: 'Actions',
@@ -116,4 +90,4 @@ class KubernetesPod extends React.Component {
   }
 }
 
-export default KubernetesPod;
+export default KubernetesJob;

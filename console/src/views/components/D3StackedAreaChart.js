@@ -18,12 +18,14 @@ class D3StackedAreaChart extends React.Component {
   // https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
   static propTypes = {
     url: PropTypes.string,
+    id: PropTypes.string,
     data: PropTypes.array,
     init: PropTypes.bool,
   };
 
   static defaultProps = {
     url: '',
+    id: '',
     data: [{ name: '', value: '' }],
     init: true,
   };
@@ -175,18 +177,17 @@ class D3StackedAreaChart extends React.Component {
     // console.log('timeSeries :', timeSeries);
 
     const mergeData = this.handleMergeMap(timeSeries, customData);
-    console.log('mergeData :', mergeData);
+    // console.log('mergeData :', mergeData);
 
     const totalSum = this.handleAggregateData(mergeData);
-    console.log(totalSum);
+    // console.log('totalSum :', totalSum);
 
     const stackedData = d3.stack().keys(namespaces)(mergeData);
     // console.log('stackedData :', stackedData);
 
-
-    const margin = { top: 60, right: 230, bottom: 50, left: 50 };
+    const margin = { top: 60, right: 230, bottom: 50, left: 80 };
     const width = 1500 - margin.left - margin.right;
-    const height = 300 - margin.top - margin.bottom;
+    const height = 260 - margin.top - margin.bottom;
 
     const svg = d3
       .select(this.refStackedAreaChart.current)
@@ -285,7 +286,7 @@ class D3StackedAreaChart extends React.Component {
       .data(stackedData)
       .enter()
       .append('path')
-      .attr('class', d => 'myArea ' + d.key)
+      .attr('class', d => `myArea ${d.key} ${this.props.id}`)
       .style('fill', d => color(d.key))
       .attr('d', areaGenerator);
 
@@ -324,14 +325,15 @@ class D3StackedAreaChart extends React.Component {
 
     // What to do when one group is hovered
     const highlight = d => {
+      // console.log(d.target.__data__);
       // reduce opacity of all groups
-      d3.selectAll('.myArea').style('opacity', 0.1);
+      d3.selectAll(`.myArea.${this.props.id}`).style('opacity', 0.1);
       // expect the one that is hovered
-      d3.select('.' + d.target.__data__).style('opacity', 1);
+      d3.select(`.${d.target.__data__}.${this.props.id}`).style('opacity', 1);
     };
 
     // And when it is not hovered anymore
-    const noHighlight = () => d3.selectAll('.myArea').style('opacity', 1);
+    const noHighlight = () => d3.selectAll(`.myArea.${this.props.id}`).style('opacity', 1);
 
     //////////
     // LEGEND //

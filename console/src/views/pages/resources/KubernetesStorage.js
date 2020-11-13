@@ -14,7 +14,7 @@ import {
 // core components
 import ReactTable from 'components/ReactTable/ReactTable.js';
 
-class ResourceStorage extends React.Component {
+class KubernetesStorage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,4 +102,4 @@ class ResourceStorage extends React.Component {
   }
 }
 
-export default ResourceStorage;
+export default KubernetesStorage;

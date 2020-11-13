@@ -23,6 +23,12 @@ import MetricCluster from 'views/pages/metrics/MetricCluster.js';
 // Kubernetes
 import KubernetesNode from 'views/pages/resources/KubernetesNode.js';
 import KubernetesPod from 'views/pages/resources/KubernetesPod.js';
+import KubernetesDeployment from 'views/pages/resources/KubernetesDeployment.js';
+import KubernetesDaemonSet from 'views/pages/resources/KubernetesDaemonset.js';
+import KubernetesReplicaSet from 'views/pages/resources/KubernetesReplicaset.js';
+import KubernetesReplicationController from 'views/pages/resources/KubernetesReplicationController.js';
+import KubernetesStatefulSet from 'views/pages/resources/KubernetesStatefulset.js';
+import KubernetesJob from 'views/pages/resources/KubernetesJob.js';
 import KubernetesService from 'views/pages/resources/KubernetesService.js';
 import KubernetesStorage from 'views/pages/resources/KubernetesStorage.js';
 
@@ -124,10 +130,38 @@ const routes = [
         layout: '/admin',
       },
       {
-        path: '/kubernetes/services',
-        name: 'Service',
-        mini: 'SVC',
-        component: KubernetesService,
+        path: '/kubernetes/deployments',
+        name: 'Deployment',
+        mini: 'DP',
+        component: KubernetesDeployment,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/daemonsets',
+        name: 'DaemonSet',
+        mini: 'DS',
+        component: KubernetesDaemonSet,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/replicasets',
+        name: 'ReplicaSet',
+        mini: 'RS',
+        component: KubernetesReplicaSet,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/replicationcontrollers',
+        name: 'ReplicationController',
+        mini: 'RC',
+        component: KubernetesReplicationController,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/statefulsets',
+        name: 'StatefulSet',
+        mini: 'STS',
+        component: KubernetesStatefulSet,
         layout: '/admin',
       },
       {
@@ -135,6 +169,20 @@ const routes = [
         name: 'Storage',
         mini: 'STR',
         component: KubernetesStorage,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/services',
+        name: 'Service',
+        mini: 'SVC',
+        component: KubernetesService,
+        layout: '/admin',
+      },
+      {
+        path: '/kubernetes/jobs',
+        name: 'Job',
+        mini: 'J',
+        component: KubernetesJob,
         layout: '/admin',
       },
     ],
