@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from 'reactstrap';
-// import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
+import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 
 class MetricCluster extends React.Component {
   constructor(props) {
@@ -196,6 +196,21 @@ class MetricCluster extends React.Component {
               <Card>
                 <CardHeader>
                   <CardTitle tag="h4">CPU Usage</CardTitle>
+                  <p className="card-category"></p>
+                </CardHeader>
+                <CardBody>
+                  <Row>
+                    <StackedAreaChart data={this.state.cpuUsage} init={this.state.init} />
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="12">
+              <Card>
+                <CardHeader>
+                  <CardTitle tag="h4">Memory Usage</CardTitle>
                   <p className="card-category"></p>
                 </CardHeader>
                 <CardBody>
