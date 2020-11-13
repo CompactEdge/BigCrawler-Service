@@ -6,10 +6,13 @@ class D3StackedAreaChart extends React.Component {
   constructor(props) {
     super(props);
     this.refStackedAreaChart = React.createRef(); // this.refs.current
-    this.handleMergeArrayObjects = this.handleMergeArrayObjects.bind(this);
+    this.handleFilterTimeSeries = this.handleFilterTimeSeries.bind(this);
+    this.handleConverToEasyFormat = this.handleConverToEasyFormat.bind(this);
+    this.handleMergeMap = this.handleMergeMap.bind(this);
     this.handleCreateStackedAreaChart = this.handleCreateStackedAreaChart.bind(
       this,
     );
+    this.handleAggregateData = this.handleAggregateData.bind(this);
   }
 
   // https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes
@@ -34,21 +37,124 @@ class D3StackedAreaChart extends React.Component {
     }
   }
 
-  handleMergeArrayObjects(arr1, arr2, key) {
-    return arr1.map((item, i) => {
-      return Object.assign({}, item, arr2[i]);
-      // TODO:
-      // if (!item || !arr2[i]) {
-      //   return Object.assign({}, item, arr2[i]);
-      // }
+  /*
+    // old
+    [
+      {
+        {
+          metric: {namespace: "default"}
+        },
+        {
+          values: [
+            [1605226949.719, "0.03191571358604417"],
+            [1605226979.719, "0.030475065142012873"],
+            [1605227009.719, "0.030637895292108242"],
+            [1605227039.719, "0.03162304340538476"],
+          ]
+        }
+      }
+      {
+        {
+          metric: {namespace: "test"}
+        },
+        {
+          values: [
+            [1605226949.719, "0.3599460237356168"],
+            [1605226979.719, "0.37346314975651596"],
+          ]
+        }
+      }
+    ]
 
-      // try {
-      //   if (item.time === arr2[i].time) {
-      //     return Object.assign({}, item, arr2[i]);
-      //   }
-      // } catch(e) {
-      //   return Object.assign({}, item, {[key]: 0});
-      // }
+    // new
+    [
+      {time: 1605226949.719, default: 0.03191571358604417, test:0.3599460237356168}
+      {time: 1605226979.719, default: 0.030475065142012873, test:0.37346314975651596}
+      {time: 1605227009.719, default: 0.030637895292108242, test:0}
+      {time: 1605227039.719, default: 0.03162304340538476, test:0}
+    ]
+  */
+  // https://github.com/prometheus/prometheus/blob/master/web/ui/react-app/src/pages/graph/GraphHelpers.ts
+  // https://github.com/grafana/grafana/blob/71fffcb17c/packages/grafana-ui/src/components/Graph/Graph.tsx
+  handleConverToEasyFormat(objectArray) {
+    /*
+      {
+        default: {
+          1605226949.719: "0.03191571358604417",
+          1605226979.719: "0.030475065142012873",
+          1605227009.719: "0.030637895292108242",
+          1605227039.719: "0.03162304340538476",
+        },
+        test: {
+          1605226949.719: "0.3599460237356168",
+          1605226979.719: "0.37346314975651596",
+        }
+      }
+    */
+    return objectArray.reduce((map, obj) => {
+      // console.log(obj);
+      const converted = obj.values.reduce((ret, origin) => {
+        ret[origin[0]] = origin[1];
+        return ret;
+      }, {});
+      // console.log(converted);
+      map[obj.metric.namespace] = converted;
+      return map;
+    }, {});
+  }
+
+  handleFilterTimeSeries(objectArray) {
+    /*
+      [
+        1605226949.719,
+        1605226979.719,
+        1605227009.719,
+        1605227039.719,
+      ]
+    */
+    return objectArray
+      .map(dat => dat.values) // select 'values'
+      .reduce((a, b) => (a.length > b.length ? a : b)) // compares 'values' length
+      .map(t => t[0]); // extract epoch time data from 'values'
+  }
+
+  handleMergeMap(ts, map) {
+    /*
+      [
+        {time: 1605226949.719, default: 0.03191571358604417, test:0.3599460237356168}
+        {time: 1605226979.719, default: 0.030475065142012873, test:0.37346314975651596}
+        {time: 1605227009.719, default: 0.030637895292108242, test:0}
+        {time: 1605227039.719, default: 0.03162304340538476, test:0}
+      ]
+    */
+    let arr = [];
+    ts.forEach(t => {
+      let obj = { time: t * 1000 };
+      for (const key in map) {
+        if (map[key][t]) {
+          Object.assign(obj, {
+            [key]: parseFloat(map[key][t]),
+          });
+        } else {
+          Object.assign(obj, {
+            [key]: 0,
+          });
+        }
+      }
+      arr.push(obj);
+    });
+    return arr;
+  }
+
+  handleAggregateData(data) {
+    return data.map(d => {
+      let sum = 0;
+      for (const key in d) {
+        if (d.hasOwnProperty(key) && key !== 'time') {
+          sum += d[key];
+        }
+      }
+      return sum;
     });
   }
 
@@ -58,78 +164,43 @@ class D3StackedAreaChart extends React.Component {
     // GENERAL
     //////////
     const namespaces = this.props.data.map(ns => ns.metric.namespace);
-    // const data = this.props.data.map(dat => dat.values);
+
     const data = this.props.data;
-    console.log(data);
+    // console.log('data :', data);
 
-    // https://github.com/prometheus/prometheus/blob/master/web/ui/react-app/src/pages/graph/GraphHelpers.ts
-    // https://github.com/grafana/grafana/blob/71fffcb17c/packages/grafana-ui/src/components/Graph/Graph.tsx
-    let customData = data.map(dat => {
-      let ns = dat.metric.namespace;
-      let mapData = dat.values.map(t => {
-        return {
-          time: t[0] * 1000,
-          [ns]: parseFloat(t[1]) * 100,
-        };
-      });
-      return mapData;
-    });
-    const timeSeries = customData
-      .reduce((a, b) => (a.length > b.length ? a : b))
-      .map(t => t.time);
-    // console.log(timeSeries);
+    const customData = this.handleConverToEasyFormat(data);
+    // console.log('customData :', customData);
 
-    const len = customData.length;
-    let mergeData = customData[0];
-    for (let index = 1; index < len; index++) {
-      const key = Object.keys(customData[index][0]);
-      if (customData[index].length < timeSeries.length) {
-        console.log('find');
-        // console.log(customData[index]);
-        // for (let index = 0; index < timeSeries.length; index++) {
-        //   if (timeSeries[index])
-        // }
-        // TODO:
-        // customData[index].map(v => {
-        //   console.log(v)
-        // })
+    const timeSeries = this.handleFilterTimeSeries(data);
+    // console.log('timeSeries :', timeSeries);
 
-        // customData[index].forEach(c => {
-        //   // console.log(c)
-        //   // console.log(key)
-        //   console.log(c[key[0]]);
-        //   console.log(c[key[1]]);
-        // });
-      }
-      // console.log(mergeData);
-      mergeData = this.mergeArrayObjects(mergeData, customData[index], key[1]);
-    }
-    console.log(mergeData);
-    //
-    // const oneData = this.props.data
-    //   .map(dat => dat.values)
-    //   .reduce((acc, cur) => [...acc, ...cur], []);
-    // console.log(oneData);
+    const mergeData = this.handleMergeMap(timeSeries, customData);
+    console.log('mergeData :', mergeData);
+
+    const totalSum = this.handleAggregateData(mergeData);
+    console.log(totalSum);
+
+    const stackedData = d3.stack().keys(namespaces)(mergeData);
+    // console.log('stackedData :', stackedData);
+
+
     const margin = { top: 60, right: 230, bottom: 50, left: 50 };
-    const width = 750 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const width = 1500 - margin.left - margin.right;
+    const height = 300 - margin.top - margin.bottom;
 
     const svg = d3
       .select(this.refStackedAreaChart.current)
-      // .attr('viewBox', [-width / 2, -height / 2, width, height])
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('viewBox', [
+        0,
+        0,
+        width + margin.left + margin.right,
+        height + margin.top + margin.bottom,
+      ])
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // const color = d3.scaleOrdinal(d3.schemePaired);
     const color = d3.scaleOrdinal().domain(namespaces).range(d3.schemeSet2);
-
-    const stackedData = d3.stack().keys(namespaces)(mergeData);
-    // console.log(data);
-    // console.log(oneData[0][0]);
-    // console.log(oneData[oneData.length - 1][0]);
-    // console.log(stackedData);
 
     //////////
     // AXIS //
@@ -167,8 +238,10 @@ class D3StackedAreaChart extends React.Component {
       .attr('text-anchor', 'start');
 
     // Add Y axis
-    const y = d3.scaleLinear().domain([0, 100]).range([height, 0]);
-    // const yAxis = svg
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(totalSum)])
+      .range([height, 0]);
     svg.append('g').call(d3.axisLeft(y).ticks(5));
 
     //////////
@@ -212,10 +285,7 @@ class D3StackedAreaChart extends React.Component {
       .data(stackedData)
       .enter()
       .append('path')
-      .attr('class', d => {
-        console.log(d.key);
-        return 'myArea ' + d.key;
-      })
+      .attr('class', d => 'myArea ' + d.key)
       .style('fill', d => color(d.key))
       .attr('d', areaGenerator);
 
@@ -226,21 +296,16 @@ class D3StackedAreaChart extends React.Component {
     function idled() {
       idleTimeout = null;
     }
+
     function updateChart(e) {
       let extent = e.selection;
 
       // If no selection, back to initial coordinate. Otherwise, update X axis domain
       if (!extent) {
         if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
-        x.domain(
-          d3.extent(mergeData, d => {
-            // console.log(d);
-            return d.time;
-          }),
-        );
+        x.domain(d3.extent(mergeData, d => d.time));
       } else {
         x.domain([x.invert(extent[0]), x.invert(extent[1])]);
-        // console.log('extent :', extent);
         areaChart.select('.brush').call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
       }
 
@@ -258,8 +323,7 @@ class D3StackedAreaChart extends React.Component {
     //////////
 
     // What to do when one group is hovered
-    const highlight = function (d) {
-      // console.log(d.target.__data__);
+    const highlight = d => {
       // reduce opacity of all groups
       d3.selectAll('.myArea').style('opacity', 0.1);
       // expect the one that is hovered
@@ -267,22 +331,20 @@ class D3StackedAreaChart extends React.Component {
     };
 
     // And when it is not hovered anymore
-    const noHighlight = function (d) {
-      d3.selectAll('.myArea').style('opacity', 1);
-    };
+    const noHighlight = () => d3.selectAll('.myArea').style('opacity', 1);
 
     //////////
     // LEGEND //
     //////////
 
     // Add one dot in the legend for each name.
-    var size = 20;
+    const size = 20;
     svg
       .selectAll('myrect')
       .data(namespaces)
       .enter()
       .append('rect')
-      .attr('x', 400)
+      .attr('x', width + size)
       .attr('y', function (d, i) {
         return 10 + i * (size + 5);
       }) // 100 is where the first dot appears. 25 is the distance between dots
@@ -300,7 +362,8 @@ class D3StackedAreaChart extends React.Component {
       .data(namespaces)
       .enter()
       .append('text')
-      .attr('x', 400 + size * 1.2)
+      .attr('x', width + size * 2.2)
+      // .attr('x', 400 + size * 1.2)
       .attr('y', function (d, i) {
         return 10 + i * (size + 5) + size / 2;
       }) // 100 is where the first dot appears. 25 is the distance between dots

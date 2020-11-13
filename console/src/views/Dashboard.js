@@ -14,7 +14,6 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { node } from 'prop-types';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from 'reactstrap';
