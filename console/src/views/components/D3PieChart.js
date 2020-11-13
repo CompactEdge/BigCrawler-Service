@@ -24,6 +24,7 @@ class D3PieChart extends React.Component {
 
   componentDidMount() {
     // console.log('componentDidMount');
+    // if (!this.props.init && this.props.data.filter(d => d.name !== 'object' && d.value !== 0).length) {
     if (!this.props.init) {
       this.handleCreatePieChart();
     }
@@ -34,7 +35,9 @@ class D3PieChart extends React.Component {
     if (this.props.data !== prevProps.data) {
       // TODO: change props or state
       this.refPieChart.current.replaceChildren('');
-      this.refPieChart.current.parentElement.removeChild(this.refPieChart.current.parentElement.children[1])
+      this.refPieChart.current.parentElement.removeChild(
+        this.refPieChart.current.parentElement.children[1],
+      );
       this.handleCreatePieChart();
     }
   }
@@ -51,14 +54,6 @@ class D3PieChart extends React.Component {
       .value(d => d.value)
       .padAngle(0.03);
 
-    // https://github.com/d3/d3-scale-chromatic/blob/master/README.md
-    // const color = d3.scaleOrdinal(d3.schemePaired);
-    // prettier-ignore
-    const color = d3.scaleOrdinal([
-      '#1f77b4',
-      '#ff7f0e',
-    ]);
-
     const arc = d3
       .arc()
       .innerRadius(120)
@@ -72,7 +67,6 @@ class D3PieChart extends React.Component {
     const title = this.props.data.find(d => {
       return d.name === 'object';
     });
-
     // The SVG <text> element draws a graphics element consisting of text.
     svg
       .append('text')
@@ -86,7 +80,11 @@ class D3PieChart extends React.Component {
       .append('g')
       .selectAll('path')
       .data(
-        pie(this.props.data.filter(d => d.name !== 'object' && d.value !== 0)),
+        pie(
+          this.props.data.filter(d => {
+            return d.name !== 'object' && d.value !== 0;
+          }),
+        ),
       );
 
     // prettier-ignore
@@ -94,11 +92,30 @@ class D3PieChart extends React.Component {
     tooltip.append('div').attr('class', 'label');
     tooltip.append('div').attr('class', 'count');
 
+    // https://github.com/d3/d3-scale-chromatic/blob/master/README.md
+    // const color = d3.scaleOrdinal(d3.schemePaired);
+    // prettier-ignore
+    // const color = d3.scaleOrdinal([
+    //   '#1f77b4',
+    //   '#ff7f0e',
+    //   '#a9a9a9',
+    // ]);
+
     // The <path> SVG element is the generic element to define a shape.
     g.join('path') // enter + append
       // .enter()
       // .append('path')
-      .attr('fill', d => color(d.data.name))
+      // .attr('fill', d => chart(d.data.name))
+      .attr('fill', d => {
+        if (d.data.name === 'running') {
+          // return color(0)
+          return '#1f77b4';
+        }
+        if (d.data.name === 'fail') {
+          // return color(1)
+          return '#ff7f0e';
+        }
+      })
       // .attr("stroke", "black")
       // .style("stroke-width", "2px")
       .on('mouseover', function (e, d) {
@@ -115,7 +132,7 @@ class D3PieChart extends React.Component {
           tooltip
           .select('.label')
           .html(d.data.name.toUpperCase())
-          .style('color', 'black');
+          .style('color', '#000');
           tooltip.select('.count').html(d.data.value);
 
           tooltip.style('display', 'block').style('opacity', 1);

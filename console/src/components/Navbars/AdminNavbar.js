@@ -222,7 +222,7 @@ class AdminNavbar extends React.Component {
                 */}
                 <NavItem>
                   <NavLink
-                    to="/admin/user-profile"
+                    to="/admin/setting"
                     className="btn-rotate nav-link"
                     // onClick={(e) => e.preventDefault()}
                   >

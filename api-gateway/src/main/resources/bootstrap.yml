@@ -76,6 +76,8 @@ spring:
     # filter: "metadata.labels['compact-edge']"
 
 management:
+  # server:
+  #   port: 8083
   endpoint:
     gateway:
       enabled: true
