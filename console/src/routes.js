@@ -18,13 +18,13 @@
 import Dashboard from 'views/Dashboard.js';
 
 // Monitoring
-import MetricCluster from 'views/pages/MetricCluster.js';
+import MetricCluster from 'views/pages/metrics/MetricCluster.js';
 
 // Kubernetes
-import KubernetesNode from 'views/pages/KubernetesNode.js';
-import KubernetesPod from 'views/pages/KubernetesPod.js';
-import KubernetesService from 'views/pages/KubernetesService.js';
-import KubernetesStorage from 'views/pages/KubernetesStorage.js';
+import KubernetesNode from 'views/pages/resources/KubernetesNode.js';
+import KubernetesPod from 'views/pages/resources/KubernetesPod.js';
+import KubernetesService from 'views/pages/resources/KubernetesService.js';
+import KubernetesStorage from 'views/pages/resources/KubernetesStorage.js';
 
 // User
 import UserProfile from 'views/pages/UserProfile.js';

@@ -149,6 +149,10 @@ class Dashboard extends React.Component {
       }
     }).length;
 
+    if (data.items.length === 0) {
+      return [];
+    }
+
     return [
       { name: 'object', value: key },
       { name: 'running', value: ready },
@@ -198,6 +202,7 @@ class Dashboard extends React.Component {
                 <CardBody>
                   <Row>
                     {this.state.node !== undefined &&
+                      this.state.node.length > 0 &&
                       this.state.node.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -216,6 +221,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.pod !== undefined &&
+                      this.state.pod.length > 0 &&
                       this.state.pod.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -235,6 +241,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.deployment !== undefined &&
+                      this.state.deployment.length > 0 &&
                       this.state.deployment.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -253,6 +260,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.daemonset !== undefined &&
+                      this.state.daemonset.length > 0 &&
                       this.state.daemonset.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -271,6 +279,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.replicaset !== undefined &&
+                      this.state.replicaset.length > 0 &&
                       this.state.replicaset.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -289,6 +298,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.replicationcontroller !== undefined &&
+                      this.state.replicationcontroller.length > 0 &&
                       this.state.replicationcontroller.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -307,6 +317,7 @@ class Dashboard extends React.Component {
                         </Col>
                       )}
                     {this.state.statefulset !== undefined &&
+                      this.state.statefulset.length > 0 &&
                       this.state.statefulset.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
@@ -326,6 +337,7 @@ class Dashboard extends React.Component {
                       )}
 
                     {this.state.job !== undefined &&
+                      this.state.job.length > 0 &&
                       this.state.job.filter(
                         d => d.name !== 'object' && d.value > 0,
                       ).length !== 0 && (
