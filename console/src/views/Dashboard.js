@@ -249,7 +249,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/deployments',
                             )
                           }>
                           <PieChart
@@ -268,7 +268,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/daemonsets',
                             )
                           }>
                           <PieChart
@@ -287,7 +287,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/replicasets',
                             )
                           }>
                           <PieChart
@@ -306,7 +306,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/replicationcontrollers',
                             )
                           }>
                           <PieChart
@@ -325,7 +325,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/statefulsets',
                             )
                           }>
                           <PieChart
@@ -345,7 +345,7 @@ class Dashboard extends React.Component {
                           className="my-5"
                           onClick={() =>
                             this.handleRedirectToPieChartResource(
-                              '/admin/kubernetes/pods',
+                              '/admin/kubernetes/jobs',
                             )
                           }>
                           <PieChart
