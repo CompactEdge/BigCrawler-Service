@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 remove::docker_images() {
-	image_hash=$(docker images | grep service-bus | awk '{print $3}')
+	image_hash=$(docker images | grep $IMAGE | awk '{print $3}')
 	if [ -z "$image_hash" ]; then
 		echo "\$image_hash is NULL"
 	else
@@ -27,6 +27,8 @@ parse::yaml() {
 		}'
 }
 
+IMAGE="service-bus"
+
 # remove old images
 remove::docker_images
 
@@ -50,7 +52,6 @@ echo "Build Complete"
 # build docker image
 REPO="markruler"
 REPO_PORT=""
-IMAGE="service-bus"
 VERSION=$(cat ./VERSION)
 
 docker build --build-arg EXPOSE_PORT=$config_svcbus_server_port -t $IMAGE:$VERSION -f ./aio/Dockerfile .
@@ -59,4 +60,4 @@ docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:latest
 docker push $REPO$REPO_PORT/$IMAGE:$VERSION
 
 echo -e "\n>>> PRINT IMAGES <<<"
-echo "$(docker images | grep service-bus | awk '{ printf ("%s\n", $0) }')"
+echo "$(docker images | grep $IMAGE | awk '{ printf ("%s\n", $0) }')"
