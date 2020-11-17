@@ -57,7 +57,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,gateway
+        include: health,gateway,metrics
 
 
 logging:

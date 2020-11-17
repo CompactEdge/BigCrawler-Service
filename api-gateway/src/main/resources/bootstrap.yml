@@ -83,12 +83,18 @@ management:
       enabled: true
     health:
       enabled: true
+      # show-details: never
       show-details: always
+      # show-components: never
       show-components: always
   endpoints:
     web:
       exposure:
-        include: health,gateway
+        include: health,gateway,metrics
+# http://localhost:8083/actuator/health
+# http://localhost:8083/actuator/gateway/routes
+# http://localhost:8083/actuator/metrics/gateway.requests
+# http://localhost:8083/actuator/metrics/gateway.requests?tag=routeUri:http://127.0.0.1:7000
 
 logging:
   level:
@@ -102,4 +108,5 @@ logging:
     reactor:
       netty:
         http:
+          server: debug
           client: debug

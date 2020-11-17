@@ -16,7 +16,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
 // @formatter:off
     "httpbin=http://localhost:${wiremock.server.port}",
-    "logging.level.reactor.netty.http.server=debug"
+    "logging.level.reactor.netty.http.server=trace",
+    "management.endpoint.health.show-details=never",
+    "management.endpoint.health.show-components=never",
 // @formatter:on
 })
 @ActiveProfiles("dev")
@@ -27,34 +29,18 @@ public class GatewayApplicationTests {
   private WebTestClient webClient;
 
   @Test
-  public void contextLoads() throws Exception {
+  public void healthCheck() throws Exception {
     // @formatter:off
-    // Stubs
     stubFor(get(urlEqualTo("/actuator/health"))
         .willReturn(aResponse()
-          .withBody("{\"headers\":{\"Hello\":\"World\"}}")
           .withHeader("Content-Type", "application/json")));
 
     webClient
       .get().uri("/actuator/health")
       .exchange()
       .expectStatus().isOk()
-      .expectBody();
-      // .jsonPath("$.headers.Hello").isEqualTo("World");
-
-    // stubFor(get(urlEqualTo("/delay/3"))
-    //   .willReturn(aResponse()
-    //     .withBody("no fallback")
-    //     .withFixedDelay(3000)));
-
-    // webClient
-    //   .get().uri("/delay/3")
-    //   .header("Host", "www.hystrix.com")
-    //   .exchange()
-    //   .expectStatus().isOk()
-    //   .expectBody()
-    //   .consumeWith(
-    //     response -> assertThat(response.getResponseBody()).isEqualTo("fallback".getBytes()));
+      .expectBody()
+      .jsonPath("$.status").isEqualTo("UP");
     // @formatter:on
   }
 }
