@@ -19,6 +19,9 @@ import Dashboard from 'views/Dashboard.js';
 
 // Monitoring
 import MetricCluster from 'views/pages/metrics/MetricCluster.js';
+import MetricNamespace from 'views/pages/metrics/MetricNamespace.js';
+import MetricNode from 'views/pages/metrics/MetricNode.js';
+import MetricPod from 'views/pages/metrics/MetricPod.js';
 
 // Kubernetes
 import KubernetesNode from 'views/pages/resources/KubernetesNode.js';
@@ -86,27 +89,27 @@ const routes = [
         component: MetricCluster,
         layout: '/admin',
       },
-      // {
-      //   path: '/monitoring/namespace',
-      //   name: 'Namespace',
-      //   mini: 'NS',
-      //   component: MetricNamespace,
-      //   layout: '/admin',
-      // },
-      // {
-      //   path: '/monitoring/node',
-      //   name: 'Node',
-      //   mini: 'NO',
-      //   component: MetricNode,
-      //   layout: '/admin',
-      // },
-      // {
-      //   path: '/monitoring/pod',
-      //   name: 'Pod',
-      //   mini: 'PO',
-      //   component: MetricPod,
-      //   layout: '/admin',
-      // },
+      {
+        path: '/monitoring/namespace',
+        name: 'Namespace',
+        mini: 'NS',
+        component: MetricNamespace,
+        layout: '/admin',
+      },
+      {
+        path: '/monitoring/node',
+        name: 'Node',
+        mini: 'NO',
+        component: MetricNode,
+        layout: '/admin',
+      },
+      {
+        path: '/monitoring/pod',
+        name: 'Pod',
+        mini: 'PO',
+        component: MetricPod,
+        layout: '/admin',
+      },
     ],
   },
   {

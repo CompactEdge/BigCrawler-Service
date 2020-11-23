@@ -248,6 +248,7 @@ class MetricCluster extends React.Component {
                     <StackedAreaChart
                       id="cpu"
                       unit="Rate"
+                      metric="namespace"
                       data={this.state.cpuUsage}
                       init={this.state.init}
                     />
@@ -268,6 +269,7 @@ class MetricCluster extends React.Component {
                     <StackedAreaChart
                       id="memory"
                       unit="Byte"
+                      metric="namespace"
                       data={this.state.memoryUsage}
                       init={this.state.init}
                     />

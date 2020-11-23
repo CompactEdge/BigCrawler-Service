@@ -106,7 +106,7 @@ class D3StackedAreaChart extends React.Component {
         return ret;
       }, {});
       // console.log(converted);
-      map[obj.metric.namespace] = converted;
+      map[obj['metric'][this.props.metric]] = converted;
       return map;
     }, {});
   }
@@ -136,7 +136,8 @@ class D3StackedAreaChart extends React.Component {
       ]
     */
     let arr = [];
-    ts.forEach(t => {
+    for (let t = ts[0]; t < ts[ts.length - 1]; t += 30) {
+      // console.log(new Date(t * 1000));
       let obj = { time: t * 1000 };
       for (const key in map) {
         if (map[key][t]) {
@@ -144,13 +145,14 @@ class D3StackedAreaChart extends React.Component {
             [key]: parseFloat(map[key][t]),
           });
         } else {
+          // console.log('not exists');
           Object.assign(obj, {
             [key]: 0,
           });
         }
       }
       arr.push(obj);
-    });
+    }
     return arr;
   }
 
@@ -171,13 +173,19 @@ class D3StackedAreaChart extends React.Component {
     //////////
     // GENERAL
     //////////
-    const namespaces = this.props.data.map(ns => ns.metric.namespace);
+
+    // console.log('this.props.metric :', this.props.metric);
+
+    const metricName = this.props.data.map(
+      ns => ns['metric'][this.props.metric],
+    );
+    // console.log('metricName :', metricName);
 
     const data = this.props.data;
     // console.log('data :', data);
 
     const customData = this.handleConverToEasyFormat(data);
-    // console.log('customData :', customData);
+    console.log('customData :', customData);
 
     const timeSeries = this.handleFilterTimeSeries(data);
     // console.log('timeSeries :', timeSeries);
@@ -188,7 +196,7 @@ class D3StackedAreaChart extends React.Component {
     const totalSum = this.handleAggregateData(mergeData);
     // console.log('totalSum :', totalSum);
 
-    const stackedData = d3.stack().keys(namespaces)(mergeData);
+    const stackedData = d3.stack().keys(metricName)(mergeData);
     // console.log('stackedData :', stackedData);
 
     const margin = { top: 30, right: 230, bottom: 30, left: 80 };
@@ -207,7 +215,7 @@ class D3StackedAreaChart extends React.Component {
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // const color = d3.scaleOrdinal(d3.schemePaired);
-    const color = d3.scaleOrdinal().domain(namespaces).range(d3.schemeSet2);
+    const color = d3.scaleOrdinal().domain(metricName).range(d3.schemeSet2);
 
     //////////
     // AXIS //
@@ -332,7 +340,6 @@ class D3StackedAreaChart extends React.Component {
 
     // What to do when one group is hovered
     const highlight = d => {
-      // console.log(d.target.__data__);
       // reduce opacity of all groups
       d3.selectAll(`.myArea.${this.props.id}`).style('opacity', 0.1);
       // expect the one that is hovered
@@ -351,7 +358,7 @@ class D3StackedAreaChart extends React.Component {
     const size = 20;
     svg
       .selectAll('myrect')
-      .data(namespaces)
+      .data(metricName)
       .enter()
       .append('rect')
       .attr('x', width + size)
@@ -369,7 +376,7 @@ class D3StackedAreaChart extends React.Component {
     // Add one dot in the legend for each name.
     svg
       .selectAll('mylabels')
-      .data(namespaces)
+      .data(metricName)
       .enter()
       .append('text')
       .attr('x', width + size * 2.2)
