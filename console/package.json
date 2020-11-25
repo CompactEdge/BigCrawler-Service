@@ -7,6 +7,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
+    "docker": "./aio/scripts/docker.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "outdate": "yarn outdated",
