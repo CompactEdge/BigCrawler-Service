@@ -33,16 +33,15 @@ class D3StackedAreaChart extends React.Component {
   };
 
   componentDidMount() {
-    // console.log(this.props.data);
-    // console.log(this.refStackedAreaChart.current);
-    // console.log('init stacked area charts: ' + this.props.init);
     if (!this.props.init) {
       this.handleCreateStackedAreaChart();
     }
   }
 
   componentDidUpdate() {
-    d3.select(this.refStackedAreaChart.current).remove();
+    // TODO: 컴포넌트를 지우지 않고 데이터 갱신만 되어야 함
+    d3.select(this.refStackedAreaChart.current.firstElementChild).remove();
+    this.handleCreateStackedAreaChart();
   }
 
   /*
@@ -185,7 +184,7 @@ class D3StackedAreaChart extends React.Component {
     // console.log('data :', data);
 
     const customData = this.handleConverToEasyFormat(data);
-    console.log('customData :', customData);
+    // console.log('customData :', customData);
 
     const timeSeries = this.handleFilterTimeSeries(data);
     // console.log('timeSeries :', timeSeries);
@@ -197,7 +196,7 @@ class D3StackedAreaChart extends React.Component {
     // console.log('totalSum :', totalSum);
 
     const stackedData = d3.stack().keys(metricName)(mergeData);
-    // console.log('stackedData :', stackedData);
+    console.log('stackedData :', stackedData);
 
     const margin = { top: 30, right: 230, bottom: 30, left: 80 };
     const width = 1500 - margin.left - margin.right;

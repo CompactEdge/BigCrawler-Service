@@ -54,15 +54,16 @@ class Dashboard extends React.Component {
   }
 
   handleCreateDashboard() {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     Promise.all([
-      fetch('http://192.168.213.243:18083/kube/core/nodes'),
-      fetch('http://192.168.213.243:18083/kube/core/pods'),
-      fetch('http://192.168.213.243:18083/kube/apps/deployments'),
-      fetch('http://192.168.213.243:18083/kube/apps/daemonsets'),
-      fetch('http://192.168.213.243:18083/kube/apps/replicasets'),
-      fetch('http://192.168.213.243:18083/kube/core/replicationcontrollers'),
-      fetch('http://192.168.213.243:18083/kube/apps/statefulsets'),
-      fetch('http://192.168.213.243:18083/kube/batch/jobs'),
+      fetch(`http://${API_GATEWAY_HOST}/kube/core/nodes`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/core/pods`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/apps/deployments`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/apps/daemonsets`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/apps/replicasets`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/core/replicationcontrollers`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/apps/statefulsets`),
+      fetch(`http://${API_GATEWAY_HOST}/kube/batch/jobs`),
     ])
       .then(
         ([

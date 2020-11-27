@@ -25,8 +25,9 @@ class KubernetesDaemonSet extends React.Component {
   }
 
   componentDidMount() {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     this.setState({ isLoading: true });
-    fetch('http://192.168.213.243:18083/kube/apps/daemonsets')
+    fetch(`http://${API_GATEWAY_HOST}/kube/apps/daemonsets`)
       .then(response => response.json())
       .then(json => {
         console.log(json);

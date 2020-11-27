@@ -19,12 +19,14 @@ class MetricNamespace extends React.Component {
       data: [], // not null
       cpuUsage: [],
       memoryUsage: [],
+      init: true,
       isLoading: false,
       error: null,
-      init: true,
+      delay: 5,
     };
     // this.encodeRFC5987ValueChars = this.encodeRFC5987ValueChars.bind(this);
     this.makePercent = this.makePercent.bind(this);
+    this.handleCreateMetricChart = this.handleCreateMetricChart.bind(this);
   }
 
   makePercent(args) {
@@ -39,49 +41,53 @@ class MetricNamespace extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    if (this.state.init) {
-      let cluster = '';
-      let namespace = 'gigamec-mano';
-      let pod = 'mariadb-0';
-      const exclude = '';
-      const now = Date.now() / 1000;
-      const range = 60 * 60 * 3; // s * m * h
-      const step = 30;
-      Promise.all([
-        fetch(
-          `http://192.168.213.243:18083/promr/${encodeURIComponent(
-            `sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="${namespace}", pod="${pod}", container!="POD", cluster="${cluster}"}) by (container)`,
-          )}&start=${now - range}&end=${now}&step=${step}`,
-        ),
-        fetch(
-          `http://192.168.213.243:18083/promr/${encodeURIComponent(
-            `sum(container_memory_working_set_bytes{cluster="${cluster}", namespace="${namespace}", pod="${pod}", container!="POD", container!="${exclude}"}) by (container)`,
-          )}&start=${now - range}&end=${now}&step=${step}`,
-        ),
-      ])
-        .then(([res1, res2]) =>
-          Promise.all([res1.json(), res2.json()]),
-        )
-        .then(
-          ([
-            cpuUsage,
-            // cpuQuota,
-            memoryUsage,
-            // memoryRequests,
-          ]) => {
-            console.log(cpuUsage);
-            // console.log(memoryUsage);
-            this.setState({
-              cpuUsage: cpuUsage.data.result,
-              memoryUsage: memoryUsage.data.result,
-              isLoading: false,
-              init: false,
-            });
-            // console.log(this.state.cpuUsage);
-          },
-        )
-        .catch(error => this.setState({ error, isLoading: false }));
-    }
+    this.handleCreateMetricChart();
+    this.interval = setInterval(this.handleCreateMetricChart, this.state.delay * 1000);
+  }
+
+  handleCreateMetricChart() {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
+    let cluster = '';
+    let namespace = 'kube-system';
+    let pod = 'kube-apiserver-minikube';
+    const exclude = '';
+    const now = Date.now() / 1000;
+    const range = 60 * 60 * 3; // s * m * h
+    const step = 30;
+    Promise.all([
+      fetch(
+        `http://${API_GATEWAY_HOST}/promr/${encodeURIComponent(
+          `sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="${namespace}", pod="${pod}", container!="POD", cluster="${cluster}"}) by (container)`,
+        )}&start=${now - range}&end=${now}&step=${step}`,
+      ),
+      fetch(
+        `http://${API_GATEWAY_HOST}/promr/${encodeURIComponent(
+          `sum(container_memory_working_set_bytes{cluster="${cluster}", namespace="${namespace}", pod="${pod}", container!="POD", container!="${exclude}"}) by (container)`,
+        )}&start=${now - range}&end=${now}&step=${step}`,
+      ),
+    ])
+      .then(([res1, res2]) =>
+        Promise.all([res1.json(), res2.json()]),
+      )
+      .then(
+        ([
+          cpuUsage,
+          // cpuQuota,
+          memoryUsage,
+          // memoryRequests,
+        ]) => {
+          console.log(cpuUsage);
+          // console.log(memoryUsage);
+          this.setState({
+            cpuUsage: cpuUsage.data.result,
+            memoryUsage: memoryUsage.data.result,
+            isLoading: false,
+            init: false,
+          });
+          // console.log(this.state.cpuUsage);
+        },
+      )
+      .catch(error => this.setState({ error, isLoading: false }));
   }
 
   render() {

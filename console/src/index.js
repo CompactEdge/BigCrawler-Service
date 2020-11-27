@@ -29,6 +29,10 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 const hist = createBrowserHistory();
 
+// global variable
+window.$host = '127.0.0.1';
+window.$apigw = '8083';
+
 ReactDOM.render(
   <Router history={hist}>
     <Switch>

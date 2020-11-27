@@ -23,17 +23,14 @@ class D3PieChart extends React.Component {
   };
 
   componentDidMount() {
-    // console.log('componentDidMount');
-    // if (!this.props.init && this.props.data.filter(d => d.name !== 'object' && d.value !== 0).length) {
     if (!this.props.init) {
       this.handleCreatePieChart();
     }
   }
 
   componentDidUpdate(prevProps) {
-    // console.log('componentDidUpdate');
     if (this.props.data !== prevProps.data) {
-      // TODO: change props or state
+      // TODO: 컴포넌트를 지우지 않고 데이터 갱신만 되어야 함
       d3.select(this.refPieChart.current).select('svg').remove();
       d3.select(this.refPieChart.current).select('.tooltip').remove();
       this.handleCreatePieChart();

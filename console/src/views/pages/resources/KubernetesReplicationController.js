@@ -25,8 +25,9 @@ class KubernetesReplicationController extends React.Component {
   }
 
   componentDidMount() {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     this.setState({ isLoading: true });
-    fetch('http://192.168.213.243:18083/kube/core/replicationcontrollers')
+    fetch(`http://${API_GATEWAY_HOST}/kube/core/replicationcontrollers`)
       .then(response => response.json())
       .then(json => {
         console.log(json);
