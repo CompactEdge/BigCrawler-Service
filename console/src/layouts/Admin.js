@@ -39,8 +39,7 @@ class Admin extends React.Component {
   }
 
   componentDidMount() {
-    // TODO:
-    document.body.classList.add('sidebar-mini');
+    // document.body.classList.add('sidebar-mini');
 
     if (navigator.platform.indexOf('Win') > -1) {
       document.documentElement.className += ' perfect-scrollbar-on';

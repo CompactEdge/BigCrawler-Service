@@ -17,7 +17,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import {
-  // Button,
+  Button,
   Collapse,
   // DropdownToggle,
   // DropdownMenu,
@@ -102,7 +102,6 @@ class AdminNavbar extends React.Component {
           expand="lg">
           <Container fluid>
             <div className="navbar-wrapper">
-              {/*
               <div className="navbar-minimize">
                 <Button
                   className="btn-icon btn-round"
@@ -114,7 +113,6 @@ class AdminNavbar extends React.Component {
                   <i className="nc-icon nc-minimal-left text-center visible-on-sidebar-regular" />
                 </Button>
               </div>
-              */}
               <div
                 className={classnames('navbar-toggle', {
                   toggled: this.state.sidebarOpen,
