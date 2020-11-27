@@ -197,14 +197,15 @@ const routes = [
   //   component: UserProfile,
   //   layout: '/admin',
   // },
-  {
-    path: '/setting',
-    name: 'Setting',
-    // icon: 'nc-icon nc-settings',
-    icon: 'nc-icon nc-circle-10',
-    component: UserProfile,
-    layout: '/admin',
-  },
+  // {
+  //   path: '/setting',
+  //   name: 'Setting',
+  //   // icon: 'nc-icon nc-settings',
+  //   icon: 'nc-icon nc-circle-10',
+  //   component: UserProfile,
+  //   layout: '/admin',
+  // },
+  /////////////////////////////////////////////////
   // Deprecated
   // {
   //   collapse: true,
