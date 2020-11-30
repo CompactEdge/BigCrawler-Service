@@ -40,8 +40,10 @@ class D3StackedAreaChart extends React.Component {
 
   componentDidUpdate() {
     // TODO: 컴포넌트를 지우지 않고 데이터 갱신만 되어야 함
-    d3.select(this.refStackedAreaChart.current.firstElementChild).remove();
-    this.handleCreateStackedAreaChart();
+    if (!this.props.init) {
+      d3.select(this.refStackedAreaChart.current.firstElementChild).remove();
+      this.handleCreateStackedAreaChart();
+    }
   }
 
   /*

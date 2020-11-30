@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // reactstrap components
 import {
@@ -7,61 +7,60 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
-  Row,
   Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Row,
 } from 'reactstrap';
 import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
+import { conditionallyUpdateScrollbar } from 'reactstrap/lib/utils';
 
-class MetricCluster extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [], // not null
-      cpuUtilisation: [],
-      cpuRequests: [],
-      cpuLimits: [],
-      memoryUtilisation: [],
-      memoryRequests: [],
-      memoryLimits: [],
-      cpuUsage: [],
-      init: true,
-      isLoading: false,
-      error: null,
-      delay: 5,
+const MetricCluster_fn = props => {
+  const [data, setData] = useState({
+    cpuUtilisation: [],
+    cpuRequests: [],
+    cpuLimits: [],
+    memoryUtilisation: [],
+    memoryRequests: [],
+    memoryLimits: [],
+    cpuUsage: [],
+    memoryUsage: [],
+  }); // not null
+  const [init, setInit] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [delay, setDelay] = useState(5);
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    setIsLoading(true);
+    handleCreateMetricChart();
+  }, []);
+
+  const callback = () => handleCreateMetricChart();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    const tick = () => {
+      savedCallback.current();
     };
-    // this.encodeRFC5987ValueChars = this.encodeRFC5987ValueChars.bind(this);
-    this.makePercent = this.makePercent.bind(this);
-    this.handleCreateMetricChart = this.handleCreateMetricChart.bind(this);
-  }
+    let id = setInterval(tick, delay * 1000);
+    return () => clearInterval(id);
+  }, []);
 
-  makePercent(args) {
-    const [arg] = arguments;
-    if (arg) {
-      const rate = parseFloat(arg) * 100;
-      return `${rate.toFixed(2)}%`;
-    } else {
-      return `-`;
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
-    this.handleCreateMetricChart();
-    this.interval = setInterval(this.handleCreateMetricChart, this.state.delay * 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  handleCreateMetricChart() {
+  const handleCreateMetricChart = () => {
     const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     const mode = 'idle';
     const cluster = '';
     const exclude = '';
     const now = Date.now() / 1000;
     const range = 60 * 60 * 3; // s * m * h
-    const step = this.state.delay;
+    const step = delay;
     Promise.all([
       fetch(
         `http://${API_GATEWAY_HOST}/prom/${encodeURIComponent(
@@ -129,15 +128,15 @@ class MetricCluster extends React.Component {
           memoryUsage,
           // memoryRequests,
         ]) => {
-          console.log(cpu1);
-          // console.log(cpu2);
-          // console.log(cpu3);
-          // console.log(memory1);
-          // console.log(memory2);
-          // console.log(memory3);
-          // console.log(cpuUsage);
-          // console.log(memoryUsage);
-          this.setState({
+          //   console.log(cpu1);
+          //   console.log(cpu2);
+          //   console.log(cpu3);
+          //   console.log(memory1);
+          //   console.log(memory2);
+          //   console.log(memory3);
+          //   console.log(cpuUsage);
+          //   console.log(memoryUsage);
+          setData({
             cpuUtilisation: cpu1.data.result[0].value,
             cpuRequests: cpu2.data.result[0].value,
             cpuLimits: cpu3.data.result[0].value,
@@ -146,152 +145,160 @@ class MetricCluster extends React.Component {
             memoryLimits: memory3.data.result[0].value,
             cpuUsage: cpuUsage.data.result,
             memoryUsage: memoryUsage.data.result,
-            isLoading: false,
-            init: false,
           });
+          setIsLoading(false);
+          setInit(false);
+
           // console.log(this.state.cpuUsage);
         },
       )
-      .catch(error => this.setState({ error, isLoading: false }));
+      .catch(error => {
+        setError(error);
+        setIsLoading(false);
+      });
+  };
+
+  const makePercent = arg => {
+    if (arg) {
+      const rate = parseFloat(arg) * 100;
+      return `${rate.toFixed(2)}%`;
+    } else {
+      return `-`;
+    }
+  };
+
+  if (error) {
+    return <p>{error.message}</p>;
   }
 
-  render() {
-    const { isLoading, error } = this.state;
+  if (isLoading) {
+    return <p>Loading ...</p>;
+  }
 
-    if (error) {
-      return <p>{error.message}</p>;
-    }
-
-    if (isLoading) {
-      return <p>Loading ...</p>;
-    }
-    return (
-      <>
-        <div className="content">
-          {/*
+  return (
+    <>
+      <div className="content">
+        {/*
             CPU Utilisation
             CPU Requests Commitment
             CPU Limits Commitment
            */}
-          <Row>
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.cpuUtilisation[1])}
-                  </CardTitle>
-                  <p className="card-category">CPU Utilisation</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.cpuRequests[1])}
-                  </CardTitle>
-                  <p className="card-category">CPU Requests Commitment</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.cpuLimits[1])}
-                  </CardTitle>
-                  <p className="card-category">CPU Limits Commitment</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-            {/*
+        <Row>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">
+                  {makePercent(data.cpuUtilisation[1])}
+                </CardTitle>
+                <p className="card-category">CPU Utilisation</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">
+                  {makePercent(data.cpuRequests[1])}
+                </CardTitle>
+                <p className="card-category">CPU Requests Commitment</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">{makePercent(data.cpuLimits[1])}</CardTitle>
+                <p className="card-category">CPU Limits Commitment</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+          {/*
               Memory Utilisation
               Memory Requests Commitment
               Memory Limits Commitment
              */}
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.memoryUtilisation[1])}
-                  </CardTitle>
-                  <p className="card-category">Memory Utilisation</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.memoryRequests[1])}
-                  </CardTitle>
-                  <p className="card-category">Memory Requests Commitment</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-            <Col md="2">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">
-                    {this.makePercent(this.state.memoryLimits[1])}
-                  </CardTitle>
-                  <p className="card-category">Memory Limits Commitment</p>
-                </CardHeader>
-                {/* <CardBody></CardBody> */}
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">CPU Usage</CardTitle>
-                  <p className="card-category"></p>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <StackedAreaChart
-                      id="cpu"
-                      unit="Rate"
-                      metric="namespace"
-                      data={this.state.cpuUsage}
-                      init={this.state.init}
-                    />
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Memory Usage</CardTitle>
-                  <p className="card-category"></p>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <StackedAreaChart
-                      id="memory"
-                      unit="Byte"
-                      metric="namespace"
-                      data={this.state.memoryUsage}
-                      init={this.state.init}
-                    />
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
-    );
-  }
-}
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">
+                  {makePercent(data.memoryUtilisation[1])}
+                </CardTitle>
+                <p className="card-category">Memory Utilisation</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">
+                  {makePercent(data.memoryRequests[1])}
+                </CardTitle>
+                <p className="card-category">Memory Requests Commitment</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">
+                  {makePercent(data.memoryLimits[1])}
+                </CardTitle>
+                <p className="card-category">Memory Limits Commitment</p>
+              </CardHeader>
+              {/* <CardBody></CardBody> */}
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">CPU Usage</CardTitle>
+                <p className="card-category"></p>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <StackedAreaChart
+                    id="cpu"
+                    unit="Rate"
+                    metric="namespace"
+                    data={data.cpuUsage}
+                    init={init}
+                  />
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Memory Usage</CardTitle>
+                <p className="card-category"></p>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <StackedAreaChart
+                    id="memory"
+                    unit="Byte"
+                    metric="namespace"
+                    data={data.memoryUsage}
+                    init={init}
+                  />
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
+};
 
-export default MetricCluster;
+export default MetricCluster_fn;

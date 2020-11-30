@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // reactstrap components
 import {
@@ -10,46 +10,71 @@ import {
   Row,
   Col,
 } from 'reactstrap';
+import CustomDropdown from 'views/components/CustomDropdown.js';
 import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 
-class MetricNamespace extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [], // not null
-      cpuUsage: [],
-      memoryUsage: [],
-      init: true,
-      isLoading: false,
-      error: null,
-      delay: 5,
+const MetricPod = props => {
+  const [data, setData] = useState({
+    cpuUsage: [],
+    memoryUsage: [],
+    init: true,
+  });
+  const [namespace, setNamespace] = useState('');
+  const [namespaceList, setNamespaceList] = useState([]);
+  const [pod, setPod] = useState({
+    name: '',
+    namespace: '',
+  });
+  const [podList, setPodList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [delay, setDelay] = useState(5);
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
+    Promise.all([fetch(`http://${API_GATEWAY_HOST}/kube/core/pods`)]).then(
+      ([res]) =>
+        Promise.all([res.json()]).then(result => {
+          const nsList = [];
+          const polist = [];
+          result[0].items.map(({ metadata }) => {
+            if (nsList.indexOf(metadata.namespace) === -1) {
+              nsList.push(metadata.namespace);
+            }
+            polist.push({ name: metadata.name, namespace: metadata.namespace });
+          });
+          setNamespaceList(nsList);
+          setNamespace(nsList[0]);
+          setPodList(polist);
+          setPod(polist[0]);
+        }),
+    );
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    handleCreateMetricChart();
+  }, []);
+
+  const callback = () => handleCreateMetricChart();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    callback();
+    const tick = () => {
+      savedCallback.current();
     };
-    // this.encodeRFC5987ValueChars = this.encodeRFC5987ValueChars.bind(this);
-    this.makePercent = this.makePercent.bind(this);
-    this.handleCreateMetricChart = this.handleCreateMetricChart.bind(this);
-  }
+    let id = setInterval(tick, delay * 1000);
+    return () => clearInterval(id);
+  }, [namespace, pod]);
 
-  makePercent(args) {
-    const [arg] = arguments;
-    if (arg) {
-      const rate = parseFloat(arg) * 100;
-      return `${rate.toFixed(2)}%`;
-    } else {
-      return `-`;
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
-    this.handleCreateMetricChart();
-    this.interval = setInterval(this.handleCreateMetricChart, this.state.delay * 1000);
-  }
-
-  handleCreateMetricChart() {
+  const handleCreateMetricChart = () => {
     const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     let cluster = '';
-    let namespace = 'kube-system';
-    let pod = 'kube-apiserver-minikube';
     const exclude = '';
     const now = Date.now() / 1000;
     const range = 60 * 60 * 3; // s * m * h
@@ -57,18 +82,16 @@ class MetricNamespace extends React.Component {
     Promise.all([
       fetch(
         `http://${API_GATEWAY_HOST}/promr/${encodeURIComponent(
-          `sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="${namespace}", pod="${pod}", container!="POD", cluster="${cluster}"}) by (container)`,
+          `sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="${namespace}", pod="${pod.name}", container!="POD", cluster="${cluster}"}) by (container)`,
         )}&start=${now - range}&end=${now}&step=${step}`,
       ),
       fetch(
         `http://${API_GATEWAY_HOST}/promr/${encodeURIComponent(
-          `sum(container_memory_working_set_bytes{cluster="${cluster}", namespace="${namespace}", pod="${pod}", container!="POD", container!="${exclude}"}) by (container)`,
+          `sum(container_memory_working_set_bytes{cluster="${cluster}", namespace="${namespace}", pod="${pod.name}", container!="POD", container!="${exclude}"}) by (container)`,
         )}&start=${now - range}&end=${now}&step=${step}`,
       ),
     ])
-      .then(([res1, res2]) =>
-        Promise.all([res1.json(), res2.json()]),
-      )
+      .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
       .then(
         ([
           cpuUsage,
@@ -78,77 +101,111 @@ class MetricNamespace extends React.Component {
         ]) => {
           console.log(cpuUsage);
           // console.log(memoryUsage);
-          this.setState({
-            cpuUsage: cpuUsage.data.result,
-            memoryUsage: memoryUsage.data.result,
-            isLoading: false,
-            init: false,
-          });
+          if (cpuUsage.data.result.length) {
+            setData({
+              cpuUsage: cpuUsage.data.result,
+              memoryUsage: memoryUsage.data.result,
+              init: false,
+            });
+          }
+          setIsLoading(false);
           // console.log(this.state.cpuUsage);
         },
       )
-      .catch(error => this.setState({ error, isLoading: false }));
+      .catch(error => {
+        setError(error);
+        setIsLoading(false);
+      });
+  };
+
+  const handleChangeNamespace = value => {
+    const idx = namespaceList.indexOf(value);
+    if (idx > -1) {
+      const ns = namespaceList[idx];
+      setNamespace(ns);
+      const poIdx = podList.findIndex(v => v.namespace === ns);
+      setPod(podList[poIdx]);
+    }
+  };
+  const handleChangePod = value => {
+    const idx = podList.findIndex(e => e.name === value);
+    if (idx > -1) {
+      setPod(podList[idx]);
+    }
+  };
+
+  if (error) {
+    return <p>{error.message}</p>;
   }
 
-  render() {
-    const { isLoading, error } = this.state;
-
-    if (error) {
-      return <p>{error.message}</p>;
-    }
-
-    if (isLoading) {
-      return <p>Loading ...</p>;
-    }
-    return (
-      <>
-        <div className="content">
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">CPU Usage</CardTitle>
-                  <p className="card-category"></p>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <StackedAreaChart
-                      id="cpu"
-                      unit="Rate"
-                      metric="container"
-                      data={this.state.cpuUsage}
-                      init={this.state.init}
-                    />
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Memory Usage</CardTitle>
-                  <p className="card-category"></p>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <StackedAreaChart
-                      id="memory"
-                      unit="Byte"
-                      metric="container"
-                      data={this.state.memoryUsage}
-                      init={this.state.init}
-                    />
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
-    );
+  if (isLoading) {
+    return <p>Loading ...</p>;
   }
-}
+  return (
+    <>
+      <div className="content">
+        <Row>
+          <CustomDropdown
+            title="Namespace"
+            value={namespace}
+            items={namespaceList}
+            onChange={handleChangeNamespace}
+          />
+          <CustomDropdown
+            title="Pod"
+            value={pod.name}
+            items={podList
+              .filter(v => v.namespace === namespace)
+              .map(v => v.name)}
+            onChange={handleChangePod}
+          />
+        </Row>
+        <CardTitle tag="h4">{pod.name}</CardTitle>
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">CPU Usage</CardTitle>
+                <p className="card-category"></p>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <StackedAreaChart
+                    id="cpu"
+                    unit="Rate"
+                    metric="container"
+                    data={data.cpuUsage}
+                    init={data.init}
+                  />
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Memory Usage</CardTitle>
+                <p className="card-category"></p>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <StackedAreaChart
+                    id="memory"
+                    unit="Byte"
+                    metric="container"
+                    data={data.memoryUsage}
+                    init={data.init}
+                  />
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
+};
 
-export default MetricNamespace;
+export default MetricPod;
