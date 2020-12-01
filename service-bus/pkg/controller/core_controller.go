@@ -9,7 +9,7 @@ func newCoreController(v1 *echo.Group) {
 	core := v1.Group("/core")
 
 	// CREATE
-	core.POST("/bindings", service.CreateNamespacedPodBindings)
+	core.POST("/bindings", service.CreateNamespacedBindings)
 	core.POST("/configmaps", service.CreateNamespacedConfigMaps)
 	core.POST("/endpoints", service.CreateNamespacedEndPoints)
 	core.POST("/events", service.CreateNamespacedEvents)
@@ -39,7 +39,7 @@ func newCoreController(v1 *echo.Group) {
 	core.GET("/limitranges/:namespace", service.ListNamespacedLimitRanges)
 	core.GET("/namespaces", service.ListNamespaces)
 	core.GET("/nodes", service.ListNode)
-	core.GET("/persistentvolumes", service.ListNamespacedPersistentVolumes)
+	core.GET("/persistentvolumes", service.ListPersistentVolumesForAllNamespaces)
 	core.GET("/persistentvolumeclaims", service.ListPersistentVolumeClaimsForAllNamespaces)
 	core.GET("/persistentvolumeclaims/:namespace", service.ListNamespacedPersistentVolumeClaims)
 	core.GET("/pods", service.ListPodsForAllNamespaces)
@@ -64,7 +64,6 @@ func newCoreController(v1 *echo.Group) {
 	core.GET("/events/:namespace/:name", service.GetNamespacedEvents)
 	core.GET("/limitranges/:namespace/:name", service.GetNamespacedLimitRanges)
 	core.GET("/namespaces/:name", service.GetNamespaces)
-	// -- core.GET("/namespaces/:name", service.GetNamespaces) // >> echo framework
 	core.GET("/nodes/:name", service.GetNodes)
 	core.GET("/persistentvolumes/:name", service.GetPersistentVolumes)
 	core.GET("/persistentvolumeclaims/:namespace/:name", service.GetNamespacedPersistentVolumeClaims)
@@ -80,10 +79,10 @@ func newCoreController(v1 *echo.Group) {
 
 	// REPLACE
 	// TODO:
-	core.PUT("/pods/:namespace", service.ReplaceNamespacedPods)
-	core.PUT("/podstatuses/:namespace", service.ReplaceNamespacedPodStatuses)
-	core.PUT("/services/:namespace", service.ReplaceNamespacedServices)
-	core.PUT("/servicestatuses/:namespace", service.ReplaceNamespacedServiceStatuses)
+	core.PUT("/pods", service.ReplaceNamespacedPods)
+	core.PUT("/podstatuses", service.ReplaceNamespacedPodStatuses)
+	core.PUT("/services", service.ReplaceNamespacedServices)
+	core.PUT("/servicestatuses", service.ReplaceNamespacedServiceStatuses)
 
 	// PATCH
 	// TODO:
@@ -111,11 +110,11 @@ func newCoreController(v1 *echo.Group) {
 	core.DELETE("/endpoints", service.DeleteNamespacedEndpoints)
 	core.DELETE("/events", service.DeleteNamespacedEvents)
 	core.DELETE("/limitranges", service.DeleteNamespacedLimitRanges)
-	core.DELETE("/namespaces/:namespace", service.DeleteNamespaces)
-	core.DELETE("/nodes", service.DeleteNodes)
+	core.DELETE("/namespaces/:name", service.DeleteNamespaces)
+	// core.DELETE("/nodes/:name", service.DeleteNodes)
 	core.DELETE("/persistentvolumes", service.DeletePersistentVolumes)
 	core.DELETE("/persistentvolumeclaims", service.DeleteNamespacedPersistentVolumeClaims)
-	core.DELETE("/pods", service.DeleteNamespacedPods)
+	core.DELETE("/pods/:namespace/:name", service.DeleteNamespacedPods)
 	core.DELETE("/podtemplates", service.DeleteNamespacedPodTemplates)
 	core.DELETE("/replicationcontrollers", service.DeleteNamespacedReplicationControllers)
 	core.DELETE("/resourcequota", service.DeleteNamespacedResourceQuotas)

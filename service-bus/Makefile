@@ -15,9 +15,14 @@ deps:
 docker:
 	./aio/scripts/docker.sh
 
+.PHONY: docs
+docs:
+	# swag init --parseDependency --parseInternal --generalInfo="main.go" --dir="./"
+	swag init
+
 .PHONY: clean
 clean:
-	@rm -f ${BINARY}
+	@rm -rf ${BINARY} docs
 
 .PHONY: build
 build:
