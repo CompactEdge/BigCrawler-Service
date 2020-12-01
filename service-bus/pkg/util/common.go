@@ -25,6 +25,7 @@ func ParseBody(ctx echo.Context) (runtime.Object, int, error) {
 	// 1. Parameter
 	// TODO
 	namespace := ctx.Param("namespace")
+	ctx.Logger().Debug(namespace)
 	if namespace != "" {
 		return nil, http.StatusOK, nil
 	}

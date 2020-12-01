@@ -12,10 +12,12 @@ import (
 	"github.com/compactedge/cewizontech/service-bus/pkg/mq"
 	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 
+	_ "github.com/compactedge/cewizontech/service-bus/docs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
+	echoSwagger "github.com/swaggo/echo-swagger" // echo-swagger middleware
 	// "github.com/spf13/cobra"
 )
 
@@ -31,6 +33,20 @@ func init() {
 	}
 }
 
+// @title Swagger API
+// @version 1.0
+// @description This is a Service Bus server.
+
+// @contact.name API Support
+// @contact.url http://www.wizontech.com/
+// @contact.email changsu.im@wizontech.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host 127.0.0.1:7000
+// @BasePath /api/v1
+// @schemes http
 func main() {
 	// Gracefully stop application
 	var gracefulStop = make(chan os.Signal)
@@ -50,6 +66,8 @@ func main() {
 	e := echo.New()
 	e.HideBanner = true
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	
 	if viper.GetBool("enable.rabbitmq") == true {
 		log.Debug("message queue channel init")
 		mq.SetConfigChannel(e)
@@ -73,6 +91,14 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(logConfig))
 	// e.Use(mq.BusClientAPI)
 
+	middleware.DefaultCORSConfig = middleware.CORSConfig{
+		Skipper:      middleware.DefaultSkipper,
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"*"},
+		// AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
+	
 	if flags.Debug == true {
 		e.Logger.SetLevel(log.DEBUG)
 	} else {
@@ -92,6 +118,14 @@ func main() {
 	// select {}
 }
 
+// HealthCheck godoc
+// @Summary 헬스 체크
+// @Description 헬스 체크를 위한 API
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /health [get]
 func healthCheck(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, "OK")
 }

@@ -14,7 +14,42 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-// CreateNamespacedConfigMaps ...
+// CreateNamespacedBindings godoc
+// @Summary Binding 생성
+// @Description JSON 형식의 body와 함께 생성할 Binding을 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Binding body string true "Create Binding"
+// @Router /core/bindings [post]
+func CreateNamespacedBindings(ctx echo.Context) error {
+	body, code, err := util.ParseBody(ctx)
+	if err != nil {
+		return ctx.JSON(code, err)
+	}
+	namespace := body.(*corev1.Binding).Namespace
+	if namespace == "" {
+		namespace = metav1.NamespaceDefault
+	}
+	err = client.GetKubeClient().CoreV1().Pods(namespace).Bind(context.TODO(), body.(*corev1.Binding), metav1.CreateOptions{})
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+	return ctx.JSON(http.StatusOK, body.(*corev1.Binding))
+}
+
+// CreateNamespacedConfigMaps godoc
+// @Summary 특정 네임스페이스의 컨피그맵 생성
+// @Description JSON 형식의 body와 함께 생성할 컨피그맵을 지정합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ConfigMap body string true "Create ConfigMap"
+// @Router /core/configmaps [post]
 func CreateNamespacedConfigMaps(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -31,7 +66,16 @@ func CreateNamespacedConfigMaps(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// CreateNamespacedEndPoints ...
+// CreateNamespacedEndPoints godoc
+// @Summary 특정 네임스페이스의 엔드포인트 생성
+// @Description JSON 형식의 body와 함께 생성할 엔드포인트를 요청합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param EndPoints body string true "Create EndPoints"
+// @Router /core/endpoints [post]
 func CreateNamespacedEndPoints(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -48,7 +92,16 @@ func CreateNamespacedEndPoints(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedEvents ...
+// CreateNamespacedEvents godoc
+// @Summary 특정 네임스페이스의 Event 생성
+// @Description JSON 형식의 body와 함께 생성할 Event를 요청합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Event body string true "Create Event"
+// @Router /core/events [post]
 func CreateNamespacedEvents(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -65,7 +118,16 @@ func CreateNamespacedEvents(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedEvictions ...
+// CreateNamespacedEvictions godoc
+// @Summary 특정 네임스페이스의 Eviction 생성
+// @Description JSON 형식의 body와 함께 생성할 Eviction을 요청합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Eviction body string true "Create Eviction"
+// @Router /core/evictions [post]
 // TODO
 func CreateNamespacedEvictions(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -100,7 +162,16 @@ func CreateNamespacedLimitRanges(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespaces ...
+// CreateNamespaces godoc
+// @Summary 새로운 네임스페이스 생성
+// @Description JSON 형식의 body와 함께 생성할 네임스페이스를 지정합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Namespace body string true "Create Namespace"
+// @Router /core/namespaces [post]
 func CreateNamespaces(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -156,7 +227,16 @@ func CreateNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedPods ...
+// CreateNamespacedPods godoc
+// @Summary Pod 생성
+// @Description JSON 형식의 body와 함께 생성할 Pod를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Pod body string true "Create Pod"
+// @Router /core/pods [post]
 func CreateNamespacedPods(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -171,23 +251,6 @@ func CreateNamespacedPods(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusCreated, obj)
-}
-
-// CreateNamespacedPodBindings ...
-func CreateNamespacedPodBindings(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Binding).Namespace
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Pods(namespace).Bind(context.TODO(), body.(*corev1.Binding), metav1.CreateOptions{})
-	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, err)
-	}
-	return ctx.JSON(http.StatusOK, body.(*corev1.Binding))
 }
 
 // CreateNamespacedPodTemplates ...
@@ -294,7 +357,15 @@ func CreateNamespacedServiceAccounts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// ListComponentStatuses ...
+// ListComponentStatuses godoc
+// @Summary 모든 ComponentStatuses 조회
+// @Description 모든 ComponentStatuses 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/componentstatuses [get]
 func ListComponentStatuses(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ComponentStatuses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -303,7 +374,15 @@ func ListComponentStatuses(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListConfigMapsForAllNamespaces ...
+// ListConfigMapsForAllNamespaces godoc
+// @Summary 모든 ConfigMap 조회
+// @Description 모든 ConfigMap 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/configmaps [get]
 func ListConfigMapsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ConfigMaps(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -312,7 +391,16 @@ func ListConfigMapsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedConfigMaps ...
+// ListNamespacedConfigMaps godoc
+// @Summary 특정 네임스페이스의 ConfigMap 조회
+// @Description 특정 네임스페이스의 ConfigMap 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced ConfigMaps"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/configmaps/{namespace} [get]
 func ListNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -322,7 +410,15 @@ func ListNamespacedConfigMaps(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListEndpointsForAllNamespaces ...
+// ListEndpointsForAllNamespaces godoc
+// @Summary 모든 EndPoints 조회
+// @Description 모든 EndPoints 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/endpoints [get]
 func ListEndpointsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Endpoints(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -331,7 +427,16 @@ func ListEndpointsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedEndpoints ...
+// ListNamespacedEndpoints godoc
+// @Summary 특정 네임스페이스의 EndPoints 조회
+// @Description 특정 네임스페이스의 EndPoints 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced EndPoints"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/endpoints/{namespace} [get]
 func ListNamespacedEndpoints(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Endpoints(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -341,7 +446,15 @@ func ListNamespacedEndpoints(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListEventsForAllNamespaces ...
+// ListEventsForAllNamespaces godoc
+// @Summary 모든 Event 조회
+// @Description 모든 Event 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/events [get]
 func ListEventsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Events(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -350,7 +463,16 @@ func ListEventsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedEvents ...
+// ListNamespacedEvents godoc
+// @Summary 특정 네임스페이스의 Event 조회
+// @Description 특정 네임스페이스의 Event 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced Events"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/events/{namespace} [get]
 func ListNamespacedEvents(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Events(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -360,7 +482,15 @@ func ListNamespacedEvents(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListLimitRangesForAllNamespaces ...
+// ListLimitRangesForAllNamespaces godoc
+// @Summary 모든 LimitRange 조회
+// @Description 모든 LimitRange 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/limitranges [get]
 func ListLimitRangesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().LimitRanges(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -369,7 +499,16 @@ func ListLimitRangesForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedLimitRanges ...
+// ListNamespacedLimitRanges godoc
+// @Summary 특정 네임스페이스의 LimitRange 조회
+// @Description 특정 네임스페이스의 LimitRange 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced LimitRanges"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/limitranges/{namespace} [get]
 func ListNamespacedLimitRanges(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().LimitRanges(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -379,7 +518,15 @@ func ListNamespacedLimitRanges(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespaces ...
+// ListNamespaces godoc
+// @Summary 모든 Namespace 조회
+// @Description 모든 Namespace 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/namespaces [get]
 func ListNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -388,7 +535,15 @@ func ListNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNode ...
+// ListNode godoc
+// @Summary 모든 Node 조회
+// @Description 모든 Node 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/nodes [get]
 func ListNode(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -397,8 +552,16 @@ func ListNode(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedPersistentVolumes ...
-func ListNamespacedPersistentVolumes(ctx echo.Context) error {
+// ListPersistentVolumesForAllNamespaces godoc
+// @Summary 모든 PersistentVolume 조회
+// @Description 모든 PersistentVolume 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/persistentvolumes [get]
+func ListPersistentVolumesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return err
@@ -406,7 +569,15 @@ func ListNamespacedPersistentVolumes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListPersistentVolumeClaimsForAllNamespaces ...
+// ListPersistentVolumeClaimsForAllNamespaces godoc
+// @Summary 모든 PersistentVolumeClaim 조회
+// @Description 모든 PersistentVolumeClaim 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/persistentvolumeclaims [get]
 func ListPersistentVolumeClaimsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -415,7 +586,16 @@ func ListPersistentVolumeClaimsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedPersistentVolumeClaims ...
+// ListNamespacedPersistentVolumeClaims godoc
+// @Summary 특정 네임스페이스의 PersistentVolumeClaim 조회
+// @Description 특정 네임스페이스의 PersistentVolumeClaim 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced PersistentVolumeClaims"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/persistentvolumeclaims/{namespace} [get]
 func ListNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -425,7 +605,15 @@ func ListNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListPodsForAllNamespaces ...
+// ListPodsForAllNamespaces godoc
+// @Summary 모든 Pod 조회
+// @Description 모든 Pod 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/pods [get]
 func ListPodsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Pods(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -434,7 +622,16 @@ func ListPodsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedPods ...
+// ListNamespacedPods godoc
+// @Summary 특정 네임스페이스의 Pod 조회
+// @Description 특정 네임스페이스의 Pod 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced Pods"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/pods/{namespace} [get]
 func ListNamespacedPods(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -444,7 +641,15 @@ func ListNamespacedPods(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListPodTemplatesForAllNamespaces ...
+// ListPodTemplatesForAllNamespaces godoc
+// @Summary 모든 PodTemplates 조회
+// @Description 모든 PodTemplates 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/podtemplates [get]
 func ListPodTemplatesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PodTemplates(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -453,7 +658,16 @@ func ListPodTemplatesForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedPodTemplates ...
+// ListNamespacedPodTemplates godoc
+// @Summary 특정 네임스페이스의 PodTemplates 조회
+// @Description 특정 네임스페이스의 PodTemplates 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced PodTemplates"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/podtemplates/{namespace} [get]
 func ListNamespacedPodTemplates(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().PodTemplates(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -463,7 +677,15 @@ func ListNamespacedPodTemplates(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListReplicationControllersForAllNamespaces ...
+// ListReplicationControllersForAllNamespaces godoc
+// @Summary 모든 ReplicationController 조회
+// @Description 모든 ReplicationController 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/replicationcontrollers [get]
 func ListReplicationControllersForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -472,7 +694,16 @@ func ListReplicationControllersForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedReplicationControllers ...
+// ListNamespacedReplicationControllers godoc
+// @Summary 특정 네임스페이스의 ReplicationController 조회
+// @Description 특정 네임스페이스의 ReplicationController 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced ReplicationControllers"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/replicationcontrollers/{namespace} [get]
 func ListNamespacedReplicationControllers(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -482,7 +713,15 @@ func ListNamespacedReplicationControllers(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListResourceQuotasForAllNamespaces ...
+// ListResourceQuotasForAllNamespaces godoc
+// @Summary 모든 ResourceQuota 조회
+// @Description 모든 ResourceQuota 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/resourcequota [get]
 func ListResourceQuotasForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ResourceQuotas(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -491,7 +730,16 @@ func ListResourceQuotasForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedResourceQuotas ...
+// ListNamespacedResourceQuotas godoc
+// @Summary 특정 네임스페이스의 ResourceQuota 조회
+// @Description 특정 네임스페이스의 ResourceQuota 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced ResourceQuotas"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/resourcequota/{namespace} [get]
 func ListNamespacedResourceQuotas(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ResourceQuotas(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -501,7 +749,15 @@ func ListNamespacedResourceQuotas(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListSecretsForAllNamespaces ...
+// ListSecretsForAllNamespaces godoc
+// @Summary 모든 Secret 조회
+// @Description 모든 Secret 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/secrets [get]
 func ListSecretsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Secrets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -510,7 +766,16 @@ func ListSecretsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedSecret ...
+// ListNamespacedSecret godoc
+// @Summary 특정 네임스페이스의 Secret 조회
+// @Description 특정 네임스페이스의 Secret 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced Secrets"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/secrets/{namespace} [get]
 func ListNamespacedSecret(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Secrets(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -520,7 +785,15 @@ func ListNamespacedSecret(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListServicesForAllNamespaces ...
+// ListServicesForAllNamespaces godoc
+// @Summary 모든 Service 조회
+// @Description 모든 Service 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/services [get]
 func ListServicesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Services(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -529,7 +802,16 @@ func ListServicesForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedServices ...
+// ListNamespacedServices godoc
+// @Summary 특정 네임스페이스의 Service 조회
+// @Description 특정 네임스페이스의 Service 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced Services"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/services/{namespace} [get]
 func ListNamespacedServices(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Services(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -539,7 +821,15 @@ func ListNamespacedServices(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListServiceAccountsForAllNamespaces ...
+// ListServiceAccountsForAllNamespaces godoc
+// @Summary 모든 ServiceAccount 조회
+// @Description 모든 ServiceAccount 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/serviceaccounts [get]
 func ListServiceAccountsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -548,7 +838,16 @@ func ListServiceAccountsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedServiceAccounts ...
+// ListNamespacedServiceAccounts godoc
+// @Summary 특정 네임스페이스의 Service 조회
+// @Description 특정 네임스페이스의 Service 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "List Namespaced Services"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/services/{namespace} [get]
 func ListNamespacedServiceAccounts(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -558,7 +857,16 @@ func ListNamespacedServiceAccounts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetComponentStatuses ...
+// GetComponentStatuses godoc
+// @Summary 특정 ComponentStatus 조회
+// @Description 특정 ComponentStatus 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param name path string true "Get ComponentStatus"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/componentStatuses/{name} [get]
 func GetComponentStatuses(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ComponentStatuses().Get(context.TODO(), name, metav1.GetOptions{})
@@ -568,7 +876,17 @@ func GetComponentStatuses(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedConfigMaps ...
+// GetNamespacedConfigMaps godoc
+// @Summary 특정 네임스페이스의 ConfigMap 조회
+// @Description 특정 네임스페이스의 ConfigMap 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "ConfigMap namespace"
+// @Param name path string true "ConfigMap name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/configmaps/{namespace}/{name} [get]
 func GetNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -579,7 +897,17 @@ func GetNamespacedConfigMaps(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedEndpoints ...
+// GetNamespacedEndpoints godoc
+// @Summary 특정 네임스페이스의 EndPoints 조회
+// @Description 특정 네임스페이스의 EndPoints 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "EndPoints namespace"
+// @Param name path string true "EndPoints name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/endpoints/{namespace}/{name} [get]
 func GetNamespacedEndpoints(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -590,7 +918,17 @@ func GetNamespacedEndpoints(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedEvents ...
+// GetNamespacedEvents godoc
+// @Summary 특정 네임스페이스의 Event 조회
+// @Description 특정 네임스페이스의 Event 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "Event namespace"
+// @Param name path string true "Event name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/events/{namespace}/{name} [get]
 func GetNamespacedEvents(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -601,7 +939,17 @@ func GetNamespacedEvents(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedLimitRanges ...
+// GetNamespacedLimitRanges godoc
+// @Summary 특정 네임스페이스의 LimitRange 조회
+// @Description 특정 네임스페이스의 LimitRange 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "LimitRange namespace"
+// @Param name path string true "LimitRange name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/limitranges/{namespace}/{name} [get]
 func GetNamespacedLimitRanges(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -612,7 +960,16 @@ func GetNamespacedLimitRanges(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespaces ...
+// GetNamespaces godoc
+// @Summary 특정 Namespace 조회
+// @Description 특정 Namespace 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param name path string true "Namespace name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/namespaces/{name} [get]
 func GetNamespaces(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Namespaces().Get(context.TODO(), name, metav1.GetOptions{})
@@ -622,7 +979,16 @@ func GetNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNodes ...
+// GetNodes godoc
+// @Summary 특정 Node 조회
+// @Description 특정 Node 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param name path string true "Node name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/nodes/{name} [get]
 func GetNodes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Nodes().Get(context.TODO(), name, metav1.GetOptions{})
@@ -632,7 +998,16 @@ func GetNodes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetPersistentVolumes ...
+// GetPersistentVolumes godoc
+// @Summary 특정 PersistentVolume 조회
+// @Description 특정 PersistentVolume 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param name path string true "PersistentVolume name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/persistentvolumes/{name} [get]
 func GetPersistentVolumes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumes().Get(context.TODO(), name, metav1.GetOptions{})
@@ -642,7 +1017,17 @@ func GetPersistentVolumes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedPersistentVolumeClaims ...
+// GetNamespacedPersistentVolumeClaims godoc
+// @Summary 특정 네임스페이스의 특정 PersistentVolumeClaims 조회
+// @Description 특정 네임스페이스의 특정 PersistentVolumeClaims 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "PersistentVolumeClaims namespace"
+// @Param name path string true "PersistentVolumeClaims name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/persistentvolumeclaims/{namespace}/{name} [get]
 func GetNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -653,7 +1038,17 @@ func GetNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedPods ...
+// GetNamespacedPods godoc
+// @Summary 특정 네임스페이스의 특정 Pod 조회
+// @Description 특정 네임스페이스의 특정 Pod 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "Pod namespace"
+// @Param name path string true "Pod name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/pods/{namespace}/{name} [get]
 func GetNamespacedPods(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -664,8 +1059,18 @@ func GetNamespacedPods(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedPodLogs ...
-// TODO
+// GetNamespacedPodLogs godoc
+// @Summary 특정 네임스페이스의 특정 PodLog 조회
+// @Description 특정 네임스페이스의 특정 PodLog 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "PodLog namespace"
+// @Param name path string true "PodLog name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/podlogs/{namespace}/{name} [get]
+// TODO:
 func GetNamespacedPodLogs(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -673,7 +1078,17 @@ func GetNamespacedPodLogs(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, rest)
 }
 
-// GetNamespacedPodTemplates ...
+// GetNamespacedPodTemplates godoc
+// @Summary 특정 네임스페이스의 특정 PodTemplate 조회
+// @Description 특정 네임스페이스의 특정 PodTemplate 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "PodTemplate namespace"
+// @Param name path string true "PodTemplate name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/podtemplates/{namespace}/{name} [get]
 func GetNamespacedPodTemplates(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -684,7 +1099,17 @@ func GetNamespacedPodTemplates(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedReplicationControllers ...
+// GetNamespacedReplicationControllers godoc
+// @Summary 특정 네임스페이스의 특정 ReplicationController 조회
+// @Description 특정 네임스페이스의 특정 ReplicationController 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "ReplicationController namespace"
+// @Param name path string true "ReplicationController name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/replicationcontrollers/{namespace}/{name} [get]
 func GetNamespacedReplicationControllers(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -695,7 +1120,17 @@ func GetNamespacedReplicationControllers(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedReplicationControllerScales ...
+// GetNamespacedReplicationControllerScales godoc
+// @Summary 특정 네임스페이스의 특정 ReplicationControllerScale 조회
+// @Description 특정 네임스페이스의 특정 ReplicationControllerScale 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "ReplicationControllerScale namespace"
+// @Param name path string true "ReplicationControllerScale name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/replicationcontrollerscales/{namespace}/{name} [get]
 func GetNamespacedReplicationControllerScales(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -706,7 +1141,17 @@ func GetNamespacedReplicationControllerScales(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedResourceQuotas ...
+// GetNamespacedResourceQuotas godoc
+// @Summary 특정 네임스페이스의 특정 ResourceQuota 조회
+// @Description 특정 네임스페이스의 특정 ResourceQuota 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "ResourceQuota namespace"
+// @Param name path string true "ResourceQuota name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/resourcequotas/{namespace}/{name} [get]
 func GetNamespacedResourceQuotas(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -717,7 +1162,17 @@ func GetNamespacedResourceQuotas(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedSecrets ...
+// GetNamespacedSecrets godoc
+// @Summary 특정 네임스페이스의 특정 Secret 조회
+// @Description 특정 네임스페이스의 특정 Secret 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "Secret namespace"
+// @Param name path string true "Secret name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/secrets/{namespace}/{name} [get]
 func GetNamespacedSecrets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -728,7 +1183,17 @@ func GetNamespacedSecrets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedServices ...
+// GetNamespacedServices godoc
+// @Summary 특정 네임스페이스의 특정 Service 조회
+// @Description 특정 네임스페이스의 특정 Service 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "Service namespace"
+// @Param name path string true "Service name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/services/{namespace}/{name} [get]
 func GetNamespacedServices(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -739,7 +1204,17 @@ func GetNamespacedServices(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedServiceAccounts ...
+// GetNamespacedServiceAccounts godoc
+// @Summary 특정 네임스페이스의 특정 ServiceAccount 조회
+// @Description 특정 네임스페이스의 특정 ServiceAccount 조회
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param namespace path string true "ServiceAccount namespace"
+// @Param name path string true "ServiceAccount name"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/serviceaccounts/{namespace}/{name} [get]
 func GetNamespacedServiceAccounts(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -750,13 +1225,23 @@ func GetNamespacedServiceAccounts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ReplaceNamespacedPods ...
+// ReplaceNamespacedPods godoc
+// @Summary 특정 Pod 수정
+// @Description 특정 Pod 수정
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param pod body string true "Pod manifest"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/pods [put]
 func ReplaceNamespacedPods(ctx echo.Context) error {
-	namespace := ctx.Param(util.NamespaceString)
+	// namespace := ctx.Param(util.NamespaceString)
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
 		return ctx.JSON(code, err)
 	}
+	namespace := body.(*corev1.Pod).Namespace
 	updated, err := client.GetKubeClient().CoreV1().Pods(namespace).Update(context.TODO(), body.(*corev1.Pod), metav1.UpdateOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -764,14 +1249,24 @@ func ReplaceNamespacedPods(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, updated)
 }
 
-// ReplaceNamespacedPodStatuses ...
+// ReplaceNamespacedPodStatuses godoc
+// @Summary 특정 PodStatus 수정
+// @Description 특정 PodStatus 수정
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param pod body string true "PodStatus manifest"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/podstatuses [put]
 // TODO: Status?
 func ReplaceNamespacedPodStatuses(ctx echo.Context) error {
-	namespace := ctx.Param(util.NamespaceString)
+	// namespace := ctx.Param(util.NamespaceString)
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
 		return ctx.JSON(code, err)
 	}
+	namespace := body.(*corev1.Pod).Namespace
 	updated, err := client.GetKubeClient().CoreV1().Pods(namespace).UpdateStatus(context.TODO(), body.(*corev1.Pod), metav1.UpdateOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -779,13 +1274,23 @@ func ReplaceNamespacedPodStatuses(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, updated)
 }
 
-// ReplaceNamespacedServices ...
+// ReplaceNamespacedServices godoc
+// @Summary 특정 Service 수정
+// @Description 특정 Service 수정
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param pod body string true "Service manifest"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/services [put]
 func ReplaceNamespacedServices(ctx echo.Context) error {
-	namespace := ctx.Param(util.NamespaceString)
+	// namespace := ctx.Param(util.NamespaceString)
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
 		return ctx.JSON(code, err)
 	}
+	namespace := body.(*corev1.Service).Namespace
 	updated, err := client.GetKubeClient().CoreV1().Services(namespace).Update(context.TODO(), body.(*corev1.Service), metav1.UpdateOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -793,14 +1298,24 @@ func ReplaceNamespacedServices(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, updated)
 }
 
-// ReplaceNamespacedServiceStatuses ...
+// ReplaceNamespacedServiceStatuses godoc
+// @Summary 특정 ServiceStatus 수정
+// @Description 특정 ServiceStatus 수정
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Param pod body string true "ServiceStatus manifest"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/servicestatuses [put]
 // TODO:
 func ReplaceNamespacedServiceStatuses(ctx echo.Context) error {
-	namespace := ctx.Param(util.NamespaceString)
+	// namespace := ctx.Param(util.NamespaceString)
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
 		return ctx.JSON(code, err)
 	}
+	namespace := body.(*corev1.Service).Namespace
 	updated, err := client.GetKubeClient().CoreV1().Services(namespace).UpdateStatus(context.TODO(), body.(*corev1.Service), metav1.UpdateOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -1060,16 +1575,29 @@ func DeleteNamespacedLimitRanges(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespaces ...
+// DeleteNamespaces godoc
+// @Summary 특정 Namespace 삭제
+// @Description 
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/namespaces/{name} [delete]
+// @Param namespace path string true "Namespace name"
 func DeleteNamespaces(ctx echo.Context) error {
-	var namespace string
-	body, code, err := util.ParseBody(ctx)
-	if code == http.StatusOK && body == nil {
-		namespace, _, _ = util.Namer(ctx)
-	} else {
-		namespace = body.(*corev1.Namespace).Name
-	}
-	err = client.GetKubeClient().CoreV1().Namespaces().Delete(context.TODO(), namespace, metav1.DeleteOptions{})
+	// var namespace string
+	// test := ctx.ParamNames()
+	// ctx.Logger().Debug(test)
+	namespace := ctx.Param(util.NameString)
+	ctx.Logger().Debug(namespace)
+	// body, code, err := util.ParseBody(ctx)
+	// if code == http.StatusOK && body == nil {
+	// 	namespace, _, _ = util.Namer(ctx)
+	// } else {
+	// 	namespace = body.(*corev1.Namespace).Name
+	// }
+	err := client.GetKubeClient().CoreV1().Namespaces().Delete(context.TODO(), namespace, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1126,18 +1654,30 @@ func DeleteNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedPods ...
+// DeleteNamespacedPods godoc
+// @Summary 특정 네임스페이스의 특정 Pod 삭제
+// @Description 
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /core/pods/{namespace}/{name} [delete]
+// @Param namespace path string true "Pod namespace"
+// @Param name path string true "Pod name"
 func DeleteNamespacedPods(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Pod).Namespace
-	name := body.(*corev1.Pod).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Pods(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.Pod).Namespace
+	// name := body.(*corev1.Pod).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().Pods(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
