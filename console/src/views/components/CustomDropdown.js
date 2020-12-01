@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Col,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
 } from 'reactstrap';
+
+const addonStyle = {
+  padding: '0px 10px',
+  color: '#ef8157',
+  borderWidth: '2px',
+  borderRadius: '3px 0 0 3px',
+  backgroundColor: '#444444',
+  borderColor: '#444444',
+  fontSize: '11px',
+  fontWeight: '550',
+};
+
+const dropdownButtonStyle = {
+  margin: '0',
+  borderRadius: '0 3px 3px 0',
+  padding: '7px',
+};
 
 const CustomDropdown = props => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -18,19 +37,25 @@ const CustomDropdown = props => {
   };
 
   return (
-    <Col>
-      <span>{props.title}</span>
-      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-        <DropdownToggle caret>{props.value}</DropdownToggle>
-        <DropdownMenu>
-          {props.items.map((item, idx) => (
-            <DropdownItem key={idx} onClick={handleClickItem}>
-              {item}
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
-      </Dropdown>
-    </Col>
+    <div style={{ marginRight: '3px' }}>
+      <InputGroup>
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText style={addonStyle}>{props.title}</InputGroupText>
+        </InputGroupAddon>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle style={dropdownButtonStyle} caret>
+            {props.value}
+          </DropdownToggle>
+          <DropdownMenu style={{ fontSize: '14px' }}>
+            {props.items.map((item, idx) => (
+              <DropdownItem key={idx} onClick={handleClickItem}>
+                {item}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+      </InputGroup>
+    </div>
   );
 };
 

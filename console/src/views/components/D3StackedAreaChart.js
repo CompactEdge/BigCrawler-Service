@@ -240,8 +240,8 @@ class D3StackedAreaChart extends React.Component {
     svg
       .append('text')
       .attr('text-anchor', 'end')
-      .attr('x', width)
-      .attr('y', height + 40)
+      .attr('x', width + 40)
+      .attr('y', height + 10)
       .text('Time');
 
     // Add Y axis label:

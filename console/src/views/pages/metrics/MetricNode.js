@@ -123,12 +123,14 @@ const MetricNode = props => {
   return (
     <>
       <div className="content">
-        <CustomDropdown
-          title="Node"
-          value={node}
-          items={nodeList}
-          onChange={handleChangeNode}
-        />
+        <div>
+          <CustomDropdown
+            title="Node"
+            value={node}
+            items={nodeList}
+            onChange={handleChangeNode}
+          />
+        </div>
         <CardTitle tag="h4">{node}</CardTitle>
         <Row>
           <Col md="12">

@@ -8,10 +8,6 @@ import {
   CardBody,
   CardTitle,
   Col,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
 } from 'reactstrap';
 import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
