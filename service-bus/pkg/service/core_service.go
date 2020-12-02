@@ -15,14 +15,15 @@ import (
 )
 
 // CreateNamespacedBindings godoc
-// @Summary Binding 생성
+// @deprecated
+// @Summary 새로운 Binding 생성
 // @Description JSON 형식의 body와 함께 생성할 Binding을 지정한다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Binding body string true "Create Binding"
+// @Param Binding body string true "생성할 Binding 매니페스트"
 // @Router /core/bindings [post]
 func CreateNamespacedBindings(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -41,14 +42,14 @@ func CreateNamespacedBindings(ctx echo.Context) error {
 }
 
 // CreateNamespacedConfigMaps godoc
-// @Summary 특정 네임스페이스의 컨피그맵 생성
-// @Description JSON 형식의 body와 함께 생성할 컨피그맵을 지정합니다.
+// @Summary 특정 네임스페이스에 새로운 ConfigMap 생성
+// @Description JSON 형식의 body와 함께 생성할 ConfigMap을 지정합니다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param ConfigMap body string true "Create ConfigMap"
+// @Param ConfigMap body string true "생성할 ConfigMap 매니페스트"
 // @Router /core/configmaps [post]
 func CreateNamespacedConfigMaps(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -67,14 +68,14 @@ func CreateNamespacedConfigMaps(ctx echo.Context) error {
 }
 
 // CreateNamespacedEndPoints godoc
-// @Summary 특정 네임스페이스의 엔드포인트 생성
-// @Description JSON 형식의 body와 함께 생성할 엔드포인트를 요청합니다.
+// @Summary 특정 네임스페이스에 새로운 EndPoints 생성
+// @Description JSON 형식의 body와 함께 생성할 EndPoints를 요청합니다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param EndPoints body string true "Create EndPoints"
+// @Param EndPoints body string true "생성할 EndPoints 매니페스트"
 // @Router /core/endpoints [post]
 func CreateNamespacedEndPoints(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -93,14 +94,14 @@ func CreateNamespacedEndPoints(ctx echo.Context) error {
 }
 
 // CreateNamespacedEvents godoc
-// @Summary 특정 네임스페이스의 Event 생성
+// @Summary 특정 네임스페이스에 새로운 Event 생성
 // @Description JSON 형식의 body와 함께 생성할 Event를 요청합니다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Event body string true "Create Event"
+// @Param Event body string true "생성할 Event 매니페스트"
 // @Router /core/events [post]
 func CreateNamespacedEvents(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -119,14 +120,15 @@ func CreateNamespacedEvents(ctx echo.Context) error {
 }
 
 // CreateNamespacedEvictions godoc
-// @Summary 특정 네임스페이스의 Eviction 생성
+// @deprecated
+// @Summary 특정 네임스페이스에 새로운 Eviction 생성
 // @Description JSON 형식의 body와 함께 생성할 Eviction을 요청합니다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Eviction body string true "Create Eviction"
+// @Param Eviction body string true "생성할 Eviction 매니페스트"
 // @Router /core/evictions [post]
 // TODO
 func CreateNamespacedEvictions(ctx echo.Context) error {
@@ -145,7 +147,16 @@ func CreateNamespacedEvictions(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// CreateNamespacedLimitRanges ...
+// CreateNamespacedLimitRanges godoc
+// @Summary 특정 네임스페이스에 새로운 LimitRange 생성
+// @Description JSON 형식의 body와 함께 생성할 LimitRange을 요청합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param LimitRange body string true "생성할 LimitRange 매니페스트"
+// @Router /core/limitranges [post]
 func CreateNamespacedLimitRanges(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -163,14 +174,14 @@ func CreateNamespacedLimitRanges(ctx echo.Context) error {
 }
 
 // CreateNamespaces godoc
-// @Summary 새로운 네임스페이스 생성
-// @Description JSON 형식의 body와 함께 생성할 네임스페이스를 지정합니다.
+// @Summary 새로운 Namespace 생성
+// @Description JSON 형식의 body와 함께 생성할 Namespace를 지정합니다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Namespace body string true "Create Namespace"
+// @Param Namespace body string true "생성할 Namespace 매니페스트"
 // @Router /core/namespaces [post]
 func CreateNamespaces(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -184,7 +195,16 @@ func CreateNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNodes ...
+// CreateNodes godoc
+// @Summary 새로운 Node 생성
+// @Description JSON 형식의 body와 함께 생성할 Node를 지정합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Node body string true "생성할 Node 매니페스트"
+// @Router /core/nodes [post]
 func CreateNodes(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -197,7 +217,16 @@ func CreateNodes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreatePersistentVolumes ...
+// CreatePersistentVolumes godoc
+// @Summary 새로운 PersistentVolume 생성
+// @Description JSON 형식의 body와 함께 생성할 PersistentVolume을 지정합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param PersistentVolume body string true "생성할 PersistentVolume 매니페스트"
+// @Router /core/persistentvolumes [post]
 func CreatePersistentVolumes(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -210,7 +239,16 @@ func CreatePersistentVolumes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedPersistentVolumeClaims ...
+// CreateNamespacedPersistentVolumeClaims godoc
+// @Summary 새로운 PersistentVolumeClaim 생성
+// @Description JSON 형식의 body와 함께 생성할 PersistentVolumeClaim을 지정합니다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param PersistentVolumeClaim body string true "생성할 PersistentVolumeClaim 매니페스트"
+// @Router /core/persistentvolumeclaims [post]
 func CreateNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -228,14 +266,14 @@ func CreateNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 }
 
 // CreateNamespacedPods godoc
-// @Summary Pod 생성
+// @Summary 새로운 Pod 생성
 // @Description JSON 형식의 body와 함께 생성할 Pod를 지정한다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Pod body string true "Create Pod"
+// @Param Pod body string true "생성할 Pod 매니페스트"
 // @Router /core/pods [post]
 func CreateNamespacedPods(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
@@ -253,7 +291,17 @@ func CreateNamespacedPods(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedPodTemplates ...
+// CreateNamespacedPodTemplates godoc
+// @deprecated
+// @Summary 새로운 PodTemplate 생성
+// @Description JSON 형식의 body와 함께 생성할 PodTemplate를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param PodTemplate body string true "생성할 PodTemplate 매니페스트"
+// @Router /core/podtemplates [post]
 func CreateNamespacedPodTemplates(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -270,7 +318,16 @@ func CreateNamespacedPodTemplates(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedReplicationControllers ...
+// CreateNamespacedReplicationControllers godoc
+// @Summary 새로운 ReplicationController 생성
+// @Description JSON 형식의 body와 함께 생성할 ReplicationController를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ReplicationController body string true "생성할 ReplicationController 매니페스트"
+// @Router /core/replicationcontrollers [post]
 func CreateNamespacedReplicationControllers(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -287,7 +344,16 @@ func CreateNamespacedReplicationControllers(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedResourceQuotas ...
+// CreateNamespacedResourceQuotas godoc
+// @Summary ResourceQuota 생성
+// @Description JSON 형식의 body와 함께 생성할 ResourceQuota를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ResourceQuota body string true "생성할 ResourceQuota 매니페스트"
+// @Router /core/resourcequotas [post]
 func CreateNamespacedResourceQuotas(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -304,7 +370,16 @@ func CreateNamespacedResourceQuotas(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedSecrets ...
+// CreateNamespacedSecrets godoc
+// @Summary Secret 생성
+// @Description JSON 형식의 body와 함께 생성할 Secret를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Secret body string true "생성할 Secret 매니페스트"
+// @Router /core/secrets [post]
 func CreateNamespacedSecrets(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -321,7 +396,16 @@ func CreateNamespacedSecrets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedServices ...
+// CreateNamespacedServices godoc
+// @Summary Service 생성
+// @Description JSON 형식의 body와 함께 생성할 Service를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Service body string true "생성할 Service 매니페스트"
+// @Router /core/services [post]
 func CreateNamespacedServices(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -338,7 +422,16 @@ func CreateNamespacedServices(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, obj)
 }
 
-// CreateNamespacedServiceAccounts ...
+// CreateNamespacedServiceAccounts godoc
+// @Summary ServiceAccount 생성
+// @Description JSON 형식의 body와 함께 생성할 ServiceAccount를 지정한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ServiceAccount body string true "생성할 ServiceAccount 매니페스트"
+// @Router /core/serviceaccounts [post]
 func CreateNamespacedServiceAccounts(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -1370,15 +1463,35 @@ func PatchNamespacedServices(ctx echo.Context) error {
 	} else {
 		return ctx.JSON(http.StatusBadRequest, nil)
 	}
-	updated, err := client.GetKubeClient().CoreV1().Services(namespace).Patch(context.TODO(), name, types.JSONPatchType, bodyBytes, metav1.PatchOptions{})
+	updated, err := client.GetKubeClient().CoreV1().Services(namespace).Patch(
+		context.TODO(),
+		name,
+		types.JSONPatchType,
+		bodyBytes,
+		metav1.PatchOptions{})
 	return ctx.JSON(http.StatusOK, updated)
 }
 
-// DeleteCollectionNamespacedConfigMaps ...
+// DeleteCollectionNamespacedConfigMaps godoc
+// @Summary 특정 네임스페이스 ConfigMap 삭제
+// @Description 특정 네임스페이스에서 지정된 레이블에 맞는 ConfigMap들을 삭제한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Namespace path string true "Namespace name"
+// @Router /core/namespaces/{name} [delete]
 // TODO: given labelSelector
 func DeleteCollectionNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
-	err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{})
+	label := ""
+	err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).DeleteCollection(
+		context.TODO(),
+		metav1.DeleteOptions{},
+		metav1.ListOptions{
+			LabelSelector: label,
+		})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1388,7 +1501,10 @@ func DeleteCollectionNamespacedConfigMaps(ctx echo.Context) error {
 // DeleteCollectionNamespacedEndpoints ...
 func DeleteCollectionNamespacedEndpoints(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
-	err := client.GetKubeClient().CoreV1().Endpoints(namespace).DeleteCollection(context.TODO(), metav1.DeleteOptions{}, metav1.ListOptions{})
+	err := client.GetKubeClient().CoreV1().Endpoints(namespace).DeleteCollection(
+		context.TODO(),
+		metav1.DeleteOptions{},
+		metav1.ListOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1577,14 +1693,14 @@ func DeleteNamespacedLimitRanges(ctx echo.Context) error {
 
 // DeleteNamespaces godoc
 // @Summary 특정 Namespace 삭제
-// @Description 
+// @Description 지정된 Namespace를 삭제한다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param Namespace path string true "Namespace name"
 // @Router /core/namespaces/{name} [delete]
-// @Param namespace path string true "Namespace name"
 func DeleteNamespaces(ctx echo.Context) error {
 	// var namespace string
 	// test := ctx.ParamNames()
@@ -1604,7 +1720,16 @@ func DeleteNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNodes ...
+// DeleteNodes godoc
+// @Summary 특정 Node 삭제
+// @Description 지정된 Node를 삭제한다.
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Node path string true "Node name"
+// @Router /core/nodes/{name} [delete]
 func DeleteNodes(ctx echo.Context) error {
 	var name string
 	body, code, err := util.ParseBody(ctx)
@@ -1656,7 +1781,7 @@ func DeleteNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 
 // DeleteNamespacedPods godoc
 // @Summary 특정 네임스페이스의 특정 Pod 삭제
-// @Description 
+// @Description
 // @Tags core
 // @Accept */*
 // @Produce json

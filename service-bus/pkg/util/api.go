@@ -31,7 +31,7 @@ func RequestAPI(data *BodyData) (int, interface{}) {
 		return http.StatusInternalServerError, err
 	}
 	defer res.Body.Close()
-	
+
 	var resJSON map[string]interface{}
 	err = json.NewDecoder(res.Body).Decode(&resJSON)
 	if err != nil {

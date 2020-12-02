@@ -13,7 +13,7 @@ import (
 
 // CreateStorageClasses ...
 func CreateStorageClasses(ctx echo.Context) error {
-// func CreateStorageClasses(ctx echo.Context, JSONData *util.BodyData) (int, interface{}) {
+	// func CreateStorageClasses(ctx echo.Context, JSONData *util.BodyData) (int, interface{}) {
 	if ctx == nil {
 		return ctx.JSON(http.StatusBadRequest, nil)
 	}
@@ -54,7 +54,7 @@ func CreateVolumeAttachments(ctx echo.Context) error {
 
 // ListStorageClasses ...
 func ListStorageClasses(ctx echo.Context) error {
-// func ListStorageClasses() (int, runtime.Object) {
+	// func ListStorageClasses() (int, runtime.Object) {
 	list, err := client.GetKubeClient().StorageV1().StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)

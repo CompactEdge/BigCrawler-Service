@@ -67,7 +67,7 @@ func main() {
 	e.HideBanner = true
 
 	e.GET("/docs/*", docs.WrapHandler)
-	
+
 	if viper.GetBool("enable.rabbitmq") == true {
 		log.Debug("message queue channel init")
 		mq.SetConfigChannel(e)
@@ -98,7 +98,7 @@ func main() {
 		// AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
 	}
 	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
-	
+
 	if flags.Debug == true {
 		e.Logger.SetLevel(log.DEBUG)
 	} else {

@@ -21,13 +21,14 @@ pwd
 ## Build
 
 ```bash
+# Cross-Compiling for Linux
 make build
 ```
 
 ## Run
 
 ```bash
-./service-bus
+make dev
 ```
 
 ## Helm
@@ -38,10 +39,14 @@ helm install service-bus ./chart
 
 ## Swagger API
 
-> http://{HOST}/swagger/index.html
+> http://{HOST}/docs/index.html
+
+```bash
+make docs
+```
 
 - swaggo 주석에서 param_type을 body, data_type을 k8s.io/api의 구조체로 지정하면 아래와 같이 출력된다.
-그래서 body와 string으로 지정 후 json이나 yaml 형식을 입력한다.
+그래서 body string으로 지정 후 json이나 yaml 형식을 입력한다.
 
 ```json
 {
@@ -109,30 +114,4 @@ helm install service-bus ./chart
   },
   "uid": "string"
 }
-```
-
-- vendor/github.com/swaggo/echo-swagger/swagger.go
-
-```javascript
-<script>
-window.onload = function() {
-  // Build a system
-  const ui = SwaggerUIBundle({
-    url: "{{.URL}}",
-    dom_id: '#swagger-ui',
-    validatorUrl: null,
-    presets: [
-      SwaggerUIBundle.presets.apis,
-      SwaggerUIStandalonePreset
-    ],
-    plugins: [
-      SwaggerUIBundle.plugins.DownloadUrl
-    ],
-    layout: "StandaloneLayout",
-    docExpansion: "none" // [expands nothing](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
-  })
-
-  window.ui = ui
-}
-</script>
 ```

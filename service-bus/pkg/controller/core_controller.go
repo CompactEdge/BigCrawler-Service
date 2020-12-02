@@ -111,7 +111,7 @@ func newCoreController(v1 *echo.Group) {
 	core.DELETE("/events", service.DeleteNamespacedEvents)
 	core.DELETE("/limitranges", service.DeleteNamespacedLimitRanges)
 	core.DELETE("/namespaces/:name", service.DeleteNamespaces)
-	// core.DELETE("/nodes/:name", service.DeleteNodes)
+	core.DELETE("/nodes/:name", service.DeleteNodes)
 	core.DELETE("/persistentvolumes", service.DeletePersistentVolumes)
 	core.DELETE("/persistentvolumeclaims", service.DeleteNamespacedPersistentVolumeClaims)
 	core.DELETE("/pods/:namespace/:name", service.DeleteNamespacedPods)
