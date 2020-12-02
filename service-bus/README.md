@@ -110,3 +110,29 @@ helm install service-bus ./chart
   "uid": "string"
 }
 ```
+
+- vendor/github.com/swaggo/echo-swagger/swagger.go
+
+```javascript
+<script>
+window.onload = function() {
+  // Build a system
+  const ui = SwaggerUIBundle({
+    url: "{{.URL}}",
+    dom_id: '#swagger-ui',
+    validatorUrl: null,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout",
+    docExpansion: "none" // [expands nothing](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
+  })
+
+  window.ui = ui
+}
+</script>
+```

@@ -11,4 +11,7 @@ vendor/
 *.out
 
 ### unused ###
-/deprecated/
+deprecated/
+
+### text ###
+docs/

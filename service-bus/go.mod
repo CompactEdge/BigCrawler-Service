@@ -17,7 +17,7 @@ require (
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/streadway/amqp v1.0.0
-	github.com/swaggo/echo-swagger v1.0.0
+	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/swag v1.6.9
 	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43 // indirect

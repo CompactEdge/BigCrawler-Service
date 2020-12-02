@@ -9,6 +9,7 @@ import (
 
 	"github.com/compactedge/cewizontech/service-bus/pkg/client"
 	"github.com/compactedge/cewizontech/service-bus/pkg/controller"
+	"github.com/compactedge/cewizontech/service-bus/pkg/docs"
 	"github.com/compactedge/cewizontech/service-bus/pkg/mq"
 	"github.com/compactedge/cewizontech/service-bus/pkg/util"
 
@@ -17,7 +18,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
-	echoSwagger "github.com/swaggo/echo-swagger" // echo-swagger middleware
 	// "github.com/spf13/cobra"
 )
 
@@ -66,7 +66,7 @@ func main() {
 	e := echo.New()
 	e.HideBanner = true
 
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	e.GET("/docs/*", docs.WrapHandler)
 	
 	if viper.GetBool("enable.rabbitmq") == true {
 		log.Debug("message queue channel init")
