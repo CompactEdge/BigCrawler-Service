@@ -101,7 +101,7 @@ func CreateIngressClasses(ctx echo.Context) error {
 func ListNetworkPoliciesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().NetworkingV1().NetworkPolicies(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -120,7 +120,7 @@ func ListNamespacedNetworkPolicies(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().NetworkingV1().NetworkPolicies(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -137,7 +137,7 @@ func ListNamespacedNetworkPolicies(ctx echo.Context) error {
 func ListIngressesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().NetworkingV1().Ingresses(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -156,7 +156,7 @@ func ListNamespacedIngresses(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().NetworkingV1().Ingresses(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -173,7 +173,7 @@ func ListNamespacedIngresses(ctx echo.Context) error {
 func ListIngressClasses(ctx echo.Context) error {
 	list, err := client.GetKubeClient().NetworkingV1().IngressClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -194,7 +194,7 @@ func GetNamespacedNetworkPolicies(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().NetworkingV1().NetworkPolicies(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -215,7 +215,7 @@ func GetNamespacedIngresses(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().NetworkingV1().Ingresses(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -234,7 +234,7 @@ func GetIngressClasses(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().NetworkingV1().IngressClasses().Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }

@@ -462,7 +462,7 @@ func CreateNamespacedServiceAccounts(ctx echo.Context) error {
 func ListComponentStatuses(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ComponentStatuses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -479,7 +479,7 @@ func ListComponentStatuses(ctx echo.Context) error {
 func ListConfigMapsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ConfigMaps(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -498,7 +498,7 @@ func ListNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -515,7 +515,7 @@ func ListNamespacedConfigMaps(ctx echo.Context) error {
 func ListEndpointsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Endpoints(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -534,7 +534,7 @@ func ListNamespacedEndpoints(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Endpoints(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -551,7 +551,7 @@ func ListNamespacedEndpoints(ctx echo.Context) error {
 func ListEventsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Events(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -570,7 +570,7 @@ func ListNamespacedEvents(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Events(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -587,7 +587,7 @@ func ListNamespacedEvents(ctx echo.Context) error {
 func ListLimitRangesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().LimitRanges(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -606,7 +606,7 @@ func ListNamespacedLimitRanges(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().LimitRanges(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -623,7 +623,7 @@ func ListNamespacedLimitRanges(ctx echo.Context) error {
 func ListNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -640,7 +640,7 @@ func ListNamespaces(ctx echo.Context) error {
 func ListNode(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -657,7 +657,7 @@ func ListNode(ctx echo.Context) error {
 func ListPersistentVolumesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -674,7 +674,7 @@ func ListPersistentVolumesForAllNamespaces(ctx echo.Context) error {
 func ListPersistentVolumeClaimsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -693,7 +693,7 @@ func ListNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -710,7 +710,7 @@ func ListNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 func ListPodsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Pods(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -729,7 +729,7 @@ func ListNamespacedPods(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -746,7 +746,7 @@ func ListNamespacedPods(ctx echo.Context) error {
 func ListPodTemplatesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().PodTemplates(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -765,7 +765,7 @@ func ListNamespacedPodTemplates(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().PodTemplates(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -782,7 +782,7 @@ func ListNamespacedPodTemplates(ctx echo.Context) error {
 func ListReplicationControllersForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -801,7 +801,7 @@ func ListNamespacedReplicationControllers(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -818,7 +818,7 @@ func ListNamespacedReplicationControllers(ctx echo.Context) error {
 func ListResourceQuotasForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ResourceQuotas(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -837,7 +837,7 @@ func ListNamespacedResourceQuotas(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ResourceQuotas(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -854,7 +854,7 @@ func ListNamespacedResourceQuotas(ctx echo.Context) error {
 func ListSecretsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Secrets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -873,7 +873,7 @@ func ListNamespacedSecret(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Secrets(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -890,7 +890,7 @@ func ListNamespacedSecret(ctx echo.Context) error {
 func ListServicesForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().Services(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -909,7 +909,7 @@ func ListNamespacedServices(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().Services(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -926,7 +926,7 @@ func ListNamespacedServices(ctx echo.Context) error {
 func ListServiceAccountsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -945,7 +945,7 @@ func ListNamespacedServiceAccounts(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -964,7 +964,7 @@ func GetComponentStatuses(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ComponentStatuses().Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -985,7 +985,7 @@ func GetNamespacedConfigMaps(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1006,7 +1006,7 @@ func GetNamespacedEndpoints(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Endpoints(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1027,7 +1027,7 @@ func GetNamespacedEvents(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Events(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1048,7 +1048,7 @@ func GetNamespacedLimitRanges(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().LimitRanges(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1067,7 +1067,7 @@ func GetNamespaces(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Namespaces().Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1086,7 +1086,7 @@ func GetNodes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Nodes().Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1105,7 +1105,7 @@ func GetPersistentVolumes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumes().Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1126,7 +1126,7 @@ func GetNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1147,7 +1147,7 @@ func GetNamespacedPods(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Pods(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1187,7 +1187,7 @@ func GetNamespacedPodTemplates(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().PodTemplates(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1208,7 +1208,7 @@ func GetNamespacedReplicationControllers(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1229,7 +1229,7 @@ func GetNamespacedReplicationControllerScales(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ReplicationControllers(namespace).GetScale(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1250,7 +1250,7 @@ func GetNamespacedResourceQuotas(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ResourceQuotas(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1271,7 +1271,7 @@ func GetNamespacedSecrets(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Secrets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1292,7 +1292,7 @@ func GetNamespacedServices(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().Services(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -1313,7 +1313,7 @@ func GetNamespacedServiceAccounts(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
