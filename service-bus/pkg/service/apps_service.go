@@ -14,7 +14,16 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-// CreateNamespacedControllerRevisions ...
+// CreateNamespacedControllerRevisions godoc
+// @Summary 새로운 ControllerRevision 생성
+// @Description JSON 형식의 body와 함께 생성할 ControllerRevision을 지정한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ControllerRevision body string true "생성할 ControllerRevision 매니페스트"
+// @Router /apps/controllerrevisions [post]
 func CreateNamespacedControllerRevisions(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -31,7 +40,16 @@ func CreateNamespacedControllerRevisions(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// CreateNamespacedDaemonSets ...
+// CreateNamespacedDaemonSets godoc
+// @Summary 새로운 DaemonSet 생성
+// @Description JSON 형식의 body와 함께 생성할 DaemonSet을 지정한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param DaemonSet body string true "생성할 DaemonSet 매니페스트"
+// @Router /apps/daemonsets [post]
 func CreateNamespacedDaemonSets(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -48,7 +66,16 @@ func CreateNamespacedDaemonSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// CreateNamespacedDeployments ...
+// CreateNamespacedDeployments godoc
+// @Summary 새로운 Deployment 생성
+// @Description JSON 형식의 body와 함께 생성할 Deployment을 지정한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param Deployment body string true "생성할 Deployment 매니페스트"
+// @Router /apps/deployments [post]
 func CreateNamespacedDeployments(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -65,7 +92,16 @@ func CreateNamespacedDeployments(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// CreateNamespacedReplicaSets ...
+// CreateNamespacedReplicaSets godoc
+// @Summary 새로운 ReplicaSet 생성
+// @Description JSON 형식의 body와 함께 생성할 ReplicaSet을 지정한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param ReplicaSet body string true "생성할 ReplicaSet 매니페스트"
+// @Router /apps/replicasets [post]
 func CreateNamespacedReplicaSets(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -82,7 +118,16 @@ func CreateNamespacedReplicaSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// CreateNamespacedStatefulSets ...
+// CreateNamespacedStatefulSets godoc
+// @Summary 새로운 StatefulSet 생성
+// @Description JSON 형식의 body와 함께 생성할 StatefulSet을 지정한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param StatefulSet body string true "생성할 StatefulSet 매니페스트"
+// @Router /apps/statefulsets [post]
 func CreateNamespacedStatefulSets(ctx echo.Context) error {
 	body, code, err := util.ParseBody(ctx)
 	if err != nil {
@@ -99,7 +144,15 @@ func CreateNamespacedStatefulSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, obj)
 }
 
-// ListControllerRevisionsForAllNamespaces ...
+// ListControllerRevisionsForAllNamespaces godoc
+// @Summary 모든 ControllerRevision 조회
+// @Description 모든 ControllerRevision를 조회한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /apps/controllerrevisions [get]
 func ListControllerRevisionsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().ControllerRevisions(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -108,7 +161,16 @@ func ListControllerRevisionsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedControllerRevisions ...
+// ListNamespacedControllerRevisions godoc
+// @Summary 특정 네임스페이스의 ControllerRevision 조회
+// @Description 특정 네임스페이스의 ControllerRevision 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ControllerRevision namespace"
+// @Router /apps/controllerrevisions/{namespace} [get]
 func ListNamespacedControllerRevisions(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().ControllerRevisions(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -118,7 +180,15 @@ func ListNamespacedControllerRevisions(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListDaemonSetsForAllNamespaces ...
+// ListDaemonSetsForAllNamespaces godoc
+// @Summary 모든 DaemonSet 조회
+// @Description 모든 DaemonSet을 조회한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /apps/daemonsets [get]
 func ListDaemonSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().DaemonSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -127,7 +197,16 @@ func ListDaemonSetsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedDaemonSets ...
+// ListNamespacedDaemonSets godoc
+// @Summary 특정 네임스페이스의 DaemonSet 조회
+// @Description 특정 네임스페이스의 DaemonSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "DaemonSet namespace"
+// @Router /apps/daemonsets/{namespace} [get]
 func ListNamespacedDaemonSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().DaemonSets(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -137,7 +216,15 @@ func ListNamespacedDaemonSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListDeploymentsForAllNamespaces ...
+// ListDeploymentsForAllNamespaces godoc
+// @Summary 모든 Deployment 조회
+// @Description 모든 Deployment를 조회한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /apps/deployments [get]
 func ListDeploymentsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().Deployments(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -146,7 +233,16 @@ func ListDeploymentsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedDeployments ...
+// ListNamespacedDeployments godoc
+// @Summary 특정 네임스페이스의 Deployment 조회
+// @Description 특정 네임스페이스의 Deployment 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Deployment namespace"
+// @Router /apps/deployments/{namespace} [get]
 func ListNamespacedDeployments(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().Deployments(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -156,7 +252,15 @@ func ListNamespacedDeployments(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListReplicaSetsForAllNamespaces ...
+// ListReplicaSetsForAllNamespaces godoc
+// @Summary 모든 ReplicaSet 조회
+// @Description 모든 ReplicaSet를 조회한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /apps/replicasets [get]
 func ListReplicaSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -165,7 +269,16 @@ func ListReplicaSetsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedReplicaSets ...
+// ListNamespacedReplicaSets godoc
+// @Summary 특정 네임스페이스의 ReplicaSet 조회
+// @Description 특정 네임스페이스의 ReplicaSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicaSet namespace"
+// @Router /apps/replicasets/{namespace} [get]
 func ListNamespacedReplicaSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -175,7 +288,15 @@ func ListNamespacedReplicaSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListStatefulSetsForAllNamespaces ...
+// ListStatefulSetsForAllNamespaces godoc
+// @Summary 모든 StatefulSet 조회
+// @Description 모든 StatefulSet를 조회한다.
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Router /apps/statefulsets [get]
 func ListStatefulSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -184,7 +305,16 @@ func ListStatefulSetsForAllNamespaces(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// ListNamespacedStatefulSets ...
+// ListNamespacedStatefulSets godoc
+// @Summary 특정 네임스페이스의 StatefulSet 조회
+// @Description 특정 네임스페이스의 StatefulSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "StatefulSet namespace"
+// @Router /apps/statefulsets/{namespace} [get]
 func ListNamespacedStatefulSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -194,7 +324,17 @@ func ListNamespacedStatefulSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedControllerRevisions ...
+// GetNamespacedControllerRevisions godoc
+// @Summary 특정 네임스페이스의 ControllerRevision 조회
+// @Description 특정 네임스페이스의 ControllerRevision 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ControllerRevision namespace"
+// @Param name path string true "ControllerRevision name"
+// @Router /apps/controllerrevisions/{namespace}/{name} [get]
 func GetNamespacedControllerRevisions(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -205,7 +345,17 @@ func GetNamespacedControllerRevisions(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedDaemonSets ...
+// GetNamespacedDaemonSets godoc
+// @Summary 특정 네임스페이스의 DaemonSet 조회
+// @Description 특정 네임스페이스의 DaemonSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "DaemonSet namespace"
+// @Param name path string true "DaemonSet name"
+// @Router /apps/daemonsets/{namespace}/{name} [get]
 func GetNamespacedDaemonSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -216,7 +366,17 @@ func GetNamespacedDaemonSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedDeployments ...
+// GetNamespacedDeployments godoc
+// @Summary 특정 네임스페이스의 Deployment 조회
+// @Description 특정 네임스페이스의 Deployment 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Deployment namespace"
+// @Param name path string true "Deployment name"
+// @Router /apps/deployments/{namespace}/{name} [get]
 func GetNamespacedDeployments(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -227,7 +387,17 @@ func GetNamespacedDeployments(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedDeploymentScale ...
+// GetNamespacedDeploymentScale godoc
+// @Summary 특정 네임스페이스의 DeploymentScale 조회
+// @Description 특정 네임스페이스의 DeploymentScale 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "DeploymentScale namespace"
+// @Param name path string true "DeploymentScale name"
+// @Router /apps/deploymentscale/{namespace}/{name} [get]
 func GetNamespacedDeploymentScale(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -238,7 +408,17 @@ func GetNamespacedDeploymentScale(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedReplicaSets ...
+// GetNamespacedReplicaSets godoc
+// @Summary 특정 네임스페이스의 ReplicaSet 조회
+// @Description 특정 네임스페이스의 ReplicaSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicaSet namespace"
+// @Param name path string true "ReplicaSet name"
+// @Router /apps/replicasets/{namespace}/{name} [get]
 func GetNamespacedReplicaSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -249,7 +429,17 @@ func GetNamespacedReplicaSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedReplicaSetScale ...
+// GetNamespacedReplicaSetScale godoc
+// @Summary 특정 네임스페이스의 ReplicaSetScale 조회
+// @Description 특정 네임스페이스의 ReplicaSetScale 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicaSetScale namespace"
+// @Param name path string true "ReplicaSetScale name"
+// @Router /apps/replicasetscale/{namespace}/{name} [get]
 func GetNamespacedReplicaSetScale(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -260,7 +450,17 @@ func GetNamespacedReplicaSetScale(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedStatefulSets ...
+// GetNamespacedStatefulSets godoc
+// @Summary 특정 네임스페이스의 StatefulSet 조회
+// @Description 특정 네임스페이스의 StatefulSet 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "StatefulSet namespace"
+// @Param name path string true "StatefulSet name"
+// @Router /apps/statefulsets/{namespace}/{name} [get]
 func GetNamespacedStatefulSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -271,7 +471,17 @@ func GetNamespacedStatefulSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
-// GetNamespacedStatefulSetScale ...
+// GetNamespacedStatefulSetScale godoc
+// @Summary 특정 네임스페이스의 StatefulSetScale 조회
+// @Description 특정 네임스페이스의 StatefulSetScale 조회
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "StatefulSetScale namespace"
+// @Param name path string true "StatefulSetScale name"
+// @Router /apps/statefulsetscale/{namespace}/{name} [get]
 func GetNamespacedStatefulSetScale(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -512,90 +722,150 @@ func DeleteCollectionNamespacedStatefulSets(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedControllerRevisions ...
+// DeleteNamespacedControllerRevisions godoc
+// @Summary 특정 네임스페이스의 ControllerRevision 삭제
+// @Description 특정 네임스페이스의 ControllerRevision 삭제
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ControllerRevision namespace"
+// @Param name path string true "ControllerRevision name"
+// @Router /apps/controllerrevisions/{namespace}/{name} [delete]
 func DeleteNamespacedControllerRevisions(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*appsv1.ControllerRevision).Namespace
-	name := body.(*appsv1.ControllerRevision).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().AppsV1().ControllerRevisions(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*appsv1.ControllerRevision).Namespace
+	// name := body.(*appsv1.ControllerRevision).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().AppsV1().ControllerRevisions(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedDaemonsets ...
+// DeleteNamespacedDaemonsets godoc
+// @Summary 특정 네임스페이스의 Daemonset 삭제
+// @Description 특정 네임스페이스의 Daemonset 삭제
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Daemonset namespace"
+// @Param name path string true "Daemonset name"
+// @Router /apps/daemonsets/{namespace}/{name} [delete]
 func DeleteNamespacedDaemonsets(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*appsv1.DaemonSet).Namespace
-	name := body.(*appsv1.DaemonSet).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().AppsV1().DaemonSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*appsv1.DaemonSet).Namespace
+	// name := body.(*appsv1.DaemonSet).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().AppsV1().DaemonSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedDeployments ...
+// DeleteNamespacedDeployments godoc
+// @Summary 특정 네임스페이스의 Deployment 삭제
+// @Description 특정 네임스페이스의 Deployment 삭제
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Deployment namespace"
+// @Param name path string true "Deployment name"
+// @Router /apps/deployments/{namespace}/{name} [delete]
 func DeleteNamespacedDeployments(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*appsv1.Deployment).Namespace
-	name := body.(*appsv1.Deployment).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().AppsV1().Deployments(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*appsv1.Deployment).Namespace
+	// name := body.(*appsv1.Deployment).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().AppsV1().Deployments(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedReplicaSets ...
+// DeleteNamespacedReplicaSets godoc
+// @Summary 특정 네임스페이스의 ReplicaSet 삭제
+// @Description 특정 네임스페이스의 ReplicaSet 삭제
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicaSet namespace"
+// @Param name path string true "ReplicaSet name"
+// @Router /apps/replicasets/{namespace}/{name} [delete]
 func DeleteNamespacedReplicaSets(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*appsv1.ReplicaSet).Namespace
-	name := body.(*appsv1.ReplicaSet).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().AppsV1().ReplicaSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*appsv1.ReplicaSet).Namespace
+	// name := body.(*appsv1.ReplicaSet).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().AppsV1().ReplicaSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedStatefulSets ...
+// DeleteNamespacedStatefulSets godoc
+// @Summary 특정 네임스페이스의 StatefulSet 삭제
+// @Description 특정 네임스페이스의 StatefulSet 삭제
+// @Tags apps
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "StatefulSet namespace"
+// @Param name path string true "StatefulSet name"
+// @Router /apps/statefulsets/{namespace}/{name} [delete]
 func DeleteNamespacedStatefulSets(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*appsv1.StatefulSet).Namespace
-	name := body.(*appsv1.StatefulSet).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().AppsV1().StatefulSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*appsv1.StatefulSet).Namespace
+	// name := body.(*appsv1.StatefulSet).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().AppsV1().StatefulSets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}

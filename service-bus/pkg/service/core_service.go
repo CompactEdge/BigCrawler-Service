@@ -490,7 +490,7 @@ func ListConfigMapsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced ConfigMaps"
+// @Param namespace path string true "ConfigMap namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/configmaps/{namespace} [get]
@@ -526,7 +526,7 @@ func ListEndpointsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced EndPoints"
+// @Param namespace path string true "EndPoints namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/endpoints/{namespace} [get]
@@ -562,7 +562,7 @@ func ListEventsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced Events"
+// @Param namespace path string true "Events namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/events/{namespace} [get]
@@ -598,7 +598,7 @@ func ListLimitRangesForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced LimitRanges"
+// @Param namespace path string true "LimitRange namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/limitranges/{namespace} [get]
@@ -685,7 +685,7 @@ func ListPersistentVolumeClaimsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced PersistentVolumeClaims"
+// @Param namespace path string true "PersistentVolumeClaim namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/persistentvolumeclaims/{namespace} [get]
@@ -721,7 +721,7 @@ func ListPodsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced Pods"
+// @Param namespace path string true "Pod namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/pods/{namespace} [get]
@@ -752,12 +752,12 @@ func ListPodTemplatesForAllNamespaces(ctx echo.Context) error {
 }
 
 // ListNamespacedPodTemplates godoc
-// @Summary 특정 네임스페이스의 PodTemplates 조회
-// @Description 특정 네임스페이스의 PodTemplates 조회
+// @Summary 특정 네임스페이스의 PodTemplate 조회
+// @Description 특정 네임스페이스의 PodTemplate 조회
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced PodTemplates"
+// @Param namespace path string true "PodTemplate namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/podtemplates/{namespace} [get]
@@ -793,7 +793,7 @@ func ListReplicationControllersForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced ReplicationControllers"
+// @Param namespace path string true "ReplicationController namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/replicationcontrollers/{namespace} [get]
@@ -829,7 +829,7 @@ func ListResourceQuotasForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced ResourceQuotas"
+// @Param namespace path string true "ResourceQuota namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/resourcequota/{namespace} [get]
@@ -865,7 +865,7 @@ func ListSecretsForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced Secrets"
+// @Param namespace path string true "Secret namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/secrets/{namespace} [get]
@@ -901,7 +901,7 @@ func ListServicesForAllNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced Services"
+// @Param namespace path string true "Service namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/services/{namespace} [get]
@@ -932,15 +932,15 @@ func ListServiceAccountsForAllNamespaces(ctx echo.Context) error {
 }
 
 // ListNamespacedServiceAccounts godoc
-// @Summary 특정 네임스페이스의 Service 조회
-// @Description 특정 네임스페이스의 Service 조회
+// @Summary 특정 네임스페이스의 ServiceAccount 조회
+// @Description 특정 네임스페이스의 ServiceAccount 조회
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "List Namespaced Services"
+// @Param namespace path string true "ServiceAccount namespace"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Router /core/services/{namespace} [get]
+// @Router /core/serviceaccounts/{namespace} [get]
 func ListNamespacedServiceAccounts(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().CoreV1().ServiceAccounts(namespace).List(context.TODO(), metav1.ListOptions{})
@@ -956,7 +956,7 @@ func ListNamespacedServiceAccounts(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param name path string true "Get ComponentStatus"
+// @Param name path string true "ComponentStatus name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
 // @Router /core/componentStatuses/{name} [get]
@@ -975,10 +975,10 @@ func GetComponentStatuses(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "ConfigMap namespace"
-// @Param name path string true "ConfigMap name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ConfigMap namespace"
+// @Param name path string true "ConfigMap name"
 // @Router /core/configmaps/{namespace}/{name} [get]
 func GetNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -996,10 +996,10 @@ func GetNamespacedConfigMaps(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "EndPoints namespace"
-// @Param name path string true "EndPoints name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "EndPoints namespace"
+// @Param name path string true "EndPoints name"
 // @Router /core/endpoints/{namespace}/{name} [get]
 func GetNamespacedEndpoints(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1017,10 +1017,10 @@ func GetNamespacedEndpoints(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "Event namespace"
-// @Param name path string true "Event name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Event namespace"
+// @Param name path string true "Event name"
 // @Router /core/events/{namespace}/{name} [get]
 func GetNamespacedEvents(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1038,10 +1038,10 @@ func GetNamespacedEvents(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "LimitRange namespace"
-// @Param name path string true "LimitRange name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "LimitRange namespace"
+// @Param name path string true "LimitRange name"
 // @Router /core/limitranges/{namespace}/{name} [get]
 func GetNamespacedLimitRanges(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1059,9 +1059,9 @@ func GetNamespacedLimitRanges(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param name path string true "Namespace name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param name path string true "Namespace name"
 // @Router /core/namespaces/{name} [get]
 func GetNamespaces(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
@@ -1078,9 +1078,9 @@ func GetNamespaces(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param name path string true "Node name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param name path string true "Node name"
 // @Router /core/nodes/{name} [get]
 func GetNodes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
@@ -1097,9 +1097,9 @@ func GetNodes(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param name path string true "PersistentVolume name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param name path string true "PersistentVolume name"
 // @Router /core/persistentvolumes/{name} [get]
 func GetPersistentVolumes(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
@@ -1116,10 +1116,10 @@ func GetPersistentVolumes(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "PersistentVolumeClaims namespace"
-// @Param name path string true "PersistentVolumeClaims name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "PersistentVolumeClaims namespace"
+// @Param name path string true "PersistentVolumeClaims name"
 // @Router /core/persistentvolumeclaims/{namespace}/{name} [get]
 func GetNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1137,10 +1137,10 @@ func GetNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "Pod namespace"
-// @Param name path string true "Pod name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Pod namespace"
+// @Param name path string true "Pod name"
 // @Router /core/pods/{namespace}/{name} [get]
 func GetNamespacedPods(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1158,10 +1158,10 @@ func GetNamespacedPods(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "PodLog namespace"
-// @Param name path string true "PodLog name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "PodLog namespace"
+// @Param name path string true "PodLog name"
 // @Router /core/podlogs/{namespace}/{name} [get]
 // TODO:
 func GetNamespacedPodLogs(ctx echo.Context) error {
@@ -1177,10 +1177,10 @@ func GetNamespacedPodLogs(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "PodTemplate namespace"
-// @Param name path string true "PodTemplate name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "PodTemplate namespace"
+// @Param name path string true "PodTemplate name"
 // @Router /core/podtemplates/{namespace}/{name} [get]
 func GetNamespacedPodTemplates(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1198,10 +1198,10 @@ func GetNamespacedPodTemplates(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "ReplicationController namespace"
-// @Param name path string true "ReplicationController name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicationController namespace"
+// @Param name path string true "ReplicationController name"
 // @Router /core/replicationcontrollers/{namespace}/{name} [get]
 func GetNamespacedReplicationControllers(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1219,10 +1219,10 @@ func GetNamespacedReplicationControllers(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "ReplicationControllerScale namespace"
-// @Param name path string true "ReplicationControllerScale name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicationControllerScale namespace"
+// @Param name path string true "ReplicationControllerScale name"
 // @Router /core/replicationcontrollerscales/{namespace}/{name} [get]
 func GetNamespacedReplicationControllerScales(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1240,10 +1240,10 @@ func GetNamespacedReplicationControllerScales(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "ResourceQuota namespace"
-// @Param name path string true "ResourceQuota name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ResourceQuota namespace"
+// @Param name path string true "ResourceQuota name"
 // @Router /core/resourcequotas/{namespace}/{name} [get]
 func GetNamespacedResourceQuotas(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1261,10 +1261,10 @@ func GetNamespacedResourceQuotas(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "Secret namespace"
-// @Param name path string true "Secret name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Secret namespace"
+// @Param name path string true "Secret name"
 // @Router /core/secrets/{namespace}/{name} [get]
 func GetNamespacedSecrets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1303,10 +1303,10 @@ func GetNamespacedServices(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param namespace path string true "ServiceAccount namespace"
-// @Param name path string true "ServiceAccount name"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ServiceAccount namespace"
+// @Param name path string true "ServiceAccount name"
 // @Router /core/serviceaccounts/{namespace}/{name} [get]
 func GetNamespacedServiceAccounts(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
@@ -1328,9 +1328,9 @@ func GetNamespacedServiceAccounts(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param pod body string true "Pod manifest"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param pod body string true "Pod manifest"
 // @Router /core/pods [put]
 func ReplaceNamespacedPods(ctx echo.Context) error {
 	// namespace := ctx.Param(util.NamespaceString)
@@ -1352,9 +1352,9 @@ func ReplaceNamespacedPods(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param pod body string true "PodStatus manifest"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param pod body string true "PodStatus manifest"
 // @Router /core/podstatuses [put]
 // TODO: Status?
 func ReplaceNamespacedPodStatuses(ctx echo.Context) error {
@@ -1377,9 +1377,9 @@ func ReplaceNamespacedPodStatuses(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param pod body string true "Service manifest"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param pod body string true "Service manifest"
 // @Router /core/services [put]
 func ReplaceNamespacedServices(ctx echo.Context) error {
 	// namespace := ctx.Param(util.NamespaceString)
@@ -1401,9 +1401,9 @@ func ReplaceNamespacedServices(ctx echo.Context) error {
 // @Tags core
 // @Accept */*
 // @Produce json
-// @Param pod body string true "ServiceStatus manifest"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
+// @Param pod body string true "ServiceStatus manifest"
 // @Router /core/servicestatuses [put]
 // TODO:
 func ReplaceNamespacedServiceStatuses(ctx echo.Context) error {

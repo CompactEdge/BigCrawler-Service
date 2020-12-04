@@ -39,31 +39,32 @@ func newAppsController(v1 *echo.Group) {
 
 	// REPLACE
 	// TODO: statefulsets, replicasets
-	apps.PUT("/controllerrevisions", service.ReplaceNamespacedControllerRevisions)
-	apps.PUT("/daemonsets", service.ReplaceNamespacedDaemonSets)
-	apps.PUT("/daemonsetstatuses", service.ReplaceNamespacedDaemonSetStatuses)
-	apps.PUT("/deployments", service.ReplaceNamespacedDeployments)
+	// apps.PUT("/controllerrevisions", service.ReplaceNamespacedControllerRevisions)
+	// apps.PUT("/daemonsets", service.ReplaceNamespacedDaemonSets)
+	// apps.PUT("/daemonsetstatuses", service.ReplaceNamespacedDaemonSetStatuses)
+	// apps.PUT("/deployments", service.ReplaceNamespacedDeployments)
 	apps.PUT("/deploymentscale", service.ReplaceNamespacedDeploymentScale)
-	apps.PUT("/deploymentstatuses", service.ReplaceNamespacedDeploymentStatuses)
+	// apps.PUT("/deploymentstatuses", service.ReplaceNamespacedDeploymentStatuses)
 
 	// PATCH
-	// TODO:
+	// TODO: statefulsets, replicasets
 	apps.PATCH("/controllerrevisions", service.PatchNamespacedControllerRevisions)
-	apps.PATCH("/daemonsets", service.PatchNamespacedDaemonSets)
-	apps.PATCH("/deployments", service.PatchNamespacedDeployments)
+	// apps.PATCH("/daemonsets", service.PatchNamespacedDaemonSets)
+	// apps.PATCH("/deployments", service.PatchNamespacedDeployments)
 
 	// DELETE COLLECTION
-	collection := apps.Group("/collection")
-	collection.DELETE("/controllerrevisions/:namespace", service.DeleteCollectionNamespacedControllerRevisions)
-	collection.DELETE("/daemonsets/:namespace", service.DeleteCollectionNamespacedDaemonSets)
-	collection.DELETE("/deployments/:namespace", service.DeleteCollectionNamespacedDeployments)
-	collection.DELETE("/replicasets/:namespace", service.DeleteCollectionNamespacedReplicaSets)
-	collection.DELETE("/statefulsets/:namespace", service.DeleteCollectionNamespacedStatefulSets)
+	// TODO: implement
+	// collection := apps.Group("/collection")
+	// collection.DELETE("/controllerrevisions/:namespace", service.DeleteCollectionNamespacedControllerRevisions)
+	// collection.DELETE("/daemonsets/:namespace", service.DeleteCollectionNamespacedDaemonSets)
+	// collection.DELETE("/deployments/:namespace", service.DeleteCollectionNamespacedDeployments)
+	// collection.DELETE("/replicasets/:namespace", service.DeleteCollectionNamespacedReplicaSets)
+	// collection.DELETE("/statefulsets/:namespace", service.DeleteCollectionNamespacedStatefulSets)
 
 	// DELETE
-	apps.DELETE("/controllerrevisions", service.DeleteNamespacedControllerRevisions)
-	apps.DELETE("/daemonsets", service.DeleteNamespacedDaemonsets)
-	apps.DELETE("/deployments", service.DeleteNamespacedDeployments)
-	apps.DELETE("/replicasets", service.DeleteNamespacedReplicaSets)
-	apps.DELETE("/statefulsets", service.DeleteNamespacedStatefulSets)
+	apps.DELETE("/controllerrevisions/:namespace/:name", service.DeleteNamespacedControllerRevisions)
+	apps.DELETE("/daemonsets/:namespace/:name", service.DeleteNamespacedDaemonsets)
+	apps.DELETE("/deployments/:namespace/:name", service.DeleteNamespacedDeployments)
+	apps.DELETE("/replicasets/:namespace/:name", service.DeleteNamespacedReplicaSets)
+	apps.DELETE("/statefulsets/:namespace/:name", service.DeleteNamespacedStatefulSets)
 }
