@@ -11,7 +11,7 @@ import {
   Col,
 } from 'reactstrap';
 import CustomDropdown from 'views/components/CustomDropdown.js';
-import StackedAreaChart from 'views/components/D3StackedAreaChart_fn.js';
+import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 
 const MetricNamespace = props => {
   const [data, setData] = useState({

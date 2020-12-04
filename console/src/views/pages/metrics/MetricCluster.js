@@ -10,7 +10,7 @@ import {
   Col,
   Row,
 } from 'reactstrap';
-import StackedAreaChart from 'views/components/D3StackedAreaChart_fn.js';
+import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 import HeadlineCard from 'views/components/HeadlineCard.js';
 import { conditionallyUpdateScrollbar } from 'reactstrap/lib/utils';
 
