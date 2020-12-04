@@ -156,7 +156,7 @@ func CreateNamespacedStatefulSets(ctx echo.Context) error {
 func ListControllerRevisionsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().ControllerRevisions(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -175,7 +175,7 @@ func ListNamespacedControllerRevisions(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().ControllerRevisions(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -192,7 +192,7 @@ func ListNamespacedControllerRevisions(ctx echo.Context) error {
 func ListDaemonSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().DaemonSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -211,7 +211,7 @@ func ListNamespacedDaemonSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().DaemonSets(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -228,7 +228,7 @@ func ListNamespacedDaemonSets(ctx echo.Context) error {
 func ListDeploymentsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().Deployments(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -247,7 +247,7 @@ func ListNamespacedDeployments(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().Deployments(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -264,7 +264,7 @@ func ListNamespacedDeployments(ctx echo.Context) error {
 func ListReplicaSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -283,7 +283,7 @@ func ListNamespacedReplicaSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -300,7 +300,7 @@ func ListNamespacedReplicaSets(ctx echo.Context) error {
 func ListStatefulSetsForAllNamespaces(ctx echo.Context) error {
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -319,7 +319,7 @@ func ListNamespacedStatefulSets(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -340,7 +340,7 @@ func GetNamespacedControllerRevisions(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().ControllerRevisions(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -361,7 +361,7 @@ func GetNamespacedDaemonSets(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().DaemonSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -382,7 +382,7 @@ func GetNamespacedDeployments(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -403,7 +403,7 @@ func GetNamespacedDeploymentScale(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().Deployments(namespace).GetScale(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -424,7 +424,7 @@ func GetNamespacedReplicaSets(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -445,7 +445,7 @@ func GetNamespacedReplicaSetScale(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().ReplicaSets(namespace).GetScale(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -466,7 +466,7 @@ func GetNamespacedStatefulSets(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -487,7 +487,7 @@ func GetNamespacedStatefulSetScale(ctx echo.Context) error {
 	name := ctx.Param(util.NameString)
 	list, err := client.GetKubeClient().AppsV1().StatefulSets(namespace).GetScale(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }

@@ -32,7 +32,7 @@ func CreateNamespacedJobs(ctx echo.Context) error {
 func ListJobs(ctx echo.Context) error {
 	list, err := client.GetKubeClient().BatchV1().Jobs(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, list)
 }
@@ -42,7 +42,7 @@ func GetJobs(ctx echo.Context) error {
 	namespace, name := util.CheckNames(ctx, "", "")
 	get, err := client.GetKubeClient().BatchV1().Jobs(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return err
+		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, get)
 }
