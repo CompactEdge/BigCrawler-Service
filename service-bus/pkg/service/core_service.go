@@ -1318,6 +1318,10 @@ func GetNamespacedServiceAccounts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, list)
 }
 
+/*
+	TODO: Test Replace method
+*/
+
 // ReplaceNamespacedPods godoc
 // @Summary 특정 Pod 수정
 // @Description 특정 Pod 수정
@@ -1416,8 +1420,11 @@ func ReplaceNamespacedServiceStatuses(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, updated)
 }
 
+/*
+	TODO: Test Patch method
+*/
+
 // PatchNamespacedPods ...
-// TODO:
 func PatchNamespacedPods(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
 	name := ctx.Param(util.NameString)
@@ -1472,20 +1479,25 @@ func PatchNamespacedServices(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, updated)
 }
 
+/*
+	DeleteCollection: delete with given labelSelector
+	TODO: implement
+*/
+
 // DeleteCollectionNamespacedConfigMaps godoc
-// @Summary 특정 네임스페이스 ConfigMap 삭제
-// @Description 특정 네임스페이스에서 지정된 레이블에 맞는 ConfigMap들을 삭제한다.
+// @deprecated
+// @Summary 특정 네임스페이스에서 지정된 레이블에 맞는 ConfigMap 삭제
+// @Description 특정 네임스페이스에서 지정된 레이블에 맞는 ConfigMap을 삭제한다.
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Namespace path string true "Namespace name"
-// @Router /core/namespaces/{name} [delete]
-// TODO: given labelSelector
+// @Param namespace path string true "ConfigMap namespace"
+// @Router /core/configmaps/{namespace} [delete]
 func DeleteCollectionNamespacedConfigMaps(ctx echo.Context) error {
 	namespace := ctx.Param(util.NamespaceString)
-	label := ""
+	label := "" // TODO
 	err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).DeleteCollection(
 		context.TODO(),
 		metav1.DeleteOptions{},
@@ -1619,72 +1631,124 @@ func DeleteCollectionNamespacedServiceAccounts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedConfigMaps ...
+/*
+	TODO: delete with manifest
+*/
+
+// DeleteNamespacedConfigMaps godoc
+// @Summary 특정 네임스페이스의 특정 ConfigMap 삭제
+// @Description 특정 네임스페이스의 특정 ConfigMap 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ConfigMap namespace"
+// @Param name path string true "ConfigMap name"
+// @Router /core/configmaps/{namespace}/{name} [delete]
 func DeleteNamespacedConfigMaps(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.ConfigMap).Namespace
-	name := body.(*corev1.ConfigMap).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().ConfigMaps(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.ConfigMap).Namespace
+	// name := body.(*corev1.ConfigMap).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().ConfigMaps(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedEndpoints ...
+// DeleteNamespacedEndpoints godoc
+// @Summary 특정 네임스페이스의 Endpoints 삭제
+// @Description 특정 네임스페이스의 Endpoints 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Endpoints namespace"
+// @Param name path string true "Endpoints name"
+// @Router /core/endpoints/{namespace}/{name} [delete]
 func DeleteNamespacedEndpoints(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Endpoints).Namespace
-	name := body.(*corev1.Endpoints).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Endpoints(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.Endpoints).Namespace
+	// name := body.(*corev1.Endpoints).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().Endpoints(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedEvents ...
+// DeleteNamespacedEvents godoc
+// @Summary 특정 네임스페이스의 특정 Event 삭제
+// @Description 특정 네임스페이스의 특정 Event 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Event namespace"
+// @Param name path string true "Event name"
+// @Router /core/events/{namespace}/{name} [delete]
 func DeleteNamespacedEvents(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Event).Namespace
-	name := body.(*corev1.Event).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Events(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.Event).Namespace
+	// name := body.(*corev1.Event).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().Events(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedLimitRanges ...
+// DeleteNamespacedLimitRanges godoc
+// @Summary 특정 네임스페이스의 특정 LimitRange 삭제
+// @Description 특정 네임스페이스의 특정 LimitRange 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "LimitRange namespace"
+// @Param name path string true "LimitRange name"
+// @Router /core/limitranges/{namespace}/{name} [delete]
 func DeleteNamespacedLimitRanges(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.LimitRange).Namespace
-	name := body.(*corev1.LimitRange).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().LimitRanges(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.LimitRange).Namespace
+	// name := body.(*corev1.LimitRange).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().LimitRanges(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1699,21 +1763,20 @@ func DeleteNamespacedLimitRanges(ctx echo.Context) error {
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Namespace path string true "Namespace name"
+// @Param name path string true "Namespace name"
 // @Router /core/namespaces/{name} [delete]
 func DeleteNamespaces(ctx echo.Context) error {
 	// var namespace string
 	// test := ctx.ParamNames()
 	// ctx.Logger().Debug(test)
-	namespace := ctx.Param(util.NameString)
-	ctx.Logger().Debug(namespace)
+	name := ctx.Param(util.NameString)
 	// body, code, err := util.ParseBody(ctx)
 	// if code == http.StatusOK && body == nil {
 	// 	namespace, _, _ = util.Namer(ctx)
 	// } else {
 	// 	namespace = body.(*corev1.Namespace).Name
 	// }
-	err := client.GetKubeClient().CoreV1().Namespaces().Delete(context.TODO(), namespace, metav1.DeleteOptions{})
+	err := client.GetKubeClient().CoreV1().Namespaces().Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1728,7 +1791,7 @@ func DeleteNamespaces(ctx echo.Context) error {
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Param Node path string true "Node name"
+// @Param name path string true "Node name"
 // @Router /core/nodes/{name} [delete]
 func DeleteNodes(ctx echo.Context) error {
 	var name string
@@ -1745,34 +1808,56 @@ func DeleteNodes(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeletePersistentVolumes ...
+// DeletePersistentVolumes godoc
+// @Summary 특정 PersistentVolume 삭제
+// @Description 특정 PersistentVolume 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param name path string true "PersistentVolume name"
+// @Router /core/persistentvolumes/{name} [delete]
 func DeletePersistentVolumes(ctx echo.Context) error {
-	var name string
-	body, code, err := util.ParseBody(ctx)
-	if code == http.StatusOK && body == nil {
-		_, name, _ = util.Namer(ctx)
-	} else {
-		name = body.(*corev1.PersistentVolume).Name
-	}
-	err = client.GetKubeClient().CoreV1().PersistentVolumes().Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// var name string
+	// body, code, err := util.ParseBody(ctx)
+	// if code == http.StatusOK && body == nil {
+	// 	_, name, _ = util.Namer(ctx)
+	// } else {
+	// 	name = body.(*corev1.PersistentVolume).Name
+	// }
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().PersistentVolumes().Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedPersistentVolumeClaims ...
+// DeleteNamespacedPersistentVolumeClaims godoc
+// @Summary 특정 네임스페이스의 특정 PersistentVolumeClaim 삭제
+// @Description 특정 네임스페이스의 특정 PersistentVolumeClaim 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "PersistentVolumeClaim namespace"
+// @Param name path string true "PersistentVolumeClaim name"
+// @Router /core/persistentvolumeclaims/{namespace}/{name} [delete]
 func DeleteNamespacedPersistentVolumeClaims(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.PersistentVolumeClaim).Namespace
-	name := body.(*corev1.PersistentVolumeClaim).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().PersistentVolumeClaims(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.PersistentVolumeClaim).Namespace
+	// name := body.(*corev1.PersistentVolumeClaim).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().PersistentVolumeClaims(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -1781,15 +1866,15 @@ func DeleteNamespacedPersistentVolumeClaims(ctx echo.Context) error {
 
 // DeleteNamespacedPods godoc
 // @Summary 특정 네임스페이스의 특정 Pod 삭제
-// @Description
+// @Description 특정 네임스페이스의 특정 Pod 삭제
 // @Tags core
 // @Accept */*
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 400,404,500 {object} map[string]interface{}
-// @Router /core/pods/{namespace}/{name} [delete]
 // @Param namespace path string true "Pod namespace"
 // @Param name path string true "Pod name"
+// @Router /core/pods/{namespace}/{name} [delete]
 func DeleteNamespacedPods(ctx echo.Context) error {
 	// body, code, err := util.ParseBody(ctx)
 	// if err != nil {
@@ -1809,108 +1894,180 @@ func DeleteNamespacedPods(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedPodTemplates ...
+// DeleteNamespacedPodTemplates godoc
+// @Summary 특정 네임스페이스의 특정 PodTemplate 삭제
+// @Description 특정 네임스페이스의 특정 PodTemplate 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "PodTemplate namespace"
+// @Param name path string true "PodTemplate name"
+// @Router /core/podtemplates/{namespace}/{name} [delete]
 func DeleteNamespacedPodTemplates(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.PodTemplate).Namespace
-	name := body.(*corev1.PodTemplate).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().PodTemplates(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.PodTemplate).Namespace
+	// name := body.(*corev1.PodTemplate).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().PodTemplates(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedReplicationControllers ...
+// DeleteNamespacedReplicationControllers godoc
+// @Summary 특정 네임스페이스의 특정 ReplicationController 삭제
+// @Description 특정 네임스페이스의 특정 ReplicationController 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ReplicationController namespace"
+// @Param name path string true "ReplicationController name"
+// @Router /core/replicationcontrollers/{namespace}/{name} [delete]
 func DeleteNamespacedReplicationControllers(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.ReplicationController).Namespace
-	name := body.(*corev1.ReplicationController).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().ReplicationControllers(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.ReplicationController).Namespace
+	// name := body.(*corev1.ReplicationController).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().ReplicationControllers(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedResourceQuotas ...
+// DeleteNamespacedResourceQuotas godoc
+// @Summary 특정 네임스페이스의 특정 ResourceQuota 삭제
+// @Description 특정 네임스페이스의 특정 ResourceQuota 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ResourceQuota namespace"
+// @Param name path string true "ResourceQuota name"
+// @Router /core/resourcequota/{namespace}/{name} [delete]
 func DeleteNamespacedResourceQuotas(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.ResourceQuota).Namespace
-	name := body.(*corev1.ResourceQuota).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().ResourceQuotas(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.ResourceQuota).Namespace
+	// name := body.(*corev1.ResourceQuota).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().ResourceQuotas(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedSecrets ...
+// DeleteNamespacedSecrets godoc
+// @Summary 특정 네임스페이스의 특정 Secret 삭제
+// @Description 특정 네임스페이스의 특정 Secret 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Secret namespace"
+// @Param name path string true "Secret name"
+// @Router /core/secrets/{namespace}/{name} [delete]
 func DeleteNamespacedSecrets(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Secret).Namespace
-	name := body.(*corev1.Secret).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Secrets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.Secret).Namespace
+	// name := body.(*corev1.Secret).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().Secrets(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedServices ...
+// DeleteNamespacedServices godoc
+// @Summary 특정 네임스페이스의 특정 Service 삭제
+// @Description 특정 네임스페이스의 특정 Service 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "Service namespace"
+// @Param name path string true "Service name"
+// @Router /core/services/{namespace}/{name} [delete]
 func DeleteNamespacedServices(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.Service).Namespace
-	name := body.(*corev1.Service).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().Services(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.Service).Namespace
+	// name := body.(*corev1.Service).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().Services(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 	return ctx.JSON(http.StatusOK, nil)
 }
 
-// DeleteNamespacedServiceAccounts ...
+// DeleteNamespacedServiceAccounts godoc
+// @Summary 특정 네임스페이스의 특정 ServiceAccount 삭제
+// @Description 특정 네임스페이스의 특정 ServiceAccount 삭제
+// @Tags core
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400,404,500 {object} map[string]interface{}
+// @Param namespace path string true "ServiceAccount namespace"
+// @Param name path string true "ServiceAccount name"
+// @Router /core/serviceaccounts/{namespace}/{name} [delete]
 func DeleteNamespacedServiceAccounts(ctx echo.Context) error {
-	body, code, err := util.ParseBody(ctx)
-	if err != nil {
-		return ctx.JSON(code, err)
-	}
-	namespace := body.(*corev1.ServiceAccount).Namespace
-	name := body.(*corev1.ServiceAccount).Name
-	if namespace == "" {
-		namespace = metav1.NamespaceDefault
-	}
-	err = client.GetKubeClient().CoreV1().ServiceAccounts(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+	// body, code, err := util.ParseBody(ctx)
+	// if err != nil {
+	// 	return ctx.JSON(code, err)
+	// }
+	// namespace := body.(*corev1.ServiceAccount).Namespace
+	// name := body.(*corev1.ServiceAccount).Name
+	// if namespace == "" {
+	// 	namespace = metav1.NamespaceDefault
+	// }
+	namespace := ctx.Param(util.NamespaceString)
+	name := ctx.Param(util.NameString)
+	err := client.GetKubeClient().CoreV1().ServiceAccounts(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}

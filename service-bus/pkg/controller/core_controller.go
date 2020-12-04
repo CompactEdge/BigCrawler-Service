@@ -78,47 +78,48 @@ func newCoreController(v1 *echo.Group) {
 	core.GET("/serviceaccounts/:namespace/:name", service.GetNamespacedServiceAccounts)
 
 	// REPLACE
-	// TODO:
+	// TODO: test
 	core.PUT("/pods", service.ReplaceNamespacedPods)
 	core.PUT("/podstatuses", service.ReplaceNamespacedPodStatuses)
 	core.PUT("/services", service.ReplaceNamespacedServices)
 	core.PUT("/servicestatuses", service.ReplaceNamespacedServiceStatuses)
 
 	// PATCH
-	// TODO:
+	// TODO: test
 	core.PATCH("/pods/:namespace", service.PatchNamespacedPods)
 	core.PATCH("/services/:namespace", service.PatchNamespacedServices)
 
 	// DELETE COLLECTION
-	collection := core.Group("/collection")
-	collection.DELETE("/configmaps/:namespace", service.DeleteCollectionNamespacedConfigMaps)
-	collection.DELETE("/endpoints/:namespace", service.DeleteCollectionNamespacedEndpoints)
-	collection.DELETE("/events/:namespace", service.DeleteCollectionNamespacedEvents)
-	collection.DELETE("/limitranges/:namespace", service.DeleteCollectionNamespacedLimitRanges)
-	collection.DELETE("/nodes", service.DeleteCollectionNodes)
-	collection.DELETE("/persistentvolumes", service.DeleteCollectionPersistentVolumes)
-	collection.DELETE("/persistentvolumeclaims/:namespace", service.DeleteCollectionNamespacedPersistentVolumeClaims)
-	collection.DELETE("/pods/:namespace", service.DeleteCollectionNamespacedPods)
-	collection.DELETE("/podtemplates/:namespace", service.DeleteCollectionNamespacedPodTemplates)
-	collection.DELETE("/replicationcontrollers/:namespace", service.DeleteCollectionNamespacedReplicationControllers)
-	collection.DELETE("/resourcequotas/:namespace", service.DeleteCollectionNamespacedResourceQuotas)
-	collection.DELETE("/secrets/:namespace", service.DeleteCollectionNamespacedSecrets)
-	collection.DELETE("/serviceaccounts/:namespace", service.DeleteCollectionNamespacedServiceAccounts)
+	// TODO: implement
+	// collection := core.Group("/collection")
+	// collection.DELETE("/configmaps/:namespace", service.DeleteCollectionNamespacedConfigMaps)
+	// collection.DELETE("/endpoints/:namespace", service.DeleteCollectionNamespacedEndpoints)
+	// collection.DELETE("/events/:namespace", service.DeleteCollectionNamespacedEvents)
+	// collection.DELETE("/limitranges/:namespace", service.DeleteCollectionNamespacedLimitRanges)
+	// collection.DELETE("/nodes", service.DeleteCollectionNodes)
+	// collection.DELETE("/persistentvolumes", service.DeleteCollectionPersistentVolumes)
+	// collection.DELETE("/persistentvolumeclaims/:namespace", service.DeleteCollectionNamespacedPersistentVolumeClaims)
+	// collection.DELETE("/pods/:namespace", service.DeleteCollectionNamespacedPods)
+	// collection.DELETE("/podtemplates/:namespace", service.DeleteCollectionNamespacedPodTemplates)
+	// collection.DELETE("/replicationcontrollers/:namespace", service.DeleteCollectionNamespacedReplicationControllers)
+	// collection.DELETE("/resourcequotas/:namespace", service.DeleteCollectionNamespacedResourceQuotas)
+	// collection.DELETE("/secrets/:namespace", service.DeleteCollectionNamespacedSecrets)
+	// collection.DELETE("/serviceaccounts/:namespace", service.DeleteCollectionNamespacedServiceAccounts)
 
 	// DELETE
-	core.DELETE("/configmaps", service.DeleteNamespacedConfigMaps)
-	core.DELETE("/endpoints", service.DeleteNamespacedEndpoints)
-	core.DELETE("/events", service.DeleteNamespacedEvents)
-	core.DELETE("/limitranges", service.DeleteNamespacedLimitRanges)
+	core.DELETE("/configmaps/:namespace/:name", service.DeleteNamespacedConfigMaps)
+	core.DELETE("/endpoints/:namespace/:name", service.DeleteNamespacedEndpoints)
+	core.DELETE("/events/:namespace/:name", service.DeleteNamespacedEvents)
+	core.DELETE("/limitranges/:namespace/:name", service.DeleteNamespacedLimitRanges)
 	core.DELETE("/namespaces/:name", service.DeleteNamespaces)
 	core.DELETE("/nodes/:name", service.DeleteNodes)
-	core.DELETE("/persistentvolumes", service.DeletePersistentVolumes)
-	core.DELETE("/persistentvolumeclaims", service.DeleteNamespacedPersistentVolumeClaims)
+	core.DELETE("/persistentvolumes/:namespace/:name", service.DeletePersistentVolumes)
+	core.DELETE("/persistentvolumeclaims/:namespace/:name", service.DeleteNamespacedPersistentVolumeClaims)
 	core.DELETE("/pods/:namespace/:name", service.DeleteNamespacedPods)
-	core.DELETE("/podtemplates", service.DeleteNamespacedPodTemplates)
-	core.DELETE("/replicationcontrollers", service.DeleteNamespacedReplicationControllers)
-	core.DELETE("/resourcequota", service.DeleteNamespacedResourceQuotas)
-	core.DELETE("/secrets", service.DeleteNamespacedSecrets)
-	core.DELETE("/services", service.DeleteNamespacedServices)
-	core.DELETE("/serviceaccounts", service.DeleteNamespacedServiceAccounts)
+	core.DELETE("/podtemplates/:namespace/:name", service.DeleteNamespacedPodTemplates)
+	core.DELETE("/replicationcontrollers/:namespace/:name", service.DeleteNamespacedReplicationControllers)
+	core.DELETE("/resourcequota/:namespace/:name", service.DeleteNamespacedResourceQuotas)
+	core.DELETE("/secrets/:namespace/:name", service.DeleteNamespacedSecrets)
+	core.DELETE("/services/:namespace/:name", service.DeleteNamespacedServices)
+	core.DELETE("/serviceaccounts/:namespace/:name", service.DeleteNamespacedServiceAccounts)
 }
