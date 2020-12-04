@@ -3083,6 +3083,388 @@ paths:
       summary: 헬스 체크
       tags:
       - root
+  /networking/ingressclasses:
+    get:
+      consumes:
+      - '*/*'
+      description: 모든 IngressClass를 조회한다.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 모든 IngressClass 조회
+      tags:
+      - networking
+    post:
+      consumes:
+      - '*/*'
+      description: JSON 형식의 body와 함께 생성할 IngressClass를 지정한다.
+      parameters:
+      - description: 생성할 IngressClass 매니페스트
+        in: body
+        name: IngressClass
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 새로운 IngressClass 생성
+      tags:
+      - networking
+  /networking/ingressclasses/{name}:
+    delete:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 IngressClass 삭제
+      parameters:
+      - description: IngressClass namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: IngressClass name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 IngressClass 삭제
+      tags:
+      - networking
+    get:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 IngressClass 조회
+      parameters:
+      - description: IngressClass name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 IngressClass 조회
+      tags:
+      - networking
+  /networking/ingresses:
+    get:
+      consumes:
+      - '*/*'
+      description: 모든 Ingress를 조회한다.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 모든 Ingress 조회
+      tags:
+      - networking
+    post:
+      consumes:
+      - '*/*'
+      description: JSON 형식의 body와 함께 생성할 Ingress를 지정한다.
+      parameters:
+      - description: 생성할 Ingress 매니페스트
+        in: body
+        name: Ingress
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 새로운 Ingress 생성
+      tags:
+      - networking
+  /networking/ingresses/{namespace}:
+    get:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 Ingress 조회
+      parameters:
+      - description: Ingress namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 Ingress 조회
+      tags:
+      - networking
+  /networking/ingresses/{namespace}/{name}:
+    delete:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 Ingress 삭제
+      parameters:
+      - description: Ingress namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: Ingress name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 Ingress 삭제
+      tags:
+      - networking
+    get:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 Ingress 조회
+      parameters:
+      - description: Ingress namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: Ingress name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 Ingress 조회
+      tags:
+      - networking
+  /networking/networkpolicies:
+    get:
+      consumes:
+      - '*/*'
+      description: 모든 NetworkPolicy를 조회한다.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 모든 NetworkPolicy 조회
+      tags:
+      - networking
+    post:
+      consumes:
+      - '*/*'
+      description: JSON 형식의 body와 함께 생성할 NetworkPolicy를 지정한다.
+      parameters:
+      - description: 생성할 NetworkPolicy 매니페스트
+        in: body
+        name: NetworkPolicy
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 새로운 NetworkPolicy 생성
+      tags:
+      - networking
+  /networking/networkpolicies/{namespace}:
+    get:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 NetworkPolicy 조회
+      parameters:
+      - description: NetworkPolicy namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 NetworkPolicy 조회
+      tags:
+      - networking
+  /networking/networkpolicies/{namespace}/{name}:
+    delete:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 NetworkPolicy 삭제
+      parameters:
+      - description: NetworkPolicy namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: NetworkPolicy name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 NetworkPolicy 삭제
+      tags:
+      - networking
+    get:
+      consumes:
+      - '*/*'
+      description: 특정 네임스페이스의 특정 NetworkPolicy 조회
+      parameters:
+      - description: NetworkPolicy namespace
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: NetworkPolicy name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 특정 네임스페이스의 특정 NetworkPolicy 조회
+      tags:
+      - networking
 schemes:
 - http
 swagger: "2.0"

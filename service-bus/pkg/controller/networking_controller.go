@@ -28,17 +28,18 @@ func newNetworkingController(v1 *echo.Group) {
 	// REPLACE
 	networking.PUT("/networkpolicies/:namespace", service.ReplaceNamespacedNetworkPolicies)
 	networking.PUT("/ingresses/:namespace", service.ReplaceNamespacedIngresses)
-	networking.PUT("/ingressclasses", service.ReplaceIngressClasses)
+	networking.PUT("/ingressclasses/:name", service.ReplaceIngressClasses)
 
 	// PATCH
 	// TODO:
 	// networking.PATCH("/networkpolicies", service.PatchNamespaced)
 
 	// DELETE COLLECTION
-	collection := networking.Group("/collection")
-	collection.DELETE("/networkpolicies/:namespace", service.DeleteCollectionNamespacedNetworkPolicies)
-	collection.DELETE("/ingresses/:namespace", service.DeleteCollectionNamespacedIngresses)
-	collection.DELETE("/ingressclasses", service.DeleteCollectionNamespacedIngressClasses)
+	// TODO:
+	// collection := networking.Group("/collection")
+	// collection.DELETE("/networkpolicies/:namespace", service.DeleteCollectionNamespacedNetworkPolicies)
+	// collection.DELETE("/ingresses/:namespace", service.DeleteCollectionNamespacedIngresses)
+	// collection.DELETE("/ingressclasses", service.DeleteCollectionNamespacedIngressClasses)
 
 	// DELETE
 	networking.DELETE("/networkpolicies/:namespace/:name", service.DeleteNamespacedNetworkPolicies)
