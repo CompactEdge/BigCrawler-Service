@@ -144,7 +144,8 @@ const MetricPod = props => {
   return (
     <>
       <div className="content">
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
           <CustomDropdown
             title="Namespace"
             value={namespace}
@@ -160,7 +161,6 @@ const MetricPod = props => {
             onChange={handleChangePod}
           />
         </div>
-        <CardTitle tag="h4">{pod.name}</CardTitle>
         <Row>
           <Col md="12">
             <Card>

@@ -43,6 +43,7 @@ const MetricNode = props => {
 
   useEffect(() => {
     setIsLoading(true);
+    handleCreateMetricChart();
   }, []);
 
   const callback = () => handleCreateMetricChart();
@@ -131,7 +132,6 @@ const MetricNode = props => {
             onChange={handleChangeNode}
           />
         </div>
-        <CardTitle tag="h4">{node}</CardTitle>
         <Row>
           <Col md="12">
             <Card>

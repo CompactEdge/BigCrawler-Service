@@ -7,6 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  UncontrolledDropdown,
 } from 'reactstrap';
 
 const addonStyle = {
@@ -42,7 +43,10 @@ const CustomDropdown = props => {
         <InputGroupAddon addonType="prepend">
           <InputGroupText style={addonStyle}>{props.title}</InputGroupText>
         </InputGroupAddon>
-        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <UncontrolledDropdown
+          isOpen={dropdownOpen}
+          toggle={toggle}
+          style={{ maxWidth: '380px' }}>
           <DropdownToggle style={dropdownButtonStyle} caret>
             {props.value}
           </DropdownToggle>
@@ -53,7 +57,7 @@ const CustomDropdown = props => {
               </DropdownItem>
             ))}
           </DropdownMenu>
-        </Dropdown>
+        </UncontrolledDropdown>
       </InputGroup>
     </div>
   );

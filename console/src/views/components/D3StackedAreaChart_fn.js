@@ -4,18 +4,36 @@ import * as d3 from 'd3';
 
 const D3StackedAreaChart = props => {
   const stackedAreaChartRef = useRef();
-
+  let dataUnit = props.unit;
   useEffect(() => {
-    console.log(props);
-    if (!props.init) {
+    d3.select(stackedAreaChartRef.current.firstElementChild).remove();
+    if (!props.init && props.data.length) {
       handleCreateStackedAreaChart();
+    } else {
+      d3.select(stackedAreaChartRef.current)
+        .append('text')
+        .attr('text-anchor', 'end')
+        .attr('x', 100)
+        .attr('y', 10)
+        .text('No Data');
     }
-  }, []);
+  }, [props]);
 
   const handleConverToEasyFormat = objectArray => {
+    let form = 0;
+    switch (dataUnit) {
+      case 'Rate':
+        form = 100;
+        dataUnit = 'Rate (%)';
+        break;
+      case 'Byte':
+        form = 1 / 1000000000;
+        dataUnit = 'GB';
+        break;
+    }
     return objectArray.reduce((map, obj) => {
       const converted = obj.values.reduce((ret, origin) => {
-        ret[origin[0]] = origin[1];
+        ret[origin[0]] = origin[1] * form;
         return ret;
       }, {});
       map[obj['metric'][props.metric]] = converted;
@@ -79,9 +97,12 @@ const D3StackedAreaChart = props => {
         0,
         width + margin.left + margin.right,
         height + margin.top + margin.bottom,
-      ])
+      ]);
+
+    const con = svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
     const color = d3.scaleOrdinal().domain(metricName).range(d3.schemeSet2);
 
     const x = d3
@@ -89,35 +110,33 @@ const D3StackedAreaChart = props => {
       .domain(d3.extent(mergeData, d => d.time))
       .range([0, width]);
 
-    const xAxis = svg
+    const xAxis = con
       .append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')));
 
-    svg
+    con
       .append('text')
       .attr('text-anchor', 'end')
       .attr('x', width + 40)
       .attr('y', height + 10)
       .text('Time');
 
+    const yMax = dataUnit.indexOf('Rate') > -1 ? 100 : d3.max(totalSum);
     // Add Y axis
-    const y = d3
-      .scaleLinear()
-      .domain([0, d3.max(totalSum)])
-      .range([height, 0]);
+    const y = d3.scaleLinear().domain([0, yMax]).range([height, 0]);
 
-    svg
+    con.append('g').call(d3.axisLeft(y).ticks(5));
+
+    con
       .append('text')
       .attr('text-anchor', 'end')
       .attr('x', -40)
       .attr('y', -10)
-      .text(props.unit)
+      .text(dataUnit)
       .attr('text-anchor', 'start');
 
-    svg.append('g').call(d3.axisLeft(y).ticks(5));
-
-    svg
+    con
       .append('defs')
       .append('svg:clipPath')
       .attr('id', 'clip')
@@ -138,7 +157,7 @@ const D3StackedAreaChart = props => {
 
     // Create the scatter variable: where both the circles and the brush take place
     // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
-    const areaChart = svg.append('g').attr('clip-path', 'url(#clip)');
+    const areaChart = con.append('g').attr('clip-path', 'url(#clip)');
 
     const areaGenerator = d3
       .area()
@@ -164,9 +183,8 @@ const D3StackedAreaChart = props => {
       idleTimeout = null;
     }
 
-    function updateChart(e) {
-      let extent = e.selection;
-
+    function updateChart({ selection }) {
+      let extent = selection;
       // If no selection, back to initial coordinate. Otherwise, update X axis domain
       if (!extent) {
         if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
@@ -207,7 +225,7 @@ const D3StackedAreaChart = props => {
 
     // Add one dot in the legend for each name.
     const size = 20;
-    svg
+    con
       .selectAll('myrect')
       .data(metricName)
       .enter()
@@ -225,7 +243,7 @@ const D3StackedAreaChart = props => {
       .on('mouseleave', noHighlight);
 
     // Add one dot in the legend for each name.
-    svg
+    con
       .selectAll('mylabels')
       .data(metricName)
       .enter()
@@ -251,7 +269,7 @@ const D3StackedAreaChart = props => {
     <>
       {/* <div className="col-md-3 my-3"> */}
       <div className="col-md-12">
-        <svg className="chart-container" ref={stackedAreaChartRef.current} />
+        <svg className="chart-container" ref={stackedAreaChartRef} />
       </div>
     </>
   );

@@ -10,18 +10,39 @@ import {
   Row,
   Col,
 } from 'reactstrap';
-import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
+import CustomDropdown from 'views/components/CustomDropdown.js';
+import StackedAreaChart from 'views/components/D3StackedAreaChart_fn.js';
 
 const MetricNamespace = props => {
   const [data, setData] = useState({
     cpuUsage: [],
     memoryUsage: [],
+    init: true,
   });
-  const [init, setInit] = useState(true);
+  const [namespace, setNamespace] = useState('');
+  const [namespaceList, setNamespaceList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
   const savedCallback = useRef();
+
+  useEffect(() => {
+    const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
+    Promise.all([
+      fetch(`http://${API_GATEWAY_HOST}/kube/core/namespaces`),
+    ]).then(([res]) =>
+      Promise.all([res.json()]).then(result => {
+        const nsList = [];
+        result[0].items.map(({ metadata }) => {
+          if (nsList.indexOf(metadata.name) === -1) {
+            nsList.push(metadata.name);
+          }
+        });
+        setNamespaceList(nsList);
+        setNamespace(nsList[0]);
+      }),
+    );
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -35,18 +56,18 @@ const MetricNamespace = props => {
   });
 
   useEffect(() => {
+    callback();
     const tick = () => {
       savedCallback.current();
     };
     let id = setInterval(tick, delay * 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [namespace]);
 
   const handleCreateMetricChart = () => {
     const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     let cluster = '';
-    let namespace = 'kube-system';
-    let type = 'deployment';
+    let type = 'deployment'; // deployment, statefulset, daemonset
     const exclude = '';
     const now = Date.now() / 1000;
     const range = 60 * 60 * 3; // s * m * h
@@ -88,9 +109,9 @@ const MetricNamespace = props => {
           setData({
             cpuUsage: cpuUsage.data.result,
             memoryUsage: memoryUsage.data.result,
+            init: false,
           });
           setIsLoading(false);
-          setInit(false);
           // console.log(this.state.cpuUsage);
         },
       )
@@ -98,6 +119,14 @@ const MetricNamespace = props => {
         setError(error);
         setIsLoading(false);
       });
+  };
+
+  const handleChangeNamespace = value => {
+    const idx = namespaceList.indexOf(value);
+    if (idx > -1) {
+      const ns = namespaceList[idx];
+      setNamespace(ns);
+    }
   };
 
   if (error) {
@@ -110,6 +139,15 @@ const MetricNamespace = props => {
   return (
     <>
       <div className="content">
+        <div
+          style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
+          <CustomDropdown
+            title="Namespace"
+            value={namespace}
+            items={namespaceList}
+            onChange={handleChangeNamespace}
+          />
+        </div>
         <Row>
           <Col md="12">
             <Card>

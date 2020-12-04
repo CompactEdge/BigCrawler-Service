@@ -32,7 +32,7 @@ class D3PieChart extends React.Component {
     if (this.props.data !== prevProps.data) {
       // TODO: 컴포넌트를 지우지 않고 데이터 갱신만 되어야 함
       d3.select(this.refPieChart.current).select('svg').remove();
-      d3.select(this.refPieChart.current).select('.tooltip').remove();
+      d3.select(this.refPieChart.current).select('.pie-tooltip').remove();
       this.handleCreatePieChart();
     }
   }
@@ -84,7 +84,7 @@ class D3PieChart extends React.Component {
       );
 
     // prettier-ignore
-    const tooltip = d3.select(this.refPieChart.current).append('div').attr('class', 'tooltip');
+    const tooltip = d3.select(this.refPieChart.current).append('div').attr('class', 'pie-tooltip tooltip');
     tooltip.append('div').attr('class', 'label');
     tooltip.append('div').attr('class', 'count');
 
@@ -155,16 +155,16 @@ class D3PieChart extends React.Component {
         tooltip.style('display', 'none').style('opacity', 0);
       })
       .attr('d', arc);
-      // TODO: update data with transition animation
-      // .transition()
-      // .duration(750)
-      // .attrTween('d', function (d) {
-      //   var interpolate = d3.interpolate(this._current, d);
-      //   this._current = interpolate(0);
-      //   return function (t) {
-      //     return arc(interpolate(t));
-      //   };
-      // });
+    // TODO: update data with transition animation
+    // .transition()
+    // .duration(750)
+    // .attrTween('d', function (d) {
+    //   var interpolate = d3.interpolate(this._current, d);
+    //   this._current = interpolate(0);
+    //   return function (t) {
+    //     return arc(interpolate(t));
+    //   };
+    // });
 
     // The <title> element provides an accessible, short-text description of any SVG container element or graphics element.
     // g.append('title').text(d => `${d.data.name}: ${d.data.value}`);

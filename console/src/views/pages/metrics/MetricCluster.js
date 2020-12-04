@@ -10,10 +10,11 @@ import {
   Col,
   Row,
 } from 'reactstrap';
-import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
+import StackedAreaChart from 'views/components/D3StackedAreaChart_fn.js';
+import HeadlineCard from 'views/components/HeadlineCard.js';
 import { conditionallyUpdateScrollbar } from 'reactstrap/lib/utils';
 
-const MetricCluster_fn = props => {
+const MetricCluster = props => {
   const [data, setData] = useState({
     cpuUtilisation: [],
     cpuRequests: [],
@@ -42,6 +43,7 @@ const MetricCluster_fn = props => {
   });
 
   useEffect(() => {
+    callback();
     const tick = () => {
       savedCallback.current();
     };
@@ -181,73 +183,62 @@ const MetricCluster_fn = props => {
            */}
         <Row>
           <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">
-                  {makePercent(data.cpuUtilisation[1])}
-                </CardTitle>
-                <p className="card-category">CPU Utilisation</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
+            <HeadlineCard
+              id="cpuUtil"
+              title="CPU Utilisation"
+              value={makePercent(data.cpuUtilisation[1])}
+              tooltip="시스템 평균 CPU 부하 정보입니다."
+            />
           </Col>
           <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">
-                  {makePercent(data.cpuRequests[1])}
-                </CardTitle>
-                <p className="card-category">CPU Requests Commitment</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
+            <HeadlineCard
+              id="cpuRC"
+              title="CPU Requests Commitment"
+              value={makePercent(data.cpuRequests[1])}
+              tooltip="쿠버네티스 클러스터 CPU Request 평균 정보입니다.
+
+              CPU Request는 컨테이너가 생성될 때 요청하는 리소스 양입니다."
+            />
           </Col>
           <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">{makePercent(data.cpuLimits[1])}</CardTitle>
-                <p className="card-category">CPU Limits Commitment</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
-          </Col>
-          {/*
-              Memory Utilisation
-              Memory Requests Commitment
-              Memory Limits Commitment
-             */}
-          <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">
-                  {makePercent(data.memoryUtilisation[1])}
-                </CardTitle>
-                <p className="card-category">Memory Utilisation</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
+            <HeadlineCard
+              id="cpuLC"
+              title="CPU Limits Commitment"
+              value={makePercent(data.cpuLimits[1])}
+              tooltip="	
+              쿠버네티스 클러스터 CPU 제약 조건 평균 정보입니다.
+              
+              CPU Limit은 컨테이너가 생성된 다음 실행 중 CPU를 추가로 사용할 수 있는 정보입니다."
+            />
           </Col>
           <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">
-                  {makePercent(data.memoryRequests[1])}
-                </CardTitle>
-                <p className="card-category">Memory Requests Commitment</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
+            <HeadlineCard
+              id="memoryUtil"
+              title="Memory Utilisation"
+              value={makePercent(data.memoryUtilisation[1])}
+              tooltip="시스템 평균 메모리 사용량입니다."
+            />
           </Col>
           <Col md="2">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">
-                  {makePercent(data.memoryLimits[1])}
-                </CardTitle>
-                <p className="card-category">Memory Limits Commitment</p>
-              </CardHeader>
-              {/* <CardBody></CardBody> */}
-            </Card>
+            <HeadlineCard
+              id="memoryRC"
+              title="Memory Requests Commitment"
+              value={makePercent(data.memoryRequests[1])}
+              tooltip="쿠버네티스 Memory Request 평균 정보입니다.
+
+              Memory Request는 컨테이너가 생성될 때 요청하는 리소스 양입니다."
+            />
+          </Col>
+          <Col md="2">
+            <HeadlineCard
+              id="memoryLC"
+              title="Memory Limits Commitment"
+              value={makePercent(data.memoryLimits[1])}
+              tooltip="	
+              쿠버네티스 Memory 제약 평균 정보입니다.
+              
+              Memory Limit은 컨테이너가 생성된 다음 실행 중 Memory를 추가로 사용할 수 있는 정보입니다."
+            />
           </Col>
         </Row>
         <Row>
@@ -297,4 +288,4 @@ const MetricCluster_fn = props => {
   );
 };
 
-export default MetricCluster_fn;
+export default MetricCluster;
