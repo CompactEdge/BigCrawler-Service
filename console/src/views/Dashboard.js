@@ -103,7 +103,7 @@ class Dashboard extends React.Component {
             pod: this.handleCountObjects('pod', pods),
             deployment: this.handleCountObjects('deployment', deployments),
             daemonset: this.handleCountObjects('daemonset', daemonsets),
-            replicaset: this.handleCountObjects('replicaset', replicasets),
+            replicaset: this.handleCountObjects('replicaset', { items: [] }),
             replicationcontroller: this.handleCountObjects(
               'replicationcontroller',
               replicationcontrollers,
@@ -114,12 +114,13 @@ class Dashboard extends React.Component {
           });
         },
       )
-      .catch(error =>
+      .catch(error => {
+        console.log(error);
         this.setState({
           error,
           isLoading: false,
-        }),
-      );
+        });
+      });
 
     if (this.state.init) {
       this.setState({ init: false });

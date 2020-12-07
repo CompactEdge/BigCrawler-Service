@@ -1,12 +1,12 @@
 {
   "name": "console",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compact Edge Console",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "start": "cp ./.env.dev ./.env && react-scripts start",
+    "build": "cp ./.env.prod ./.env && react-scripts build && gulp licenses",
     "docker": "./aio/scripts/docker.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

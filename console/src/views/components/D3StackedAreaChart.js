@@ -277,31 +277,34 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
 
-    const focusLine = con;
-    //   .append('g')
-    //   .append('rect')
-    //   .style('fill', 'red')
-    //   .style('width', 1)
-    //   .style('height', height)
-    //   .style('opacity', 0);
+    const focusLine = con
+      .append('g')
+      .append('rect')
+      .style('fill', 'red')
+      .style('width', 1)
+      .style('height', height)
+      .style('opacity', 0);
 
-    // con
-    //   .append('rect')
-    //   .style('fill', 'none')
-    //   .style('pointer-events', 'all')
-    //   .attr('width', width)
-    //   .attr('height', height)
-    //   .on('mouseover', handleMouseoverGrid)
-    //   .on('mousemove', handleMousemoveGrid);
+    const handleMouseoverGrid = () => {
+      focusLine.style('opacity', 1);
+    };
 
-    // const handleMouseoverGrid = () => {
-    //   console.log('in');
-    //   focusLine.style('opacity', 1);
-    // };
+    const handleMousemoveGrid = d => {
+      focusLine.attr('x', width / 2);
+    };
 
-    // const handleMousemoveGrid = d => {
-    //   focusLine.attr('cx', d => d.x);
-    // };
+    const handleMouseleaveGrid = () => {
+      focusLine.style('opacity', 0);
+    };
+    con
+      .append('rect')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('width', width)
+      .attr('height', height)
+      .on('mouseover', handleMouseoverGrid)
+      .on('mousemove', handleMousemoveGrid)
+      .on('mouseleave', handleMouseleaveGrid);
   };
 
   return (

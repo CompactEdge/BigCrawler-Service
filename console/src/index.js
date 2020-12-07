@@ -29,9 +29,11 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 const hist = createBrowserHistory();
 
+require('dotenv').config();
+
 // global variable
-window.$host = '127.0.0.1';
-window.$apigw = '8083';
+window.$host = process.env.REACT_APP_HOST;
+window.$apigw = process.env.REACT_APP_APIGW;
 
 ReactDOM.render(
   <Router history={hist}>
