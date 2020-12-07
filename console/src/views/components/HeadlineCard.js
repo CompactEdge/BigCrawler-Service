@@ -11,9 +11,20 @@ const HeadlineCard = props => {
   };
   return (
     <Card id={props.id}>
-      <CardHeader>
+      <CardHeader style={{ textAlign: 'center' }}>
         <CardTitle tag="h4">{props.value}</CardTitle>
-        <p className="card-category">{props.title}</p>
+        <p
+          className="card-category"
+          style={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            margin: '0 -15px',
+            borderTop: '1px solid rgba(255,165,0,0.4)',
+            padding: '0 10px',
+          }}>
+          {props.title}
+        </p>
       </CardHeader>
       <Tooltip
         placement="bottom"

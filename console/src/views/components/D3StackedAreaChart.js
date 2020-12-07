@@ -127,9 +127,12 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .attr('y', height + 30)
       .text('Time');
 
-    const yMax = dataUnit.indexOf('Rate') > -1 ? 100 : d3.max(totalSum);
+    const yMax = d3.max(totalSum);
     // Add Y axis
-    const y = d3.scaleLinear().domain([0, yMax]).range([height, 0]);
+    const y = d3
+      .scaleLinear()
+      .domain([0, yMax * 1.1])
+      .range([height, 0]);
 
     con
       .append('g')

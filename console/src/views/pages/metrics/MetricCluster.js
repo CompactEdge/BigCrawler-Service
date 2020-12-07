@@ -57,7 +57,7 @@ const MetricCluster = props => {
     const cluster = '';
     const exclude = '';
     const now = Date.now() / 1000;
-    const range = 60 * 60 * 6; // s * m * h
+    const range = 60 * 60 * 1; // s * m * h
     const step = delay;
     Promise.all([
       fetch(
