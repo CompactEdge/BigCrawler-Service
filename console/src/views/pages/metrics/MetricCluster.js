@@ -57,7 +57,7 @@ const MetricCluster = props => {
     const cluster = '';
     const exclude = '';
     const now = Date.now() / 1000;
-    const range = 60 * 60 * 3; // s * m * h
+    const range = 60 * 60 * 6; // s * m * h
     const step = delay;
     Promise.all([
       fetch(
@@ -182,7 +182,7 @@ const MetricCluster = props => {
             CPU Limits Commitment
            */}
         <Row>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="cpuUtil"
               title="CPU Utilisation"
@@ -190,7 +190,7 @@ const MetricCluster = props => {
               tooltip="시스템 평균 CPU 부하 정보입니다."
             />
           </Col>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="cpuRC"
               title="CPU Requests Commitment"
@@ -200,7 +200,7 @@ const MetricCluster = props => {
               CPU Request는 컨테이너가 생성될 때 요청하는 리소스 양입니다."
             />
           </Col>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="cpuLC"
               title="CPU Limits Commitment"
@@ -211,7 +211,7 @@ const MetricCluster = props => {
               CPU Limit은 컨테이너가 생성된 다음 실행 중 CPU를 추가로 사용할 수 있는 정보입니다."
             />
           </Col>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="memoryUtil"
               title="Memory Utilisation"
@@ -219,7 +219,7 @@ const MetricCluster = props => {
               tooltip="시스템 평균 메모리 사용량입니다."
             />
           </Col>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="memoryRC"
               title="Memory Requests Commitment"
@@ -229,7 +229,7 @@ const MetricCluster = props => {
               Memory Request는 컨테이너가 생성될 때 요청하는 리소스 양입니다."
             />
           </Col>
-          <Col md="2">
+          <Col xs="6" md="2">
             <HeadlineCard
               id="memoryLC"
               title="Memory Limits Commitment"

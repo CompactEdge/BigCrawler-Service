@@ -70,7 +70,7 @@ const MetricNamespace = props => {
     let type = 'deployment'; // deployment, statefulset, daemonset
     const exclude = '';
     const now = Date.now() / 1000;
-    const range = 60 * 60 * 3; // s * m * h
+    const range = 60 * 60 * 1; // s * m * h
     const step = 30;
     Promise.all([
       fetch(

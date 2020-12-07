@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import * as d3 from 'd3';
 
-const D3StackedAreaChart = props => {
+const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
   const stackedAreaChartRef = useRef();
-  let dataUnit = props.unit;
+  let dataUnit = unit;
+
   useEffect(() => {
     d3.select(stackedAreaChartRef.current.firstElementChild).remove();
-    if (!props.init && props.data.length) {
+    if (!init && data.length > 0) {
       handleCreateStackedAreaChart();
     } else {
       d3.select(stackedAreaChartRef.current)
@@ -17,7 +18,7 @@ const D3StackedAreaChart = props => {
         .attr('y', 10)
         .text('No Data');
     }
-  }, [props]);
+  }, [data]);
 
   const handleConverToEasyFormat = objectArray => {
     let form = 0;
@@ -30,20 +31,22 @@ const D3StackedAreaChart = props => {
         form = 1 / 1000000000;
         dataUnit = 'GB';
         break;
+      default:
+        return false;
     }
     return objectArray.reduce((map, obj) => {
       const converted = obj.values.reduce((ret, origin) => {
         ret[origin[0]] = origin[1] * form;
         return ret;
       }, {});
-      map[obj['metric'][props.metric]] = converted;
+      map[obj['metric'][metric]] = converted;
       return map;
     }, {});
   };
 
   const handleFilterTimeSeries = objectArray => {
     return objectArray
-      .map(dat => dat.values) // select 'values'
+      .map(data => data.values) // select 'values'
       .reduce((a, b) => (a.length > b.length ? a : b)) // compares 'values' length
       .map(t => t[0]); // extract epoch time data from 'values'
   };
@@ -77,8 +80,7 @@ const D3StackedAreaChart = props => {
   };
 
   const handleCreateStackedAreaChart = () => {
-    const metricName = props.data.map(ns => ns['metric'][props.metric]);
-    const data = props.data;
+    const metricName = data.map(ns => ns['metric'][metric]);
     const customData = handleConverToEasyFormat(data);
     const timeSeries = handleFilterTimeSeries(data);
     const mergeData = handleMergeMap(timeSeries, customData);
@@ -113,7 +115,10 @@ const D3StackedAreaChart = props => {
     const xAxis = con
       .append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')));
+      .attr('class', 'grid')
+      .call(
+        d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')).tickSize(-height),
+      );
 
     con
       .append('text')
@@ -126,7 +131,10 @@ const D3StackedAreaChart = props => {
     // Add Y axis
     const y = d3.scaleLinear().domain([0, yMax]).range([height, 0]);
 
-    con.append('g').call(d3.axisLeft(y).ticks(5));
+    con
+      .append('g')
+      .attr('class', 'grid')
+      .call(d3.axisLeft(y).ticks(5).tickSize(-width));
 
     con
       .append('text')
@@ -171,7 +179,7 @@ const D3StackedAreaChart = props => {
       .data(stackedData)
       .enter()
       .append('path')
-      .attr('class', d => `myArea ${d.key} ${props.id}`)
+      .attr('class', d => `myArea ${d.key} ${id}`)
       .style('fill', d => color(d.key))
       .attr('d', areaGenerator);
 
@@ -182,7 +190,7 @@ const D3StackedAreaChart = props => {
     function idled() {
       idleTimeout = null;
     }
-
+    //extent [0~1190];
     function updateChart({ selection }) {
       let extent = selection;
       // If no selection, back to initial coordinate. Otherwise, update X axis domain
@@ -195,7 +203,10 @@ const D3StackedAreaChart = props => {
       }
 
       // Update axis and area position
-      xAxis.transition().duration(1000).call(d3.axisBottom(x).ticks(5));
+      xAxis
+        .transition()
+        .duration(1000)
+        .call(d3.axisBottom(x).ticks(5).tickSize(-height));
       areaChart
         .selectAll('path')
         .transition()
@@ -208,16 +219,15 @@ const D3StackedAreaChart = props => {
     //////////
 
     // What to do when one group is hovered
-    const highlight = d => {
+    const highlight = e => {
       // reduce opacity of all groups
-      d3.selectAll(`.myArea.${props.id}`).style('opacity', 0.1);
+      d3.selectAll(`.myArea.${id}`).style('opacity', 0.1);
       // expect the one that is hovered
-      d3.select(`.${d.target.__data__}.${props.id}`).style('opacity', 1);
+      d3.select(`.${e.target.__data__}.${id}`).style('opacity', 1);
     };
 
     // And when it is not hovered anymore
-    const noHighlight = () =>
-      d3.selectAll(`.myArea.${props.id}`).style('opacity', 1);
+    const noHighlight = () => d3.selectAll(`.myArea.${id}`).style('opacity', 1);
 
     //////////
     // LEGEND //
@@ -263,6 +273,32 @@ const D3StackedAreaChart = props => {
       .style('alignment-baseline', 'middle')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
+
+    const focusLine = con;
+    //   .append('g')
+    //   .append('rect')
+    //   .style('fill', 'red')
+    //   .style('width', 1)
+    //   .style('height', height)
+    //   .style('opacity', 0);
+
+    // con
+    //   .append('rect')
+    //   .style('fill', 'none')
+    //   .style('pointer-events', 'all')
+    //   .attr('width', width)
+    //   .attr('height', height)
+    //   .on('mouseover', handleMouseoverGrid)
+    //   .on('mousemove', handleMousemoveGrid);
+
+    // const handleMouseoverGrid = () => {
+    //   console.log('in');
+    //   focusLine.style('opacity', 1);
+    // };
+
+    // const handleMousemoveGrid = d => {
+    //   focusLine.attr('cx', d => d.x);
+    // };
   };
 
   return (
