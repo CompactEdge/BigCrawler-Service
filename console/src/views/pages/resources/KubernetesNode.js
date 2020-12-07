@@ -68,35 +68,37 @@ class KubernetesNode extends React.Component {
                       {
                         Header: 'Role',
                         accessor: item => {
-                          // console.log(item.metadata.labels)
-                          // Object.keys(item.metadata.labels).forEach(key => {
-                          //   console.log(key)
-                          //   if (key.includes('master')) {
-                          //     return 'master'
-                          //   }
-                          // })
                           for (let key of Object.keys(item.metadata.labels)) {
                             if (key.includes('master')) {
-                              return 'master'
+                              return 'master';
                             }
                           }
-                        }
+                          return 'worker';
+                        },
                       },
                       {
                         Header: 'Ready',
-                        accessor: item => item.status.conditions.find((condition) => condition.type === 'Ready').status
+                        accessor: item =>
+                          item.status.conditions.find(
+                            condition => condition.type === 'Ready',
+                          ).status === 'True'
+                            ? 'True'
+                            : 'False',
                       },
                       {
                         Header: 'Internal-IP',
-                        accessor: item => item.status.addresses.find((address) => address.type === 'InternalIP').address
+                        accessor: item =>
+                          item.status.addresses.find(
+                            address => address.type === 'InternalIP',
+                          ).address,
                       },
                       {
                         Header: 'Kernel',
                         accessor: 'status.nodeInfo.kernelVersion',
                       },
                       {
-                        Header: "Actions",
-                        accessor: "actions",
+                        Header: 'Actions',
+                        accessor: 'actions',
                         sortable: false,
                         filterable: false,
                       },

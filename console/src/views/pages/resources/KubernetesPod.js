@@ -79,12 +79,13 @@ class KubernetesPod extends React.Component {
                           //   }
                           //   return counter;
                           // }, 0);
-                          const running = item.status.containerStatuses.reduce(
+                          const running = item.status.containerStatuses?.reduce(
                             (counter, obj) =>
-                              obj.ready === true ? counter += 1 : counter,
+                              obj.ready === true ? (counter += 1) : counter,
                             0,
                           );
-                          return `${running}/${num}`;
+
+                          return `${running ? running : 0}/${num}`;
                         },
                       },
                       {

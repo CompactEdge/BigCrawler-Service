@@ -134,12 +134,12 @@ class Dashboard extends React.Component {
         case 'node':
         case 'pod':
           return (
-            d.status.conditions.find(v => v.type === 'Ready')['status'] ===
+            d.status.conditions?.find(v => v.type === 'Ready')['status'] ===
             'True'
           );
         case 'deployment':
           return (
-            d.status.conditions.find(v => v.type === 'Available')['status'] ===
+            d.status.conditions?.find(v => v.type === 'Available')['status'] ===
               'True' && d.status.readyReplicas > 0
           );
         case 'replicaset':

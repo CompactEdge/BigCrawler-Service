@@ -24,11 +24,10 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
     let form = 0;
     switch (dataUnit) {
       case 'Rate':
-        form = 100;
-        dataUnit = 'Rate (%)';
+        form = 1;
         break;
       case 'Byte':
-        form = 1 / 1000000000;
+        form = 1 / (1000 * 1000 * 1000);
         dataUnit = 'GB';
         break;
       default:
@@ -277,34 +276,34 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
 
-    const focusLine = con
-      .append('g')
-      .append('rect')
-      .style('fill', 'red')
-      .style('width', 1)
-      .style('height', height)
-      .style('opacity', 0);
+    // const focusLine = con
+    //   .append('g')
+    //   .append('rect')
+    //   .style('fill', 'red')
+    //   .style('width', 1)
+    //   .style('height', height)
+    //   .style('opacity', 0);
 
-    const handleMouseoverGrid = () => {
-      focusLine.style('opacity', 1);
-    };
+    // const handleMouseoverGrid = () => {
+    //   focusLine.style('opacity', 1);
+    // };
 
-    const handleMousemoveGrid = d => {
-      focusLine.attr('x', width / 2);
-    };
+    // const handleMousemoveGrid = d => {
+    //   focusLine.attr('x', width / 2);
+    // };
 
-    const handleMouseleaveGrid = () => {
-      focusLine.style('opacity', 0);
-    };
-    con
-      .append('rect')
-      .style('fill', 'none')
-      .style('pointer-events', 'all')
-      .attr('width', width)
-      .attr('height', height)
-      .on('mouseover', handleMouseoverGrid)
-      .on('mousemove', handleMousemoveGrid)
-      .on('mouseleave', handleMouseleaveGrid);
+    // const handleMouseleaveGrid = () => {
+    //   focusLine.style('opacity', 0);
+    // };
+    // con
+    //   .append('rect')
+    //   .style('fill', 'none')
+    //   .style('pointer-events', 'all')
+    //   .attr('width', width)
+    //   .attr('height', height)
+    //   .on('mouseover', handleMouseoverGrid)
+    //   .on('mousemove', handleMousemoveGrid)
+    //   .on('mouseleave', handleMouseleaveGrid);
   };
 
   return (
