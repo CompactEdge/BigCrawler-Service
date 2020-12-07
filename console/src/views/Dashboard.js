@@ -103,7 +103,7 @@ class Dashboard extends React.Component {
             pod: this.handleCountObjects('pod', pods),
             deployment: this.handleCountObjects('deployment', deployments),
             daemonset: this.handleCountObjects('daemonset', daemonsets),
-            replicaset: this.handleCountObjects('replicaset', { items: [] }),
+            replicaset: this.handleCountObjects('replicaset', replicasets),
             replicationcontroller: this.handleCountObjects(
               'replicationcontroller',
               replicationcontrollers,
