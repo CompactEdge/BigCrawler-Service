@@ -3,6 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 // reactstrap components
 import { Card, CardHeader, CardTitle, Tooltip } from 'reactstrap';
 
+const style = {
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  margin: '0 -15px',
+  borderTop: '1px solid rgba(255,165,0,0.4)',
+  padding: '0 10px',
+};
+
 const HeadlineCard = props => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -13,16 +22,7 @@ const HeadlineCard = props => {
     <Card id={props.id}>
       <CardHeader style={{ textAlign: 'center' }}>
         <CardTitle tag="h4">{props.value}</CardTitle>
-        <p
-          className="card-category"
-          style={{
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            margin: '0 -15px',
-            borderTop: '1px solid rgba(255,165,0,0.4)',
-            padding: '0 10px',
-          }}>
+        <p className="card-category" style={style}>
           {props.title}
         </p>
       </CardHeader>

@@ -20,6 +20,18 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
     }
   }, [data]);
 
+  const handleUnderTen = num => (num < 10 ? '0' + num : num);
+
+  const dateFormat = date => {
+    const year = date.getFullYear();
+    const month = handleUnderTen(date.getMonth() + 1);
+    const day = handleUnderTen(date.getDate());
+    const hour = handleUnderTen(date.getHours());
+    const minutes = handleUnderTen(date.getMinutes());
+    const second = handleUnderTen(date.getSeconds());
+    return `${year}-${month}-${day} ${hour}:${minutes}:${second}`;
+  };
+
   const handleConverToEasyFormat = objectArray => {
     let form = 0;
     switch (dataUnit) {
@@ -185,8 +197,98 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('fill', d => color(d.key))
       .attr('d', areaGenerator);
 
+    areaChart.select('.focus-line').remove();
+    const focusLine = areaChart
+      .append('rect')
+      .attr('class', 'focus-line')
+      .style('fill', 'red')
+      .style('width', 1)
+      .style('height', height)
+      .style('opacity', 0);
+
+    d3.select(stackedAreaChartRef.current.parentElement)
+      .select('.tooltip')
+      .remove();
+    const tooltip = d3
+      .select(stackedAreaChartRef.current.parentElement)
+      .append('div')
+      .attr('class', 'area-tooltip tooltip');
+
+    tooltip.append('div').attr('class', 'time');
+    tooltip.append('div').attr('class', 'label');
+
+    const handleMouseoverGrid = () => {
+      focusLine.style('opacity', 1);
+      tooltip.style('display', 'block').style('opacity', 1);
+    };
+
+    const handleMousemoveGrid = e => {
+      const range = x.domain();
+      const rangeValue = 1190;
+      const start = range[0];
+      const end = range[1];
+      const step = (end - start) / rangeValue;
+      const pointer = d3.pointer(e);
+      const selectedX = step * pointer[0];
+      const timeX = start.getTime() + selectedX;
+      let time;
+      let tooltipData = {};
+      stackedData.forEach(data => {
+        const key = data.key;
+        data.some(v => {
+          tooltipData = {
+            ...tooltipData,
+            [key]: v.data[key],
+          };
+          time = v.data.time;
+          return v.data.time >= timeX - 30000;
+        });
+      });
+      focusLine.attr('x', pointer[0]);
+      const keys = Object.keys(tooltipData);
+      tooltip
+        .style('top', `${e.layerY + 10}px`)
+        .style('left', `${e.layerX + 25}px`)
+        .select('div.time')
+        .html(dateFormat(new Date(time)));
+      tooltip.select('div.label').html(
+        keys
+          .map(
+            v => `
+              <div>
+                <div class='key'>
+                  <div class='rect' style='background: ${color(v)}'></div>
+                  <span class='name'>
+                    ${v.substr(0, 20)}${v.length > 20 ? '... :' : ':'}
+                 </span>
+                </div>
+                <span class='value'>
+                  ${tooltipData[v].toFixed(4)}
+                </span>
+              </div>
+            `,
+          )
+          .join(''),
+      );
+    };
+
+    const handleMouseleaveGrid = () => {
+      focusLine.style('opacity', 0);
+      tooltip.style('opacity', 0);
+    };
+
     // Add the brushing
-    areaChart.append('g').attr('class', 'brush').call(brush);
+    areaChart
+      .append('g')
+      .attr('class', 'brush')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('width', width)
+      .attr('height', height)
+      .on('mouseover', handleMouseoverGrid)
+      .on('mousemove', handleMousemoveGrid)
+      .on('mouseleave', handleMouseleaveGrid)
+      .call(brush);
 
     var idleTimeout;
     function idled() {
@@ -275,35 +377,6 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('alignment-baseline', 'middle')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
-
-    // const focusLine = con
-    //   .append('g')
-    //   .append('rect')
-    //   .style('fill', 'red')
-    //   .style('width', 1)
-    //   .style('height', height)
-    //   .style('opacity', 0);
-
-    // const handleMouseoverGrid = () => {
-    //   focusLine.style('opacity', 1);
-    // };
-
-    // const handleMousemoveGrid = d => {
-    //   focusLine.attr('x', width / 2);
-    // };
-
-    // const handleMouseleaveGrid = () => {
-    //   focusLine.style('opacity', 0);
-    // };
-    // con
-    //   .append('rect')
-    //   .style('fill', 'none')
-    //   .style('pointer-events', 'all')
-    //   .attr('width', width)
-    //   .attr('height', height)
-    //   .on('mouseover', handleMouseoverGrid)
-    //   .on('mousemove', handleMousemoveGrid)
-    //   .on('mouseleave', handleMouseleaveGrid);
   };
 
   return (
