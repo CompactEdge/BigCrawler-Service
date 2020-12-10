@@ -24,6 +24,7 @@ const MetricNode = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
+  const [range, setRange] = useState(60 * 60 * 1); // s * m * h
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -32,9 +33,7 @@ const MetricNode = props => {
       ([res]) =>
         Promise.all([res.json()]).then(result => {
           const list = [];
-          result[0].items.map(({ metadata }) => {
-            list.push(metadata.name);
-          });
+          result[0].items.forEach(({ metadata }) => list.push(metadata.name));
           setNodeList(list);
           setNode(list[0]);
         }),
@@ -65,8 +64,10 @@ const MetricNode = props => {
     const API_GATEWAY_HOST = `${window.$host}:${window.$apigw}`;
     let cluster = '';
     const exclude = '';
-    const now = Date.now() / 1000;
-    const range = 60 * 60 * 1; // s * m * h
+    const date = new Date();
+    const sec = date.getSeconds();
+    date.setSeconds(sec < 30 ? 0 : 30);
+    const now = date.getTime() / 1000;
     const step = 30;
     Promise.all([
       fetch(
@@ -147,6 +148,8 @@ const MetricNode = props => {
                     metric="pod"
                     data={data.cpuUsage}
                     init={data.init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>
@@ -168,6 +171,8 @@ const MetricNode = props => {
                     metric="pod"
                     data={data.memoryUsage}
                     init={data.init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>

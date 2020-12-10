@@ -12,7 +12,6 @@ import {
 } from 'reactstrap';
 import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 import HeadlineCard from 'views/components/HeadlineCard.js';
-import { conditionallyUpdateScrollbar } from 'reactstrap/lib/utils';
 
 const MetricCluster = props => {
   const [data, setData] = useState({
@@ -29,6 +28,7 @@ const MetricCluster = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
+  const [range, setRange] = useState(60 * 60 * 1); // s * m * h
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -60,7 +60,6 @@ const MetricCluster = props => {
     const sec = date.getSeconds();
     date.setSeconds(sec < 30 ? 0 : 30);
     const now = date.getTime() / 1000;
-    const range = 60 * 60 * 1; // s * m * h
     const step = delay;
     Promise.all([
       fetch(
@@ -259,6 +258,8 @@ const MetricCluster = props => {
                     metric="namespace"
                     data={data.cpuUsage}
                     init={init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>
@@ -280,6 +281,8 @@ const MetricCluster = props => {
                     metric="namespace"
                     data={data.memoryUsage}
                     init={init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>

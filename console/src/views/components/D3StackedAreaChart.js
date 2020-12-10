@@ -2,23 +2,28 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import * as d3 from 'd3';
 
-const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
+const D3StackedAreaChart = ({ id, unit, metric, data, init, range, delay }) => {
+  const [chartExtent, setChartExtent] = useState([]);
+  const [timeFormat, setTimeFormat] = useState('%H:%M');
+  const [isBrush, setIsBrush] = useState(false);
   const stackedAreaChartRef = useRef();
   let dataUnit = unit;
 
   useEffect(() => {
-    d3.select(stackedAreaChartRef.current.firstElementChild).remove();
-    if (!init && data.length > 0) {
-      handleCreateStackedAreaChart();
-    } else {
-      d3.select(stackedAreaChartRef.current)
-        .append('text')
-        .attr('text-anchor', 'end')
-        .attr('x', 100)
-        .attr('y', 10)
-        .text('No Data');
+    if (!isBrush) {
+      d3.select(stackedAreaChartRef.current.firstElementChild).remove();
+      if (!init && data.length > 0) {
+        handleCreateStackedAreaChart();
+      } else {
+        d3.select(stackedAreaChartRef.current)
+          .append('text')
+          .attr('text-anchor', 'end')
+          .attr('x', 100)
+          .attr('y', 10)
+          .text('No Data');
+      }
     }
-  }, [data]);
+  }, [data, init, range]);
 
   const handleUnderTen = num => (num < 10 ? '0' + num : num);
 
@@ -64,7 +69,9 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
 
   const handleMergeMap = (ts, map) => {
     let arr = [];
-    for (let t = ts[0]; t < ts[ts.length - 1]; t += 30) {
+    const end = ts[ts.length - 1];
+    const start = end - range;
+    for (let t = start; t < end; t += 30) {
       let obj = { time: t * 1000 };
       for (const key in map) {
         if (map[key][t]) {
@@ -118,18 +125,43 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
 
     const color = d3.scaleOrdinal().domain(metricName).range(d3.schemeSet2);
 
-    const x = d3
-      .scaleTime()
-      .domain(d3.extent(mergeData, d => d.time))
-      .range([0, width]);
+    const x = d3.scaleTime().range([0, width]);
+
+    if (chartExtent.length > 0) {
+      const start = chartExtent[0] + delay * 1000;
+      const end = chartExtent[1] + delay * 1000;
+      x.domain([start, end]).range([0, width]);
+      setChartExtent([start, end]);
+      if (end - start < 7 * 60 * 1000) {
+        setTimeFormat('%H:%M:%S');
+      } else {
+        setTimeFormat('%H:%M');
+      }
+    } else {
+      x.domain(d3.extent(mergeData, d => d.time));
+    }
 
     const xAxis = con
       .append('g')
       .attr('transform', `translate(0, ${height})`)
-      .attr('class', 'grid')
-      .call(
-        d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')).tickSize(-height),
+      .attr('class', 'grid');
+
+    if (chartExtent.length > 0) {
+      xAxis.call(
+        d3
+          .axisBottom(x)
+          .tickFormat(d3.timeFormat(timeFormat))
+          .ticks(10)
+          .tickSize(-height),
       );
+    } else {
+      xAxis.call(
+        d3
+          .axisBottom(x)
+          .tickFormat(d3.timeFormat(timeFormat))
+          .tickSize(-height),
+      );
+    }
 
     con
       .append('text')
@@ -175,8 +207,8 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
         [0, 0],
         [width, height],
       ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+      .on('start', () => setIsBrush(true))
       .on('end', updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
-
     // Create the scatter variable: where both the circles and the brush take place
     // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
     const areaChart = con.append('g').attr('clip-path', 'url(#clip)');
@@ -217,12 +249,9 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
     tooltip.append('div').attr('class', 'time');
     tooltip.append('div').attr('class', 'label');
 
-    const handleMouseoverGrid = () => {
-      focusLine.style('opacity', 1);
-      tooltip.style('display', 'block').style('opacity', 1);
-    };
-
     const handleMousemoveGrid = e => {
+      focusLine.style('opacity', 1);
+      tooltip.style('opacity', 1);
       const range = x.domain();
       const rangeValue = 1190;
       const start = range[0];
@@ -246,11 +275,7 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       });
       focusLine.attr('x', pointer[0]);
       const keys = Object.keys(tooltipData);
-      tooltip
-        .style('top', `${e.layerY + 10}px`)
-        .style('left', `${e.layerX + 25}px`)
-        .select('div.time')
-        .html(dateFormat(new Date(time)));
+      tooltip.select('div.time').html(dateFormat(new Date(time)));
       tooltip.select('div.label').html(
         keys
           .map(
@@ -270,6 +295,19 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
           )
           .join(''),
       );
+      const svgWidth = parseFloat(svg.style('width').replace('px', ''));
+      const tooltipWidth = parseFloat(tooltip.style('width').replace('px', ''));
+
+      tooltip
+        .style('top', `${e.layerY + 10}px`)
+        .style(
+          'left',
+          `${
+            svgWidth - e.offsetX < tooltipWidth
+              ? e.layerX - tooltipWidth + 6
+              : e.layerX + 25
+          }px`,
+        );
     };
 
     const handleMouseleaveGrid = () => {
@@ -285,7 +323,6 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('pointer-events', 'all')
       .attr('width', width)
       .attr('height', height)
-      .on('mouseover', handleMouseoverGrid)
       .on('mousemove', handleMousemoveGrid)
       .on('mouseleave', handleMouseleaveGrid)
       .call(brush);
@@ -297,12 +334,22 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
     //extent [0~1190];
     function updateChart({ selection }) {
       let extent = selection;
+      let tFormat = '%H:%M';
       // If no selection, back to initial coordinate. Otherwise, update X axis domain
       if (!extent) {
         if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
         x.domain(d3.extent(mergeData, d => d.time));
       } else {
-        x.domain([x.invert(extent[0]), x.invert(extent[1])]);
+        const start = x.invert(extent[0]);
+        const end = x.invert(extent[1]);
+        x.domain([start, end]);
+        setChartExtent([start.getTime(), end.getTime()]);
+        if (end.getTime() - start.getTime() < 7 * 60 * 1000) {
+          setTimeFormat('%H:%M:%S');
+          tFormat += ':%S';
+        } else {
+          setTimeFormat('%H:%M');
+        }
         areaChart.select('.brush').call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
       }
 
@@ -310,12 +357,19 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       xAxis
         .transition()
         .duration(1000)
-        .call(d3.axisBottom(x).ticks(5).tickSize(-height));
+        .call(
+          d3
+            .axisBottom(x)
+            .tickFormat(d3.timeFormat(tFormat))
+            .ticks(10)
+            .tickSize(-height),
+        );
       areaChart
         .selectAll('path')
         .transition()
         .duration(1000)
         .attr('d', areaGenerator);
+      setIsBrush(false);
     }
 
     //////////
@@ -328,6 +382,7 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       d3.selectAll(`.myArea.${id}`).style('opacity', 0.1);
       // expect the one that is hovered
       d3.select(`.${e.target.__data__}.${id}`).style('opacity', 1);
+      console.log(e.target.__data__);
     };
 
     // And when it is not hovered anymore
@@ -353,6 +408,7 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('fill', function (d) {
         return color(d);
       })
+      .style('cursor', 'pointer')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
 
@@ -375,6 +431,7 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       })
       .attr('text-anchor', 'left')
       .style('alignment-baseline', 'middle')
+      .style('cursor', 'pointer')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
   };

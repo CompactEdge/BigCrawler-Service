@@ -24,6 +24,7 @@ const MetricNamespace = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
+  const [range, setRange] = useState(60 * 60 * 1); // s * m * h
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const MetricNamespace = props => {
     ]).then(([res]) =>
       Promise.all([res.json()]).then(result => {
         const nsList = [];
-        result[0].items.map(({ metadata }) => {
+        result[0].items.forEach(({ metadata }) => {
           if (nsList.indexOf(metadata.name) === -1) {
             nsList.push(metadata.name);
           }
@@ -69,8 +70,10 @@ const MetricNamespace = props => {
     let cluster = '';
     let type = 'deployment'; // deployment, statefulset, daemonset
     const exclude = '';
-    const now = Date.now() / 1000;
-    const range = 60 * 60 * 1; // s * m * h
+    const date = new Date();
+    const sec = date.getSeconds();
+    date.setSeconds(sec < 30 ? 0 : 30);
+    const now = date.getTime() / 1000;
     const step = 30;
     Promise.all([
       fetch(
@@ -163,6 +166,8 @@ const MetricNamespace = props => {
                     metric="workload"
                     data={data.cpuUsage}
                     init={data.init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>
@@ -184,6 +189,8 @@ const MetricNamespace = props => {
                     metric="workload"
                     data={data.memoryUsage}
                     init={data.init}
+                    range={range}
+                    delay={delay}
                   />
                 </Row>
               </CardBody>

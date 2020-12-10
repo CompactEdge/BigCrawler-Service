@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 // reactstrap components
 import { Card, CardHeader, CardTitle, Tooltip } from 'reactstrap';
