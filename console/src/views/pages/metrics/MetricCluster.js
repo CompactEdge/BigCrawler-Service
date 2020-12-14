@@ -23,12 +23,13 @@ const MetricCluster = props => {
     memoryLimits: [],
     cpuUsage: [],
     memoryUsage: [],
-  }); // not null
+  });
   const [init, setInit] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
   const [range, setRange] = useState(60 * 60 * 1); // s * m * h
+  const [extent, setExtent] = useState([]);
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -36,7 +37,12 @@ const MetricCluster = props => {
     handleCreateMetricChart();
   }, []);
 
-  const callback = () => handleCreateMetricChart();
+  const callback = () => {
+    handleCreateMetricChart();
+    if (extent.length > 0) {
+      setExtent([extent[0] + delay * 1000, extent[1] + delay * 1000]);
+    }
+  };
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -259,7 +265,8 @@ const MetricCluster = props => {
                     data={data.cpuUsage}
                     init={init}
                     range={range}
-                    delay={delay}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>
@@ -282,7 +289,8 @@ const MetricCluster = props => {
                     data={data.memoryUsage}
                     init={init}
                     range={range}
-                    delay={delay}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>
