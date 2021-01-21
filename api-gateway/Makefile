@@ -2,13 +2,11 @@ VERSION := 0.1.0
 
 .PHONY: build
 build:
-	@gradle clean
-	gradle build
+	@gradle clean build
 
 .PHONY: build-skip-test
 build-skip-test:
-	@gradle clean
-	gradle build -x test
+	@gradle clean build -x test
 
 .PHONY: docker
 docker:
@@ -17,16 +15,16 @@ docker:
 .PHONY: run
 run:
   # gradle bootRun --args='--spring.profiles.active=dev'
-	gradle bootRunDev
+	@gradle bootRunDev
 
 .PHONY: jar
 jar:
-  @java -jar "-Dspring.profiles.active=dev" build/libs/gateway-${VERSION}.jar
+	@java -jar -Dspring.profiles.active=dev build/libs/gateway-${VERSION}.jar
 
-.PHONY: check-deps
-check-deps:
-	gradle -q dependencies
+.PHONY: deps
+deps:
+	@gradle dependencies
 
-.PHONY: unit-test
-unit-test:
-	gradle test
+.PHONY: test
+test:
+	@gradle test

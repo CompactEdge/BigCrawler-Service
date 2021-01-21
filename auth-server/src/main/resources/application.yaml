@@ -1,0 +1,35 @@
+spring:
+  profiles: dev
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+server:
+  port: 9000
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+---
+spring:
+  profiles: prod
+  devtools:
+    livereload:
+      enabled: false
+
+server:
+  port: 9000
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.boot.autoconfigure: INFO

@@ -6,7 +6,6 @@ plugins {
 }
 
 group = 'com.wizontech'
-// version = '0.1.0-SNAPSHOT'
 version = '0.1.0'
 sourceCompatibility = '11'
 
@@ -26,29 +25,38 @@ ext {
 }
 
 dependencies {
+	// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-config'
-	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-discovery'
-	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-ribbon'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-  // implementation 'com.google.code.findbugs:jsr305:3.0.2'
+	// org.springframework.cloud.security.oauth2.SpringCloudSecurityAutoConfiguration: All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.otRun
+	// implementation 'org.springframework.cloud:spring-cloud-starter-security'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	// testImplementation 'org.springframework.cloud:spring-cloud-gateway-core'
 	testImplementation('org.springframework.cloud:spring-cloud-starter-contract-stub-runner') {
 		exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
 	}
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'org.junit.vintage:junit-vintage-engine'
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.assertj:assertj-core'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	// testImplementation('org.springframework.boot:spring-boot-starter-test') {
+	// 	exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	// }
+
+	// k8s
+	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-config'
+	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-discovery'
+	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-ribbon'
+
+	// test
+	// testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	// testImplementation 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	// testImplementation 'org.junit.vintage:junit-vintage-engine'
+	// testImplementation 'io.projectreactor:reactor-test'
+	// testImplementation 'org.assertj:assertj-core'
 	// testImplementation 'org.springframework.cloud:spring-cloud-test-support:2.2.0.RELEASE'
 	// testImplementation 'org.springframework.cloud:spring-cloud-loadbalancer'
-	// testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.security:spring-security-test'
+	// testImplementation 'org.springframework.security:spring-security-test'
+	// testImplementation 'org.springframework.cloud:spring-cloud-gateway-core'
 }
 
 dependencyManagement {
@@ -59,10 +67,10 @@ dependencyManagement {
 
 test {
 	filter {
-		//include specific method in any of the tests
-		includeTestsMatching "*context*"
+		// include specific method in any of the tests
+		includeTestsMatching "actuator*"
 
-		//include all tests from package
+		// include all tests from package
 		includeTestsMatching "com.wizontech.gateway.*"
 	}
 	outputs.dir snippetsDir
@@ -74,55 +82,10 @@ asciidoctor {
 	dependsOn test
 }
 
-// task bootRunDev(dependsOn:bootRun) {
-// 	bootRun.configure {
-// 		systemProperty "spring.profiles.active", 'dev'
-// 	}
-// }
-
-tasks.register("bootRunDev") {
-  group = "application"
-  description = "Runs this project as a Spring Boot application with the dev profile"
-  doFirst {
-    tasks.bootRun.configure {
-      systemProperty("spring.profiles.active", "dev")
-    }
-  }
-  finalizedBy("bootRun")
+task bootRunDev(dependsOn: bootRun) {
+	// dependsOn 'bootRun'
+	println "Runs this project as a Spring Boot application with the dev profile"
+	bootRun.configure {
+		systemProperty "spring.profiles.active", 'dev'
+	}
 }
-
-
-// gradle [command]
-// assemble              -- Assembles the outputs of this project.
-// bootBuildImage        -- Builds an OCI image of the application using the output of the bootJar task
-// bootJar               -- Assembles an executable jar archive containing the main classes and their depend
-// bootRun               -- Runs this project as a Spring Boot application.
-// bootRunDev            -- Runs this project as a Spring Boot application with the dev profile
-// build                 -- Assembles and tests this project.
-// buildDependents       -- Assembles and tests this project and all projects that depend on it.
-// buildEnvironment      -- Displays all buildscript dependencies declared in root project 'gateway'.
-// buildNeeded           -- Assembles and tests this project and all projects it depends on.
-// check                 -- Runs all checks.
-// classes               -- Assembles main classes.
-// clean                 -- Deletes the build directory.
-// compileJava           -- Compiles main Java source.
-// compileTestJava       -- Compiles test Java source.
-// components            -- Displays the components produced by root project 'gateway'. [incubating]
-// dependencies          -- Displays all dependencies declared in root project 'gateway'.
-// dependencyInsight     -- Displays the insight into a specific dependency in root project 'gateway'.
-// dependencyManagement  -- Displays the dependency management declared in root project 'gateway'.
-// dependentComponents   -- Displays the dependent components of components in root project 'gateway'. [incu
-// help                  -- Displays a help message.
-// init                  -- Initializes a new Gradle build.
-// jar                   -- Assembles a jar archive containing the main classes.
-// javadoc               -- Generates Javadoc API documentation for the main source code.
-// model                 -- Displays the configuration model of root project 'gateway'. [incubating]
-// outgoingVariants      -- Displays the outgoing variants of root project 'gateway'.
-// processResources      -- Processes main resources.
-// processTestResources  -- Processes test resources.
-// projects              -- Displays the sub-projects of root project 'gateway'.
-// properties            -- Displays the properties of root project 'gateway'.
-// tasks                 -- Displays the tasks runnable from root project 'gateway'.
-// test                  -- Runs the unit tests.
-// testClasses           -- Assembles test classes.
-// wrapper               -- Generates Gradle wrapper files.

@@ -1,0 +1,31 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.8.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.wizontech'
+version = '0.1.0'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/snapshot' } // for spring-security-oauth2-authorization-server:0.1.0-SNAPSHOT
+}
+
+dependencies {
+	// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.4'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.1.0-SNAPSHOT'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+	useJUnitPlatform()
+}

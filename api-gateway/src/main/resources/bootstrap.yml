@@ -9,9 +9,45 @@ spring:
     ansi:
       enabled: always
   devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
     add-properties: true
   application:
     name: gateway
+  # https://spring.io/blog/2019/08/16/securing-services-with-spring-cloud-gateway
+  security:
+    oauth2:
+      client:
+        registration:
+          messaging-client-oidc:
+            provider: auth-server
+            client-id: api-gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: messaging-client-oidc
+          messaging-client-authorization-code:
+            provider: auth-server
+            client-id: api-gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/authorized"
+            scope: message.read,message.write
+            client-name: messaging-client-authorization-code
+          messaging-client-client-credentials:
+            provider: auth-server
+            client-id: api-gateway
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+            client-name: messaging-client-client-credentials
+        provider:
+          auth-server:
+            issuer-uri: http://auth-server:9000
   cloud:
     gateway:
       globalcors:
@@ -25,7 +61,7 @@ spring:
             # - PUT
             # - PATCH
             # - DELETE
-      # discovery:
+      # discovery: # k8s
       #   locator:
       #     enabled: true
       #     lower-case-service-id: true
@@ -35,6 +71,16 @@ spring:
       # filters:
       # include-expression:
       routes:
+        # - id: auth_server
+        #   uri: http://127.0.0.1:9000
+        #   predicates:
+        #     - Path=/oauth2/**
+        #     # - Path=/oauth2/authorization/messaging-client-oidc
+        #   filters:
+        #     - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        #     - RewritePath=/(?<segment>/?.*), /$\{segment}
+        #     - TokenRelay=
+        #     - RemoveRequestHeader=Cookie
         - id: service_bus
           uri: http://127.0.0.1:7000
           predicates:
@@ -83,10 +129,10 @@ management:
       enabled: true
     health:
       enabled: true
-      # show-details: never
       show-details: always
-      # show-components: never
       show-components: always
+      # show-details: never
+      # show-components: never
   endpoints:
     web:
       exposure:
