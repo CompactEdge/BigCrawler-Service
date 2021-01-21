@@ -1,14 +1,28 @@
-.card{
-  .card-footer{
-    .stats{
-      i{
+.card {
+  .card-footer {
+    .stats {
+      i {
         margin-right: 9px;
       }
     }
-    .legend{
-      i{
+
+    .legend {
+      i {
         margin-right: 4px;
       }
     }
+  }
+}
+
+.card.headline-card {
+  cursor: help;
+
+  .card-category {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 -15px;
+    border-top: 1px solid rgba(255, 165, 0, 0.4);
+    padding: 0 10px;
   }
 }

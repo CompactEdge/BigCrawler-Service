@@ -24,6 +24,8 @@ const MetricNamespace = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
+  const [range, setRange] = useState(60 * 60 * 1); // s * m * h
+  const [extent, setExtent] = useState([]);
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const MetricNamespace = props => {
     ]).then(([res]) =>
       Promise.all([res.json()]).then(result => {
         const nsList = [];
-        result[0].items.map(({ metadata }) => {
+        result[0].items.forEach(({ metadata }) => {
           if (nsList.indexOf(metadata.name) === -1) {
             nsList.push(metadata.name);
           }
@@ -49,7 +51,12 @@ const MetricNamespace = props => {
     handleCreateMetricChart();
   }, []);
 
-  const callback = () => handleCreateMetricChart();
+  const callback = () => {
+    handleCreateMetricChart();
+    if (extent.length > 0) {
+      setExtent([extent[0] + delay * 1000, extent[1] + delay * 1000]);
+    }
+  };
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -69,8 +76,10 @@ const MetricNamespace = props => {
     let cluster = '';
     let type = 'deployment'; // deployment, statefulset, daemonset
     const exclude = '';
-    const now = Date.now() / 1000;
-    const range = 60 * 60 * 1; // s * m * h
+    const date = new Date();
+    const sec = date.getSeconds();
+    date.setSeconds(sec < 30 ? 0 : 30);
+    const now = date.getTime() / 1000;
     const step = 30;
     Promise.all([
       fetch(
@@ -163,6 +172,9 @@ const MetricNamespace = props => {
                     metric="workload"
                     data={data.cpuUsage}
                     init={data.init}
+                    range={range}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>
@@ -184,6 +196,9 @@ const MetricNamespace = props => {
                     metric="workload"
                     data={data.memoryUsage}
                     init={data.init}
+                    range={range}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>

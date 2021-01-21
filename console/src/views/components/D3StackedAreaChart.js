@@ -2,23 +2,47 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import * as d3 from 'd3';
 
-const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
+const D3StackedAreaChart = ({
+  id,
+  unit,
+  metric,
+  data,
+  init,
+  range,
+  extent,
+  setExtent,
+}) => {
+  const [isBrush, setIsBrush] = useState(false);
   const stackedAreaChartRef = useRef();
   let dataUnit = unit;
 
   useEffect(() => {
-    d3.select(stackedAreaChartRef.current.firstElementChild).remove();
-    if (!init && data.length > 0) {
-      handleCreateStackedAreaChart();
-    } else {
-      d3.select(stackedAreaChartRef.current)
-        .append('text')
-        .attr('text-anchor', 'end')
-        .attr('x', 100)
-        .attr('y', 10)
-        .text('No Data');
+    if (!isBrush) {
+      d3.select(stackedAreaChartRef.current.firstElementChild).remove();
+      if (!init && data.length > 0) {
+        handleCreateStackedAreaChart();
+      } else {
+        d3.select(stackedAreaChartRef.current)
+          .append('text')
+          .attr('text-anchor', 'end')
+          .attr('x', 100)
+          .attr('y', 10)
+          .text('No Data');
+      }
     }
-  }, [data]);
+  }, [data, init, range, extent]);
+
+  const handleUnderTen = num => (num < 10 ? '0' + num : num);
+
+  const dateFormat = date => {
+    const year = date.getFullYear();
+    const month = handleUnderTen(date.getMonth() + 1);
+    const day = handleUnderTen(date.getDate());
+    const hour = handleUnderTen(date.getHours());
+    const minutes = handleUnderTen(date.getMinutes());
+    const second = handleUnderTen(date.getSeconds());
+    return `${year}-${month}-${day} ${hour}:${minutes}:${second}`;
+  };
 
   const handleConverToEasyFormat = objectArray => {
     let form = 0;
@@ -52,7 +76,9 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
 
   const handleMergeMap = (ts, map) => {
     let arr = [];
-    for (let t = ts[0]; t < ts[ts.length - 1]; t += 30) {
+    const end = ts[ts.length - 1];
+    const start = end - range;
+    for (let t = start; t < end; t += 30) {
       let obj = { time: t * 1000 };
       for (const key in map) {
         if (map[key][t]) {
@@ -106,18 +132,41 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
 
     const color = d3.scaleOrdinal().domain(metricName).range(d3.schemeSet2);
 
-    const x = d3
-      .scaleTime()
-      .domain(d3.extent(mergeData, d => d.time))
-      .range([0, width]);
+    const x = d3.scaleTime().range([0, width]);
+
+    let timeFormat = '%H:%M';
+    if (extent.length > 0) {
+      const start = extent[0];
+      const end = extent[1];
+      x.domain([start, end]).range([0, width]);
+      if (end - start < 7 * 60 * 1000) {
+        timeFormat = '%H:%M:%S';
+      }
+    } else {
+      x.domain(d3.extent(mergeData, d => d.time));
+    }
 
     const xAxis = con
       .append('g')
       .attr('transform', `translate(0, ${height})`)
-      .attr('class', 'grid')
-      .call(
-        d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')).tickSize(-height),
+      .attr('class', 'grid');
+
+    if (extent.length > 0) {
+      xAxis.call(
+        d3
+          .axisBottom(x)
+          .tickFormat(d3.timeFormat(timeFormat))
+          .ticks(10)
+          .tickSize(-height),
       );
+    } else {
+      xAxis.call(
+        d3
+          .axisBottom(x)
+          .tickFormat(d3.timeFormat(timeFormat))
+          .tickSize(-height),
+      );
+    }
 
     con
       .append('text')
@@ -163,8 +212,8 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
         [0, 0],
         [width, height],
       ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+      .on('start', () => setIsBrush(true))
       .on('end', updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
-
     // Create the scatter variable: where both the circles and the brush take place
     // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-path
     const areaChart = con.append('g').attr('clip-path', 'url(#clip)');
@@ -185,8 +234,108 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('fill', d => color(d.key))
       .attr('d', areaGenerator);
 
+    areaChart.select('.focus-line').remove();
+    const focusLine = areaChart
+      .append('rect')
+      .attr('class', 'focus-line')
+      .style('fill', 'red')
+      .style('width', 1)
+      .style('height', height)
+      .style('opacity', 0);
+
+    d3.select(stackedAreaChartRef.current.parentElement)
+      .select('.tooltip')
+      .remove();
+    const tooltip = d3
+      .select(stackedAreaChartRef.current.parentElement)
+      .append('div')
+      .attr('class', 'area-tooltip tooltip');
+
+    tooltip.append('div').attr('class', 'time');
+    tooltip.append('div').attr('class', 'label');
+
+    const handleMousemoveGrid = e => {
+      focusLine.style('opacity', 1);
+      tooltip.style('opacity', 1);
+      const range = x.domain();
+      const rangeValue = 1190;
+      const start = range[0];
+      const end = range[1];
+      const step = (end - start) / rangeValue;
+      const pointer = d3.pointer(e);
+      const selectedX = step * pointer[0];
+      const timeX = start.getTime() + selectedX;
+      let time;
+      let tooltipData = {};
+      stackedData.forEach(data => {
+        const key = data.key;
+        data.some(v => {
+          tooltipData = {
+            ...tooltipData,
+            [key]: v.data[key],
+          };
+          time = v.data.time;
+          return v.data.time >= timeX - 30 * 1000;
+        });
+      });
+      focusLine.attr('x', pointer[0]);
+      const keys = Object.keys(tooltipData);
+      tooltip.select('div.time').html(dateFormat(new Date(time)));
+      tooltip.select('div.label').html(
+        keys
+          .map(
+            v => `
+              <div>
+                <div class='key'>
+                  <div class='rect' style='background: ${color(v)}'></div>
+                  <span class='name'>
+                    ${v.substr(0, 20)}${v.length > 20 ? '... :' : ':'}
+                 </span>
+                </div>
+                <span class='value'>
+                  ${tooltipData[v].toFixed(4)}
+                </span>
+              </div>
+            `,
+          )
+          .join(''),
+      );
+      const svgWidth = parseFloat(svg.style('width').replace('px', ''));
+      const tooltipWidth = parseFloat(tooltip.style('width').replace('px', ''));
+
+      tooltip
+        .style('top', `${e.layerY + 10}px`)
+        .style(
+          'left',
+          `${
+            svgWidth - e.offsetX < tooltipWidth
+              ? e.layerX - tooltipWidth + 6
+              : e.layerX + 25
+          }px`,
+        );
+    };
+
+    const handleMouseleaveGrid = () => {
+      focusLine.style('opacity', 0);
+      tooltip.style('opacity', 0);
+    };
+
+    const handleDblClickGrid = () => {
+      setExtent(d3.extent(mergeData, d => d.time));
+    };
+
     // Add the brushing
-    areaChart.append('g').attr('class', 'brush').call(brush);
+    areaChart
+      .append('g')
+      .attr('class', 'brush')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('width', width)
+      .attr('height', height)
+      .on('mousemove', handleMousemoveGrid)
+      .on('mouseleave', handleMouseleaveGrid)
+      .on('dblclick', handleDblClickGrid)
+      .call(brush);
 
     var idleTimeout;
     function idled() {
@@ -194,26 +343,33 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
     }
     //extent [0~1190];
     function updateChart({ selection }) {
-      let extent = selection;
       // If no selection, back to initial coordinate. Otherwise, update X axis domain
-      if (!extent) {
+      if (!selection) {
         if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
         x.domain(d3.extent(mergeData, d => d.time));
       } else {
-        x.domain([x.invert(extent[0]), x.invert(extent[1])]);
+        const start = x.invert(selection[0]).getTime();
+        const end = x.invert(selection[1]).getTime();
+        setExtent([start, end]);
+        x.domain([start, end]);
+        if (end - start < 7 * 60 * 1000) {
+          timeFormat = '%H:%M:%S';
+        } else {
+          timeFormat = '%H:%M';
+        }
         areaChart.select('.brush').call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
       }
 
       // Update axis and area position
-      xAxis
-        .transition()
-        .duration(1000)
-        .call(d3.axisBottom(x).ticks(5).tickSize(-height));
-      areaChart
-        .selectAll('path')
-        .transition()
-        .duration(1000)
-        .attr('d', areaGenerator);
+      xAxis.call(
+        d3
+          .axisBottom(x)
+          .tickFormat(d3.timeFormat(timeFormat))
+          .ticks(10)
+          .tickSize(-height),
+      );
+      areaChart.selectAll('path').attr('d', areaGenerator);
+      setIsBrush(false);
     }
 
     //////////
@@ -237,6 +393,7 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
 
     // Add one dot in the legend for each name.
     const size = 20;
+
     con
       .selectAll('myrect')
       .data(metricName)
@@ -251,6 +408,8 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       .style('fill', function (d) {
         return color(d);
       })
+      .style('rx', size / 2)
+      .style('cursor', 'pointer')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
 
@@ -273,37 +432,9 @@ const D3StackedAreaChart = ({ id, unit, metric, data, init }) => {
       })
       .attr('text-anchor', 'left')
       .style('alignment-baseline', 'middle')
+      .style('cursor', 'pointer')
       .on('mouseover', highlight)
       .on('mouseleave', noHighlight);
-
-    // const focusLine = con
-    //   .append('g')
-    //   .append('rect')
-    //   .style('fill', 'red')
-    //   .style('width', 1)
-    //   .style('height', height)
-    //   .style('opacity', 0);
-
-    // const handleMouseoverGrid = () => {
-    //   focusLine.style('opacity', 1);
-    // };
-
-    // const handleMousemoveGrid = d => {
-    //   focusLine.attr('x', width / 2);
-    // };
-
-    // const handleMouseleaveGrid = () => {
-    //   focusLine.style('opacity', 0);
-    // };
-    // con
-    //   .append('rect')
-    //   .style('fill', 'none')
-    //   .style('pointer-events', 'all')
-    //   .attr('width', width)
-    //   .attr('height', height)
-    //   .on('mouseover', handleMouseoverGrid)
-    //   .on('mousemove', handleMousemoveGrid)
-    //   .on('mouseleave', handleMouseleaveGrid);
   };
 
   return (

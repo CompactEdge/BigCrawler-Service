@@ -131,9 +131,9 @@ class D3PieChart extends React.Component {
           .style('color', '#000');
           tooltip.select('.count').html(d.data.value);
 
+        })
+        .on('mousemove', function (e) {
           tooltip.style('display', 'block').style('opacity', 1);
-      })
-      .on('mousemove', function (e) {
         // console.log(e);
         tooltip
           .style('top', e.layerY + 15 + 'px')

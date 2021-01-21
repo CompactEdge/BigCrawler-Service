@@ -12,7 +12,6 @@ import {
 } from 'reactstrap';
 import StackedAreaChart from 'views/components/D3StackedAreaChart.js';
 import HeadlineCard from 'views/components/HeadlineCard.js';
-import { conditionallyUpdateScrollbar } from 'reactstrap/lib/utils';
 
 const MetricCluster = props => {
   const [data, setData] = useState({
@@ -24,11 +23,13 @@ const MetricCluster = props => {
     memoryLimits: [],
     cpuUsage: [],
     memoryUsage: [],
-  }); // not null
+  });
   const [init, setInit] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [delay, setDelay] = useState(5);
+  const [range, setRange] = useState(60 * 60 * 1); // s * m * h
+  const [extent, setExtent] = useState([]);
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -36,7 +37,12 @@ const MetricCluster = props => {
     handleCreateMetricChart();
   }, []);
 
-  const callback = () => handleCreateMetricChart();
+  const callback = () => {
+    handleCreateMetricChart();
+    if (extent.length > 0) {
+      setExtent([extent[0] + delay * 1000, extent[1] + delay * 1000]);
+    }
+  };
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -56,8 +62,10 @@ const MetricCluster = props => {
     const mode = 'idle';
     const cluster = '';
     const exclude = '';
-    const now = Date.now() / 1000;
-    const range = 60 * 60 * 1; // s * m * h
+    const date = new Date();
+    const sec = date.getSeconds();
+    date.setSeconds(sec < 30 ? 0 : 30);
+    const now = date.getTime() / 1000;
     const step = delay;
     Promise.all([
       fetch(
@@ -256,6 +264,9 @@ const MetricCluster = props => {
                     metric="namespace"
                     data={data.cpuUsage}
                     init={init}
+                    range={range}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>
@@ -277,6 +288,9 @@ const MetricCluster = props => {
                     metric="namespace"
                     data={data.memoryUsage}
                     init={init}
+                    range={range}
+                    extent={extent}
+                    setExtent={value => setExtent(value)}
                   />
                 </Row>
               </CardBody>

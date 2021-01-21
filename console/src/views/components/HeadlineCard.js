@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 // reactstrap components
 import { Card, CardHeader, CardTitle, Tooltip } from 'reactstrap';
@@ -10,21 +10,10 @@ const HeadlineCard = props => {
     setTooltipOpen(!tooltipOpen);
   };
   return (
-    <Card id={props.id}>
+    <Card id={props.id} className="headline-card">
       <CardHeader style={{ textAlign: 'center' }}>
         <CardTitle tag="h4">{props.value}</CardTitle>
-        <p
-          className="card-category"
-          style={{
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            margin: '0 -15px',
-            borderTop: '1px solid rgba(255,165,0,0.4)',
-            padding: '0 10px',
-          }}>
-          {props.title}
-        </p>
+        <p className="card-category">{props.title}</p>
       </CardHeader>
       <Tooltip
         placement="bottom"

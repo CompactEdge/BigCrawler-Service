@@ -7,9 +7,42 @@
   position: absolute;
   text-align: center;
   width: 80px;
-  border-radius: 10px;
+  border-radius: 6px;
   // z-index: 10;
   // display: block;
+}
+
+.area-tooltip {
+  background: #fff;
+  box-shadow: 0 0 5px #999999;
+  color: #333;
+  font-size: 12px;
+  padding: 10px;
+  position: absolute;
+  border-radius: 6px;
+  opacity: 0;
+}
+
+.area-tooltip div.time {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+.area-tooltip div.label div.key {
+  display: inline-block;
+}
+
+.area-tooltip div.label div.key div.rect {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 3.5px;
+}
+
+.area-tooltip div.label span.value {
+  margin-left: 5px;
+  float: right;
 }
 
 .grid {
