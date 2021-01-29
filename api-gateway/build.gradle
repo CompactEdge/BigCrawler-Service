@@ -1,6 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.5.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	// id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'org.springframework.boot' version '2.3.8.RELEASE'
+	// id 'org.springframework.boot' version '2.4.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.asciidoctor.convert' version '1.5.8'
 	id 'java'
 }
@@ -17,30 +19,29 @@ configurations {
 
 repositories {
 	mavenCentral()
+	// maven { url 'https://repo.spring.io/snapshot' } // for spring-security-oauth2-authorization-server:0.1.0-SNAPSHOTREAD
+	// maven { url "https://repo.spring.io/milestone" } // for version '1.0.1.M0'
 }
 
 ext {
-	set('springCloudVersion', "Hoxton.SR8")
-	set('snippetsDir', file("build/generated-snippets"))
+	// https://spring.io/projects/spring-cloud#adding-spring-cloud-to-an-existing-spring-boot-application
+	// set('springCloudVersion', "Greenwich.SR1")
+	set('springCloudVersion', "Hoxton.SR9")
+	// set('springCloudVersion', "2020.0.0")
+	set('snippetsDir', file("build/generated"))
 }
 
 dependencies {
-	// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-	// org.springframework.cloud.security.oauth2.SpringCloudSecurityAutoConfiguration: All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.otRun
-	// implementation 'org.springframework.cloud:spring-cloud-starter-security'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	// implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.1.0-SNAPSHOT'
 
-	testImplementation('org.springframework.cloud:spring-cloud-starter-contract-stub-runner') {
-		exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
-	}
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	// testImplementation('org.springframework.boot:spring-boot-starter-test') {
-	// 	exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	// }
+	// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
+	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+	implementation 'org.springframework.cloud:spring-cloud-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor' // for banner.txt
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// k8s
 	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-config'
@@ -48,15 +49,7 @@ dependencies {
 	// implementation 'org.springframework.cloud:spring-cloud-kubernetes-ribbon'
 
 	// test
-	// testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	// testImplementation 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	// testImplementation 'org.junit.vintage:junit-vintage-engine'
-	// testImplementation 'io.projectreactor:reactor-test'
-	// testImplementation 'org.assertj:assertj-core'
-	// testImplementation 'org.springframework.cloud:spring-cloud-test-support:2.2.0.RELEASE'
-	// testImplementation 'org.springframework.cloud:spring-cloud-loadbalancer'
-	// testImplementation 'org.springframework.security:spring-security-test'
-	// testImplementation 'org.springframework.cloud:spring-cloud-gateway-core'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 dependencyManagement {
