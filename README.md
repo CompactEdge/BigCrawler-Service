@@ -7,5 +7,5 @@
 - auth-server
 - console
 - registry
-- message-broker
 - data-stream (simulator)
+
