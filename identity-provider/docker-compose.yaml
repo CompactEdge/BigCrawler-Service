@@ -1,0 +1,51 @@
+# https://github.com/keycloak/keycloak-containers/blob/master/docker-compose-examples/keycloak-mysql.yml
+version: "3"
+# volumes:
+#   docker-local-volume:
+#     driver: local
+# networks:
+#   idp-bridge:
+#     driver: bridge
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    # network_mode: bridge # default bridge
+    # networks:
+    #   - idp-bridge
+    ports:
+      - 3306:3306
+    # volumes:
+    #   - ./mysql-data:/var/lib/mysql
+      # - docker-local-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: 1234
+  identity-provider:
+    container_name: identity-provider
+    image:  jboss/keycloak:12.0.2
+    # network_mode: bridge
+    # networks:
+    #   - idp-bridge
+    ports:
+      - 9000:8080
+    volumes:
+      - ./tmp:/tmp
+    # command: -b 0.0.0.0 #-Dkeycloak.profile.feature.upload_scripts=enabled #-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled
+    depends_on:
+    - mysql
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: 1234
+      KEYCLOAK_LOGLEVEL: INFO
+      ROOT_LOGLEVEL: INFO
+      # KEYCLOAK_IMPORT: /tmp/realm/realm-export.json
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_PORT: 3306
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: 1234
+      JDBC_PARAMS: "connectTimeout=30000"
