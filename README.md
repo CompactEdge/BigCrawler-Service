@@ -2,10 +2,10 @@
 
 ![architecture-console.png](architecture-console.png)
 
-- service-bus
 - api-gateway
-- auth-server
 - console
+- identity-provider
 - registry
+- service-bus
 - data-stream (simulator)
 
