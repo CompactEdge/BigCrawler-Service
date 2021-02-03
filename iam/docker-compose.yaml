@@ -15,8 +15,9 @@ services:
     #   - idp-bridge
     ports:
       - 3306:3306
-    # volumes:
-    #   - ./mysql-data:/var/lib/mysql
+    volumes:
+      # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql-data:/var/lib/mysql
       # - docker-local-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root

@@ -1,11 +1,17 @@
-# Compact Edge Management
+# Compact-Edge Management Console
 
 ![architecture-console.png](architecture-console.png)
 
-- api-gateway
-- console
-- identity-provider
-- registry
-- service-bus
-- data-stream (simulator)
+## Core
 
+- Web Interface
+- API Gateway
+- IAM (Identity and Access Management)
+- Service Bus
+- Registry
+  - Container Iamge
+  - Helm Chart
+
+## Applications
+
+- Data Stream (ELK)
