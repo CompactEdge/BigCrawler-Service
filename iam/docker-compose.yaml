@@ -7,9 +7,9 @@ version: "3"
 #   idp-bridge:
 #     driver: bridge
 services:
-  mysql:
-    container_name: mysql
-    image: mysql:5.7
+  maria:
+    container_name: maria
+    image: mariadb:10.5.8
     # network_mode: bridge # default bridge
     # networks:
     #   - idp-bridge
@@ -38,7 +38,7 @@ services:
       - ./aio/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json:/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json # admin/admin
     # command: -b 0.0.0.0 #-Dkeycloak.profile.feature.upload_scripts=enabled #-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled
     depends_on:
-    - mysql
+    - maria
     environment:
       # Initializing master realm
       # Imported realm compact-edge from file /tmp/compact-edge-realm.json.
@@ -48,8 +48,9 @@ services:
       KEYCLOAK_LOGLEVEL: INFO
       ROOT_LOGLEVEL: INFO
       KEYCLOAK_IMPORT: /tmp/compact-edge-realm.json
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
+      # https://github.com/keycloak/keycloak-containers/blob/master/server/README.md#database
+      DB_VENDOR: mariadb
+      DB_ADDR: maria
       DB_PORT: 3306
       DB_DATABASE: keycloak
       DB_USER: keycloak
