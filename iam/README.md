@@ -7,11 +7,11 @@
 ## up and down
 
 ```bash
-docker-compose up
+make run
 ```
 
 ```bash
-docker-compose down
+make clean
 ```
 
 ## W/O docker-compose

@@ -15,9 +15,9 @@ services:
     #   - idp-bridge
     ports:
       - 3306:3306
-    volumes:
+    # volumes:
       # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./mysql-data:/var/lib/mysql
+      # - ./mysql-data:/var/lib/mysql
       # - docker-local-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -34,15 +34,20 @@ services:
       - 9000:8080
     volumes:
       - ./tmp:/tmp
+      - ./aio/realm/compact-edge-realm.json:/tmp/compact-edge-realm.json
+      - ./aio/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json:/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json # admin/admin
     # command: -b 0.0.0.0 #-Dkeycloak.profile.feature.upload_scripts=enabled #-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled
     depends_on:
     - mysql
     environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: 1234
+      # Initializing master realm
+      # Imported realm compact-edge from file /tmp/compact-edge-realm.json.
+      # Importing users from '/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json'
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: 1234
       KEYCLOAK_LOGLEVEL: INFO
       ROOT_LOGLEVEL: INFO
-      # KEYCLOAK_IMPORT: /tmp/realm/realm-export.json
+      KEYCLOAK_IMPORT: /tmp/compact-edge-realm.json
       DB_VENDOR: MYSQL
       DB_ADDR: mysql
       DB_PORT: 3306
