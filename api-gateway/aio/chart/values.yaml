@@ -43,7 +43,7 @@ service:
   # port: 8083
   type: NodePort
   port: 8083
-  nodePort: 18083
+  nodePort: 30083
 
 ingress:
   enabled: false

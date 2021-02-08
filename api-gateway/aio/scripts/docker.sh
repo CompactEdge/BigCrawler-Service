@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+BINARY="api-gateway"
+IMAGE="api-gateway"
+VERSION="0.1.0"
+REGISTRY="localhost"
+REGISTRY_PORT=":5000"
+
 remove::docker_images() {
 	image_hash=$(docker images | grep $BINARY | awk '{print $3}')
 	if [ -z "$image_hash" ]; then
@@ -10,18 +16,12 @@ remove::docker_images() {
 	fi
 }
 
-BINARY="api-gateway"
-IMAGE="api-gateway"
-VERSION="0.1.0"
-REPO="markruler"
-REPO_PORT=""
-
 remove::docker_images
 docker build --build-arg JAR_FILE=build/libs/*.jar -t $IMAGE:$VERSION -f ./aio/Dockerfile .
-docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:$VERSION
-docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:latest
+docker tag $IMAGE:$VERSION $REGISTRY$REGISTRY_PORT/$IMAGE:$VERSION
+docker tag $IMAGE:$VERSION $REGISTRY$REGISTRY_PORT/$IMAGE:latest
 
 echo -e "\n>>> PRINT IMAGES <<<"
 echo "$(docker images | grep $BINARY | awk '{ printf ("%s\n", $0) }')"
 
-docker push $REPO$REPO_PORT/$IMAGE:$VERSION
+docker push $REGISTRY$REGISTRY_PORT/$IMAGE:$VERSION
