@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+REGISTRY_HOST="localhost"
+REGISTRY_PORT=":5000"
+VERSION=$(cat ./VERSION)
+
 remove::docker_images() {
 	image_hash=$(docker images | grep $IMAGE | awk '{print $3}')
 	if [ -z "$image_hash" ]; then
@@ -32,7 +36,7 @@ IMAGE="service-bus"
 # remove old images
 remove::docker_images
 
-SETTINGS_FILE="config/service-bus.yaml"
+SETTINGS_FILE="aio/chart/files/service-bus.yaml"
 eval $(parse::yaml $SETTINGS_FILE "config_")
 
 BINARY=svcbus
@@ -50,14 +54,10 @@ make build
 echo "Build Complete"
 
 # build docker image
-REPO="markruler"
-REPO_PORT=""
-VERSION=$(cat ./VERSION)
-
-docker build --build-arg EXPOSE_PORT=$config_svcbus_server_port -t $IMAGE:$VERSION -f ./aio/Dockerfile .
-docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:$VERSION
-docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:latest
-docker push $REPO$REPO_PORT/$IMAGE:$VERSION
+docker build --build-arg EXPOSE_PORT=$config_svcbus_server_port -t $IMAGE:$VERSION -f ./aio/Dockerfile.prod .
+docker tag $IMAGE:$VERSION $REGISTRY_HOST$REGISTRY_PORT/$IMAGE:$VERSION
+docker tag $IMAGE:$VERSION $REGISTRY_HOST$REGISTRY_PORT/$IMAGE:latest
+docker push $REGISTRY_HOST$REGISTRY_PORT/$IMAGE:$VERSION
 
 echo -e "\n>>> PRINT IMAGES <<<"
 echo "$(docker images | grep $IMAGE | awk '{ printf ("%s\n", $0) }')"

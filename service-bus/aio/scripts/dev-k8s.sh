@@ -6,6 +6,13 @@ minikube start \
 --container-runtime=docker \
 --memory='3gb'
 
+docker run \
+--detach \
+--rm \
+--publish 5000:5000 \
+--name registry \
+registry:2.7.1
+
 # prometheus
 kubectl create -f devops/k8s/coreos/kube-prometheus/manifests/setup
 kubectl create -f devops/k8s/coreos/kube-prometheus/manifests

@@ -43,7 +43,7 @@ spec:
         volumeMounts:
 {{- if .Values.configMapName }}
         - name: conf
-          mountPath: /root/service-bus/config
+          mountPath: /conf
 {{- end }}
         - name: localtime
           mountPath: /etc/localtime

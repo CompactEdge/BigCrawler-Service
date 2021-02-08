@@ -1,4 +1,6 @@
 BINARY := svcbus
+GO_OS := $(shell go env GOOS)
+GOARCH := $(shell go env GOARCH)
 
 .PHONY: fmt
 fmt:
@@ -25,8 +27,11 @@ clean:
 	@rm -rf ${BINARY} docs
 
 .PHONY: build
-build:
-	@GOOS=linux GOARCH=amd64 go build -o ${BINARY} main.go
+build: clean docs
+	@echo "GO_OS:   ${GO_OS}"
+	@echo "GO_ARCH: ${GOARCH}"
+	@#CGO_ENABLED=0 GOOS=${GO_OS} GOARCH=${GO_ARCH} go build -o ${BINARY} main.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${BINARY} main.go
 
 .PHONY: run
 run:

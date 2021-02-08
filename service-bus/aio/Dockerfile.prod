@@ -1,0 +1,6 @@
+# FROM golang:1.15.0-alpine3.12
+FROM alpine:3.12.1
+COPY svcbus /
+ARG EXPOSE_PORT
+EXPOSE $EXPOSE_PORT
+ENTRYPOINT ["svcbus", "-profile=server"]
