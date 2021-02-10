@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REGISTRY_HOST="localhost"
+REGISTRY_HOST="local-registry"
 REGISTRY_PORT=":5000"
 VERSION=$(cat ./VERSION)
 
@@ -50,6 +50,8 @@ else
 fi
 
 echo "Build $BINARY"
+# standard_init_linux.go:219: exec user process caused "no such file or directory"
+# CGO_ENABLED=0
 make build
 echo "Build Complete"
 

@@ -1,0 +1,3 @@
+https://kubernetes.io/docs/concepts/storage/
+https://github.com/kubernetes-retired/external-storage/blob/master/nfs/deploy/README.md
+https://kubernetes-csi.github.io/docs/external-provisioner.html

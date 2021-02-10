@@ -3,7 +3,7 @@
 BINARY="api-gateway"
 IMAGE="api-gateway"
 VERSION="0.1.0"
-REGISTRY="localhost"
+REGISTRY="local-registry"
 REGISTRY_PORT=":5000"
 
 remove::docker_images() {

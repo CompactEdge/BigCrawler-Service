@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: markruler/api-gateway
+  repository: local-registry/api-gateway
   pullPolicy: Always
   # pullPolicy: IfNotPresent
 

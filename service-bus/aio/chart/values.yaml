@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: markruler/service-bus
+  repository: local-registry:5000/service-bus
   pullPolicy: Always
 
 nameOverride: ""

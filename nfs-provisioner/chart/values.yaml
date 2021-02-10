@@ -1,0 +1,49 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/kubernetes_incubator/nfs-provisioner
+  pullPolicy: Always
+  # pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+provisioner:
+  local:
+    name: local/nfs
+    volume: /home/nfs-volume
+
+serviceAccount:
+  create: true
+  name: sa-nfs-provisioner
+  annotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

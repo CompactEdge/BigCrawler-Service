@@ -96,15 +96,20 @@ command: []
 args: []
 
 # Additional environment variables for Keycloak
-extraEnv: ""
-  # - name: KEYCLOAK_LOGLEVEL
-  #   value: DEBUG
-  # - name: WILDFLY_LOGLEVEL
-  #   value: DEBUG
-  # - name: CACHE_OWNERS_COUNT
-  #   value: "2"
-  # - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
-  #   value: "2"
+extraEnv: |
+  - name: KEYCLOAK_USER
+    value: wizontech
+  - name: KEYCLOAK_PASSWORD
+    value: admin
+
+# - name: KEYCLOAK_LOGLEVEL
+#   value: DEBUG
+# - name: WILDFLY_LOGLEVEL
+#   value: DEBUG
+# - name: CACHE_OWNERS_COUNT
+#   value: "2"
+# - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
+#   value: "2"
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
 extraEnvFrom: ""
@@ -220,17 +225,20 @@ service:
   labels: {}
   # key: value
   # The Service type
-  type: ClusterIP
+  # type: ClusterIP
+  type: NodePort
   # Optional IP for the load balancer. Used for services of type LoadBalancer only
   loadBalancerIP: ""
   # The http Service port
   httpPort: 80
   # The HTTP Service node port if type is NodePort
-  httpNodePort: null
+  # httpNodePort: null
+  httpNodePort: 9000
   # The HTTPS Service port
   httpsPort: 8443
   # The HTTPS Service node port if type is NodePort
-  httpsNodePort: null
+  # httpsNodePort: null
+  httpsNodePort: 9001
   # The WildFly management Service port
   httpManagementPort: 9990
   # The WildFly management Service node port if type is NodePort

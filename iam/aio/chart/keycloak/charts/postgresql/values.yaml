@@ -314,7 +314,7 @@ persistence:
   ##
   subPath: ""
 
-  # storageClass: "-"
+  storageClass: "nfs-provisioner"
   accessModes:
     - ReadWriteOnce
   size: 8Gi
