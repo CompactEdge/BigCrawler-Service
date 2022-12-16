@@ -1,0 +1,54 @@
+.date {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.outer-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.box-dot {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 5px;
+  width: 10px;
+  height: 10px;
+}
+
+.dot {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(52, 44, 44);
+}
+
+.data-name {
+  margin-right: 5px;
+}
+
+.inner-container {
+  /* border: solid 1px;
+  border-color: tomato; */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.data-val {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.data-unit {
+  font-size: 12px;
+}
+
+
