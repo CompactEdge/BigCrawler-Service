@@ -15,3 +15,4 @@
 ## Applications
 
 - Data Stream (ELK)
+- edgeManager
