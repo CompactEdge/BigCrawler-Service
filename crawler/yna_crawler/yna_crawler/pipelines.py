@@ -17,7 +17,7 @@ from scrapy.utils.log import logger #, configure_logging
 from konlpy.tag import Okt
 
 
-
+//ynacrawler pipeline
 class YnaCrawlerPipeline(object):
   def __init__(self):
     self.settings = get_project_settings()
