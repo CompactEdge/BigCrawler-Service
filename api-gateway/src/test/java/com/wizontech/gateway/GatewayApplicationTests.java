@@ -31,7 +31,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWireMock()
 public class GatewayApplicationTests {
 
-  @Autowired
+  @Autowired 
   private WebTestClient webTestClient;
 
   @Test
