@@ -2,7 +2,7 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-
+#logging
 class Log:
     __log_level_map = {
         'debug' : logging.DEBUG,
