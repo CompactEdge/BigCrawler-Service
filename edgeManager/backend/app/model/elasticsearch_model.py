@@ -15,7 +15,7 @@ def load_es():
 
     return es
 
-
+#list
 def list_indices():
     es = load_es()
     indices = list()
@@ -25,7 +25,7 @@ def list_indices():
 
     return indices
 
-
+#list item
 def list_item_names():
     es = load_es()
     body = {
