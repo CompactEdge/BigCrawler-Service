@@ -7,7 +7,7 @@ from flask import current_app
 from utils import get_datetime_stamp
 from utils.logger import Log
 
-
+#load elasticsearch
 def load_es():
     basic_auth = (current_app.config['ELASTICSEARCH_USERNAME'], current_app.config['ELASTICSEARCH_PASSWORD'])
     uri = "%s:%d" % (current_app.config['ELASTICSEARCH_SERVER'], current_app.config['ELASTICSEARCH_PORT'])
