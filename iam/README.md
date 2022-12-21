@@ -84,7 +84,7 @@ docker logs -f identity-provider
 curl localhost:9000
 ```
 
-> 화면에서 직접 export/import 하는 것을 추천합니다.
+> 화면에서 직접 export/import 하는 것을 추천
 
 ## Exporting Realm
 
