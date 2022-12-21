@@ -3,6 +3,7 @@ import pika
 
 queue = sys.argv[1]
 
+# test message
 message = 'test performance message'
  
 # Connection 생성
